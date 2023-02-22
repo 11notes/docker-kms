@@ -1,6 +1,6 @@
 #!/bin/ash
 
-echo "$(date +'%Y-%m-%d %T') starting py-kms server ..."
+echo "$(date +'%Y-%m-%d %T') starting py-kms server ..." >> /var/log/kms.log
 
 if [ -z "$1" ]; then
     set -- "python3" \

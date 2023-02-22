@@ -1,5 +1,5 @@
 # :: Build
-	FROM alpine:latest as build
+  FROM alpine:latest as build
 
   RUN set -ex; \
     apk add --update --no-cache \
@@ -14,8 +14,6 @@
       git; \
     git clone https://github.com/SystemRage/py-kms.git /tmp/py-kms; \
     mv /tmp/py-kms/py-kms /usr/local/bin;
-
-
 
 # :: Header
 	FROM python:3.7.10-alpine
