@@ -12,7 +12,7 @@
       cmake \
       g++ \
       git; \
-    git clone https://github.com/SystemRage/py-kms.git /tmp/py-kms; \
+    git clone https://github.com/Py-KMS-Organization/py-kms.git /tmp/py-kms; \
     mv /tmp/py-kms/py-kms /usr/local/bin;
 
 # :: Header
@@ -31,7 +31,6 @@ USER root
   RUN set -ex; \
     apk add --update --no-cache \
       py3-configargparse \
-      py3-flask \
       py3-pygments \
       python3-tkinter \
       sqlite-libs \
