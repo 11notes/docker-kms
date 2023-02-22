@@ -15,6 +15,8 @@
     git clone https://github.com/SystemRage/py-kms.git /tmp/py-kms; \
     mv /tmp/py-kms/py-kms /usr/local/bin;
 
+
+
 # :: Header
 	FROM python:3.7.10-alpine
 	COPY --from=build /usr/local/bin/ /usr/local/bin
