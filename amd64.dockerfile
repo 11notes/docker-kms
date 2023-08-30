@@ -52,6 +52,7 @@
       pip3 install --no-cache-dir \
         peewee \
         tzlocal \
+        pytz \
         pysqlite3;
 
     # :: create user
