@@ -18,9 +18,7 @@
       -s /kms/var/kms.db \
       -w RANDOM \
       -V ${KMS_LOGLEVEL} \
-      -F FILEOFF \
-      -t0 600 \
-      -t1 300 \
+      -F /var/log/kms.log \
       -y
   fi
 
