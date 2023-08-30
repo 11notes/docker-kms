@@ -1,5 +1,26 @@
-# Alpine:: Python KMS
+# Alpine :: KMS
 Run a KMS server based on Alpine Linux. Small, lightweight, secure and fast 🏔️
+
+Works with:
+- Windows Vista 
+- Windows 7 
+- Windows 8
+- Windows 8.1
+- Windows 10 ( 1511 / 1607 / 1703 / 1709 / 1803 / 1809 )
+- Windows 10 ( 1903 / 1909 / 20H1, 20H2, 21H1, 21H2 )
+- Windows 11 ( 21H2 )
+- Windows Server 2008
+- Windows Server 2008 R2
+- Windows Server 2012
+- Windows Server 2012 R2
+- Windows Server 2016
+- Windows Server 2019
+- Windows Server 2022
+- Microsoft Office 2010 ( Volume License )
+- Microsoft Office 2013 ( Volume License )
+- Microsoft Office 2016 ( Volume License )
+- Microsoft Office 2019 ( Volume License )
+- Microsoft Office 2021 ( Volume License )
 
 ## Volumes
 * **/kms/var** - Directory of the sqlite database
