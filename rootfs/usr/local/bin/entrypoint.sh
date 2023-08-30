@@ -1,8 +1,5 @@
 #!/bin/ash
-
-echo "$(date +'%Y-%m-%d %T') starting py-kms server ..." >> /var/log/kms.log
-
-if [ -z "$1" ]; then
+  if [ -z "$1" ]; then
     set -- "python3" \
       /usr/local/bin/py-kms/pykms_Server.py \
       0.0.0.0 \
@@ -15,6 +12,6 @@ if [ -z "$1" ]; then
       -w RANDOM \
       -V WARNING \
       -F /var/log/kms.log
-fi
+  fi
 
-exec "$@"
+  exec "$@"
