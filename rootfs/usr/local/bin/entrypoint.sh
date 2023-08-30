@@ -12,7 +12,7 @@
       ${KMS_IP} \
       ${KMS_PORT} \
       -l ${KMS_LOCALE} \
-      -c 25 \
+      -c 50 \
       -a ${KMS_ACTIVATIONINTERVAL} \
       -r ${KMS_RENEWALINTERVAL} \
       -s /kms/var/kms.db \
