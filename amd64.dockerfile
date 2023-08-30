@@ -16,7 +16,7 @@
     mv /tmp/py-kms/py-kms /usr/local/bin;
 
 # :: Header
-  FROM python:3.7.10-alpine
+  FROM python:3.11.5-alpine
   ENV APP_ROOT=/kms
   COPY --from=build /usr/local/bin/ /usr/local/bin
 
