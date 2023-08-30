@@ -2,6 +2,7 @@
   if [ -z "${KMS_IP}" ]; then KMS_IP=0.0.0.0; fi
   if [ -z "${KMS_PORT}" ]; then KMS_PORT=1688; fi
   if [ -z "${KMS_LOCALE}" ]; then KMS_LOCALE=1033; fi
+  if [ -z "${KMS_CLIENTCOUNT}" ]; then KMS_CLIENTCOUNT=256; fi
   if [ -z "${KMS_ACTIVATIONINTERVAL}" ]; then KMS_ACTIVATIONINTERVAL=120; fi
   if [ -z "${KMS_RENEWALINTERVAL}" ]; then KMS_RENEWALINTERVAL=259200; fi
   if [ -z "${KMS_LOGLEVEL}" ]; then KMS_LOGLEVEL="INFO"; fi
@@ -12,7 +13,7 @@
       ${KMS_IP} \
       ${KMS_PORT} \
       -l ${KMS_LOCALE} \
-      -c 50 \
+      -c ${KMS_CLIENTCOUNT} \
       -a ${KMS_ACTIVATIONINTERVAL} \
       -r ${KMS_RENEWALINTERVAL} \
       -s /kms/var/kms.db \
