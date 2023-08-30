@@ -34,8 +34,7 @@
   # :: prepare image
     RUN set -ex; \
       mkdir -p ${APP_ROOT}; \
-      mkdir -p ${APP_ROOT}/var; \
-      ln -s /dev/stdout /var/log/kms.log;
+      mkdir -p ${APP_ROOT}/var;
 
     RUN set -ex; \
       apk add --no-cache \
@@ -64,8 +63,7 @@
         chmod +x -R /usr/local/bin; \
         usermod -d ${APP_ROOT} docker; \
         chown -R 1000:1000 \
-          ${APP_ROOT} \
-          /var/log/kms.log;
+          ${APP_ROOT};
 
 # :: Volumes
   VOLUME ["${APP_ROOT}/var"]

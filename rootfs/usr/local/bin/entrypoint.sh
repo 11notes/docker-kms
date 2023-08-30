@@ -17,7 +17,7 @@
       -s /kms/var/kms.db \
       -w RANDOM \
       -V ERROR \
-      -F /var/log/kms.log \
+      -F STDOUT \
       -t0 600 \
       -t1 300
   fi
