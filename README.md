@@ -19,6 +19,15 @@ docker run --name kms \
 | `gid` | 1000 | group id 1000 |
 | `home` | /kms | home directory of user docker |
 
+## Environment
+| Parameter | Value | Default |
+| --- | --- | --- |
+| `KMS_IP` | localhost or 127.0.0.1 or a dedicated IP | 0.0.0.0 |
+| `KMS_PORT` | any port > 1024 | 1688 |
+| `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
+| `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
+| `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
+
 ## Parent
 * [python:3.7.10-alpine](https://hub.docker.com/layers/library/python/3.7.10-alpine/images/sha256-932f7a8769b07d1effc5a46cb1463948542a017e82350c93f56792bec08ff9dd?context=explore)
 
@@ -28,4 +37,5 @@ docker run --name kms \
 
 ## Tips
 * Don't bind to ports < 1024 (requires root), use NAT/reverse proxy
-* [Permanent Stroage](https://github.com/11notes/alpine-docker-netshare) - Module to store permanent container data via NFS/CIFS and more
+* [Persistent Storage](https://github.com/11notes/alpine-docker-netshare)
+* [Microsoft LICD](https://learn.microsoft.com/en-us/troubleshoot/windows-client/deployment/kms-current-count-not-increase)
