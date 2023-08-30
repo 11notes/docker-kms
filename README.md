@@ -38,4 +38,4 @@ docker run --name kms \
 ## Tips
 * Don't bind to ports < 1024 (requires root), use NAT/reverse proxy
 * [Persistent Storage](https://github.com/11notes/alpine-docker-netshare)
-* [Microsoft LICD](https://learn.microsoft.com/en-us/troubleshoot/windows-client/deployment/kms-current-count-not-increase)
+* [Microsoft LICD](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a)
