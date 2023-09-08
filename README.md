@@ -58,15 +58,16 @@ slmgr /ipk WX4NM-KYWYW-QJJR4-XV3QB-6VM33
 ```
 Add your KMS server information to server
 ```powershell
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "IP_OF_YOUR_KMS"
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "1688"
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\OfficeSoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "IP_OF_YOUR_KMS"
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\OfficeSoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "1688"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "KMS_IP"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "KMS_PORT"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\OfficeSoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "KMS_IP"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\OfficeSoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "KMS_PORT"
 ```
 Activate server
 ```cmd
 slmgr /ato
 ```
+*Do not expos your KMS server to the web via port 1688. Microsoft is active scanning the entire internet for public available KMS servers and will issue a take down notice to your ISP!*
 
 ## Parent
 * [python:3.7.10-alpine](https://hub.docker.com/layers/library/python/3.7.10-alpine/images/sha256-932f7a8769b07d1effc5a46cb1463948542a017e82350c93f56792bec08ff9dd?context=explore)
