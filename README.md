@@ -51,6 +51,23 @@ docker run --name kms \
 | `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
 | `KMS_LOGLEVEL` | CRITICAL, ERROR, WARNING, INFO, DEBUG, MININFO | INFO |
 
+## Example
+Windows Server 2022 Datacenter. List of [GVLK](https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys)
+```cmd
+slmgr /ipk WX4NM-KYWYW-QJJR4-XV3QB-6VM33
+```
+Add your KMS server information to server
+```powershell
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "IP_OF_YOUR_KMS"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "1688"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\OfficeSoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "IP_OF_YOUR_KMS"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\OfficeSoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "1688"
+```
+Activate server
+```cmd
+slmgr /ato
+```
+
 ## Parent
 * [python:3.7.10-alpine](https://hub.docker.com/layers/library/python/3.7.10-alpine/images/sha256-932f7a8769b07d1effc5a46cb1463948542a017e82350c93f56792bec08ff9dd?context=explore)
 
