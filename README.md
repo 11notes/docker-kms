@@ -1,4 +1,7 @@
 # Alpine :: KMS
+![size](https://img.shields.io/docker/image-size/11notes/kms/2022.12.16?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-kms?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-kms?color=c91cb8)
+
+
 Run a KMS server based on Alpine Linux. Small, lightweight, secure and fast 🏔️
 
 Works with:
@@ -39,6 +42,7 @@ docker run --name kms \
 | `uid` | 1000 | user id 1000 |
 | `gid` | 1000 | group id 1000 |
 | `home` | /kms | home directory of user docker |
+| `database` | /kms/var/kms.db | SQlite database holding all client data |
 
 ## Environment
 | Parameter | Value | Default |
@@ -69,14 +73,14 @@ slmgr /ato
 ```
 *Do not expos your KMS server to the web via port 1688. Microsoft is active scanning the entire internet for public available KMS servers and will issue a take down notice to your ISP!*
 
-## Parent
+## Parent Image
 * [python:3.7.10-alpine](https://hub.docker.com/layers/library/python/3.7.10-alpine/images/sha256-932f7a8769b07d1effc5a46cb1463948542a017e82350c93f56792bec08ff9dd?context=explore)
 
-## Built with
+## Built with and thanks to
 * [py-kms](https://github.com/Py-KMS-Organization/py-kms)
 * [Alpine Linux](https://alpinelinux.org/)
 
 ## Tips
-* Don't bind to ports < 1024 (requires root), use NAT/reverse proxy
-* [Persistent Storage](https://github.com/11notes/alpine-docker-netshare)
+* Only use rootless container runtime (podman, rootless docker)
+* Don't bind to ports < 1024 (requires root), use NAT/reverse proxy (haproxy, traefik, nginx)
 * [Microsoft LICD](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a)
