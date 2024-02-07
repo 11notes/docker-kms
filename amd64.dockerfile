@@ -1,5 +1,5 @@
 # :: Build
-  FROM 11notes/alpine:stable as build
+  FROM alpine as build
 
   RUN set -ex; \
     apk add --update --no-cache \

@@ -1,7 +1,7 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
 # 🏔️ Alpine - Key Management Server
-![size](https://img.shields.io/docker/image-size/11notes/kms/3.1.8?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/3.1.8?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-kms?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-kms?color=c91cb8) ![stars](https://img.shields.io/docker/stars/11notes/kms?color=e6a50e)
+![size](https://img.shields.io/docker/image-size/11notes/kms/1.0.2022?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/1.0.2022?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-kms?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-kms?color=c91cb8) ![stars](https://img.shields.io/docker/stars/11notes/kms?color=e6a50e)
 
 **Activate any version of Windows and Office, forever**
 

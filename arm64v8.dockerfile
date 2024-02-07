@@ -2,7 +2,7 @@
   FROM multiarch/qemu-user-static:x86_64-aarch64 as qemu
 
 # :: Build
-  FROM 11notes/alpine:arm64v8-stable as build
+  FROM arm64v8/alpine as build
   COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
 
   RUN set -ex; \
