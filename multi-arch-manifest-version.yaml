@@ -1,0 +1,11 @@
+image: 11notes/kms:1.0.2022
+manifests:
+  - image: 11notes/kms:amd64-1.0.2022
+    platform:
+      architecture: amd64
+      os: linux
+  - image: 11notes/kms:arm64v8-1.0.2022
+    platform:
+      architecture: arm64
+      os: linux
+      variant: v8
