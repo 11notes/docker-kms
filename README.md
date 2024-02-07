@@ -1,8 +1,12 @@
-# Alpine :: KMS
-![size](https://img.shields.io/docker/image-size/11notes/kms/2022.12.16?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-kms?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-kms?color=c91cb8)
+![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
+# 🏔️ Alpine - Key Management Server
+![size](https://img.shields.io/docker/image-size/11notes/kms/3.1.8?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/3.1.8?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-kms?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-kms?color=c91cb8) ![stars](https://img.shields.io/docker/stars/11notes/kms?color=e6a50e)
 
-Run a KMS server based on Alpine Linux. Small, lightweight, secure and fast 🏔️
+**Activate any version of Windows and Office, forever**
+
+# SYNOPSIS
+What can I do with this? This image will run a KMS server you can use to activate any version of Windows and Office.
 
 Works with:
 - Windows Vista 
@@ -25,38 +29,18 @@ Works with:
 - Microsoft Office 2019 ( Volume License )
 - Microsoft Office 2021 ( Volume License )
 
-## Volumes
-* **/kms/var** - Directory of the sqlite database
+# VOLUMES
+* **/kms/var** - Directory of the activation database
 
-## Run
+# RUN
 ```shell
 docker run --name kms \
-  -v ../var:/kms/var \
+  -v .../var:/kms/var \
   -d 11notes/kms:[tag]
 ```
 
-## Defaults
-| Parameter | Value | Description |
-| --- | --- | --- |
-| `user` | docker | user docker |
-| `uid` | 1000 | user id 1000 |
-| `gid` | 1000 | group id 1000 |
-| `home` | /kms | home directory of user docker |
-| `database` | /kms/var/kms.db | SQlite database holding all client data |
-
-## Environment
-| Parameter | Value | Default |
-| --- | --- | --- |
-| `KMS_IP` | localhost or 127.0.0.1 or a dedicated IP | 0.0.0.0 |
-| `KMS_PORT` | any port > 1024 | 1688 |
-| `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
-| `KMS_CLIENTCOUNT` | client count >= 25 | 256 |
-| `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
-| `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
-| `KMS_LOGLEVEL` | CRITICAL, ERROR, WARNING, INFO, DEBUG, MININFO | INFO |
-
-## Example
-Windows Server 2022 Datacenter. List of [GVLK](https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys)
+# EXAMPLES
+## Windows Server 2022 Datacenter. List of [GVLK](https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys)
 ```cmd
 slmgr /ipk WX4NM-KYWYW-QJJR4-XV3QB-6VM33
 ```
@@ -71,16 +55,43 @@ Activate server
 ```cmd
 slmgr /ato
 ```
-*Do not expos your KMS server to the web via port 1688. Microsoft is active scanning the entire internet for public available KMS servers and will issue a take down notice to your ISP!*
 
-## Parent Image
-* [python:3.7.10-alpine](https://hub.docker.com/layers/library/python/3.7.10-alpine/images/sha256-932f7a8769b07d1effc5a46cb1463948542a017e82350c93f56792bec08ff9dd?context=explore)
+# DEFAULT SETTINGS
+| Parameter | Value | Description |
+| --- | --- | --- |
+| `user` | docker | user docker |
+| `uid` | 1000 | user id 1000 |
+| `gid` | 1000 | group id 1000 |
+| `home` | /kms | home directory of user docker |
+| `database` | /kms/var/kms.db | SQlite database holding all client data |
 
-## Built with and thanks to
+# ENVIRONMENT
+| Parameter | Value | Default |
+| --- | --- | --- |
+| `TZ` | [Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) | |
+| `DEBUG` | Show debug information | |
+| `KMS_IP` | localhost or 127.0.0.1 or a dedicated IP | 0.0.0.0 |
+| `KMS_PORT` | any port > 1024 | 1688 |
+| `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
+| `KMS_CLIENTCOUNT` | client count >= 25 | 256 |
+| `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
+| `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
+| `KMS_LOGLEVEL` | CRITICAL, ERROR, WARNING, INFO, DEBUG, MININFO | INFO |
+
+# PARENT IMAGE
+* [11notes/alpine:stable](https://hub.docker.com/r/11notes/alpine)
+
+# BUILT WITH
 * [py-kms](https://github.com/Py-KMS-Organization/py-kms)
-* [Alpine Linux](https://alpinelinux.org/)
+* [alpine](https://alpinelinux.org)
 
-## Tips
+# TIPS
 * Only use rootless container runtime (podman, rootless docker)
-* Don't bind to ports < 1024 (requires root), use NAT/reverse proxy (haproxy, traefik, nginx)
+* Allow non-root ports < 1024 via `echo "net.ipv4.ip_unprivileged_port_start=53" > /etc/sysctl.d/ports.conf`
+* Use a reverse proxy like Traefik, Nginx to terminate TLS with a valid certificate
+* Use Let’s Encrypt certificates to protect your SSL endpoints
 * [Microsoft LICD](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a)
+
+# ElevenNotes<sup>™️</sup>
+This image is provided to you at your own risk. Always make backups before updating an image to a new version. Check the changelog for breaking changes.
+    

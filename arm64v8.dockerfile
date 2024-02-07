@@ -1,5 +1,9 @@
+# :: Arch
+  FROM multiarch/qemu-user-static:x86_64-aarch64 as qemu
+
 # :: Build
-  FROM 11notes/alpine:stable as build
+  FROM 11notes/alpine:arm64v8-stable as build
+  COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
 
   RUN set -ex; \
     apk add --update --no-cache \
@@ -16,7 +20,8 @@
     mv /tmp/py-kms/py-kms /usr/local/bin;
 
 # :: Header
-  FROM python:3.11-alpine
+  FROM arm64v8/python:3.11-alpine
+  COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
   ENV APP_ROOT=/kms
   COPY --from=build /usr/local/bin/ /usr/local/bin
 
