@@ -2,8 +2,7 @@
   FROM multiarch/qemu-user-static:x86_64-aarch64 as qemu
 
 # :: Build
-  FROM arm64v8/alpine as build
-  COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
+  FROM alpine as build
 
   RUN set -ex; \
     apk add --update --no-cache \
@@ -22,8 +21,8 @@
 # :: Header
   FROM arm64v8/python:3.11-alpine
   COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
-  ENV APP_ROOT=/kms
   COPY --from=build /usr/local/bin/ /usr/local/bin
+  ENV APP_ROOT=/kms
 
 # :: Run
   USER root
