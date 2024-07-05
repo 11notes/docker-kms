@@ -19,7 +19,7 @@
     mv /tmp/py-kms/py-kms /usr/local/bin;
 
 # :: Header
-  FROM arm64v8/python:3.11-alpine
+  FROM --platform=linux/arm64 arm64v8/python:3.11-alpine
   COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
   COPY --from=build /usr/local/bin/ /usr/local/bin
   ENV APP_ROOT=/kms
