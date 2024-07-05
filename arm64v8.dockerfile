@@ -29,7 +29,7 @@
 
   # :: update image
     RUN set -ex; \
-      apk --no-cache add \
+      apk --no-cache --update add \
         curl \
         tzdata \
         shadow; \
