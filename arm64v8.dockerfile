@@ -1,4 +1,4 @@
-# :: Arch
+# :: QEMU
   FROM multiarch/qemu-user-static:x86_64-aarch64 as qemu
 
 # :: Build

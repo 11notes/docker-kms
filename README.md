@@ -1,7 +1,7 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
 # 🏔️ Alpine - Key Management Server
-![size](https://img.shields.io/docker/image-size/11notes/kms/1.0.2022?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/1.0.2022?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-kms?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-kms?color=c91cb8) ![stars](https://img.shields.io/docker/stars/11notes/kms?color=e6a50e)
+![size](https://img.shields.io/docker/image-size/11notes/kms/latest?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/latest?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6) ![stars](https://img.shields.io/docker/stars/11notes/kms?color=e6a50e) [<img src="https://img.shields.io/badge/github-11notes-blue?logo=github">](https://github.com/11notes)
 
 **Activate any version of Windows and Office, forever**
 
@@ -86,12 +86,11 @@ slmgr /ato
 * [alpine](https://alpinelinux.org)
 
 # TIPS
-* Only use rootless container runtime (podman, rootless docker)
-* Allow non-root ports < 1024 via `echo "net.ipv4.ip_unprivileged_port_start=53" > /etc/sysctl.d/ports.conf`
+* Allow non-root ports < 1024 via `echo "net.ipv4.ip_unprivileged_port_start={n}" > /etc/sysctl.d/ports.conf`
 * Use a reverse proxy like Traefik, Nginx to terminate TLS with a valid certificate
 * Use Let’s Encrypt certificates to protect your SSL endpoints
 * [Microsoft LICD](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a)
 
 # ElevenNotes<sup>™️</sup>
-This image is provided to you at your own risk. Always make backups before updating an image to a new version. Check the changelog for breaking changes.
+This image is provided to you at your own risk. Always make backups before updating an image to a new version. Check the changelog for breaking changes. You can find all my repositories on [github](https://github.com/11notes).
     
