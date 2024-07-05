@@ -32,11 +32,39 @@ Works with:
 # VOLUMES
 * **/kms/var** - Directory of the activation database
 
-# RUN
-```shell
-docker run --name kms \
-  -v .../var:/kms/var \
-  -d 11notes/kms:[tag]
+# COMPOSE
+```yaml
+version: "3.8"
+services:
+  kms:
+    image: "11notes/kms:latest"
+    container_name: "postgres"
+    environment:
+      TZ: Europe/Zurich
+    volumes:
+      - "kms-var:/kms/var"
+    networks:
+      - kms
+    restart: always
+  whodb:
+    image: "11notes/whodb:latest"
+    container_name: "whodb"
+    environment:
+      TZ: Europe/Zurich
+    volumes:
+      - "kms-var:/whodb/var"
+    ports:
+      - "8080:8080/tcp"
+    networks:
+      - kms
+      - frontend
+    restart: always
+volumes:
+  kms-var:
+networks:
+  kms:
+    internal: true
+  frontend:
 ```
 
 # EXAMPLES
@@ -73,7 +101,7 @@ slmgr /ato
 | `KMS_IP` | localhost or 127.0.0.1 or a dedicated IP | 0.0.0.0 |
 | `KMS_PORT` | any port > 1024 | 1688 |
 | `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
-| `KMS_CLIENTCOUNT` | client count >= 25 | 256 |
+| `KMS_CLIENTCOUNT` | client count >= 25 | 25 |
 | `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
 | `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
 | `KMS_LOGLEVEL` | CRITICAL, ERROR, WARNING, INFO, DEBUG, MININFO | INFO |
