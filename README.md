@@ -5,6 +5,7 @@
 
 **Activate any version of Windows and Office, forever**
 
+![slmgr](https://github.com/11notes/docker-kms/blob/main/slmgr.png?raw=true)
 ![whodb](https://github.com/11notes/docker-kms/blob/main/whodb.png?raw=true)
 
 # SYNOPSIS
