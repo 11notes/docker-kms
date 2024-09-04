@@ -1,14 +1,12 @@
-version: "3.8"
+name: "kms"
 services:
   kms:
     image: "11notes/kms:latest"
-    container_name: "postgres"
+    container_name: "kms"
     environment:
       TZ: Europe/Zurich
     volumes:
       - "kms-var:/kms/var"
-    networks:
-      - kms
     restart: always
   whodb:
     image: "11notes/whodb:latest"
@@ -19,13 +17,6 @@ services:
       - "kms-var:/whodb/var"
     ports:
       - "8080:8080/tcp"
-    networks:
-      - kms
-      - frontend
     restart: always
 volumes:
   kms-var:
-networks:
-  kms:
-    internal: true
-  frontend:

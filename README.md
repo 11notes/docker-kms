@@ -1,6 +1,6 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
-# 🏔️ Alpine - Key Management Server
+# 🏔️ Alpine - kms
 ![size](https://img.shields.io/docker/image-size/11notes/kms/latest?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/latest?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6) ![stars](https://img.shields.io/docker/stars/11notes/kms?color=e6a50e) [<img src="https://img.shields.io/badge/github-11notes-blue?logo=github">](https://github.com/11notes)
 
 **Activate any version of Windows and Office, forever**
@@ -9,16 +9,15 @@
 ![whodb](https://github.com/11notes/docker-kms/blob/main/whodb.png?raw=true)
 
 # SYNOPSIS
-What can I do with this? This image will run a KMS server you can use to activate any version of Windows and Office.
+What can I do with this? This image will run a KMS server you can use to activate any version of Windows and Office, forever.
 
 Works with:
 - Windows Vista 
 - Windows 7 
 - Windows 8
 - Windows 8.1
-- Windows 10 ( 1511 / 1607 / 1703 / 1709 / 1803 / 1809 )
-- Windows 10 ( 1903 / 1909 / 20H1, 20H2, 21H1, 21H2 )
-- Windows 11 ( 21H2 )
+- Windows 10
+- Windows 11
 - Windows Server 2008
 - Windows Server 2008 R2
 - Windows Server 2012
@@ -26,28 +25,28 @@ Works with:
 - Windows Server 2016
 - Windows Server 2019
 - Windows Server 2022
+- Windows Server 2025
 - Microsoft Office 2010 ( Volume License )
 - Microsoft Office 2013 ( Volume License )
 - Microsoft Office 2016 ( Volume License )
 - Microsoft Office 2019 ( Volume License )
 - Microsoft Office 2021 ( Volume License )
+- Microsoft Office 2024 ( Volume License )
 
 # VOLUMES
 * **/kms/var** - Directory of the activation database
 
 # COMPOSE
 ```yaml
-version: "3.8"
+name: "kms"
 services:
   kms:
     image: "11notes/kms:latest"
-    container_name: "postgres"
+    container_name: "kms"
     environment:
       TZ: Europe/Zurich
     volumes:
       - "kms-var:/kms/var"
-    networks:
-      - kms
     restart: always
   whodb:
     image: "11notes/whodb:latest"
@@ -58,16 +57,9 @@ services:
       - "kms-var:/whodb/var"
     ports:
       - "8080:8080/tcp"
-    networks:
-      - kms
-      - frontend
     restart: always
 volumes:
   kms-var:
-networks:
-  kms:
-    internal: true
-  frontend:
 ```
 
 # EXAMPLES
@@ -117,7 +109,6 @@ slmgr /ato
 * [alpine](https://alpinelinux.org)
 
 # TIPS
-* Allow non-root ports < 1024 via `echo "net.ipv4.ip_unprivileged_port_start={n}" > /etc/sysctl.d/ports.conf`
 * Use a reverse proxy like Traefik, Nginx to terminate TLS with a valid certificate
 * Use Let’s Encrypt certificates to protect your SSL endpoints
 * [Microsoft LICD](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a)

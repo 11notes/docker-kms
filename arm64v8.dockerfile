@@ -23,6 +23,15 @@
   COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
   COPY --from=build /usr/local/bin/ /usr/local/bin
   ENV APP_ROOT=/kms
+  ENV APP_NAME="kms"
+  ENV APP_VERSION="latest"
+  ENV KMS_IP=0.0.0.0
+  ENV KMS_PORT=1688
+  ENV KMS_LOCALE=1033
+  ENV KMS_CLIENTCOUNT=25
+  ENV KMS_ACTIVATIONINTERVAL=120
+  ENV KMS_RENEWALINTERVAL=259200
+  ENV KMS_LOGLEVEL="INFO"
 
 # :: Run
   USER root
