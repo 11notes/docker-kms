@@ -10,7 +10,8 @@
     git clone https://github.com/11notes/util.git;
 
 # :: Build
-  FROM alpine as build
+  FROM --platform=linux/arm64 alpine as build
+  COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
 
   RUN set -ex; \
     apk add --update --no-cache \
