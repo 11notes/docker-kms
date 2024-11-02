@@ -1,6 +1,14 @@
 # :: QEMU
   FROM multiarch/qemu-user-static:x86_64-aarch64 as qemu
 
+# :: Util
+  FROM alpine as util
+
+  RUN set -ex; \
+    apk add --no-cache \
+      git; \
+    git clone https://github.com/11notes/util.git;
+
 # :: Build
   FROM alpine as build
 
@@ -22,6 +30,7 @@
   FROM --platform=linux/arm64 arm64v8/python:3.11-alpine
   COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
   COPY --from=build /usr/local/bin/ /usr/local/bin
+  COPY --from=util /util/docker /usr/local/bin
   ENV APP_ROOT=/kms
   ENV APP_NAME="kms"
   ENV APP_VERSION="latest"

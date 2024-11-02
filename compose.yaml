@@ -6,7 +6,9 @@ services:
     environment:
       TZ: Europe/Zurich
     volumes:
-      - "kms-var:/kms/var"
+      - "var:/kms/var"
+    ports:
+      - "1688:1688/tcp"
     restart: always
   whodb:
     image: "11notes/whodb:latest"
@@ -14,9 +16,9 @@ services:
     environment:
       TZ: Europe/Zurich
     volumes:
-      - "kms-var:/whodb/var"
+      - "var:/whodb/var"
     ports:
       - "8080:8080/tcp"
     restart: always
 volumes:
-  kms-var:
+  var:

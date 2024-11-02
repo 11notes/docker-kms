@@ -1,7 +1,7 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
 # 🏔️ Alpine - kms
-![size](https://img.shields.io/docker/image-size/11notes/kms/latest?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/latest?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6) ![stars](https://img.shields.io/docker/stars/11notes/kms?color=e6a50e) [<img src="https://img.shields.io/badge/github-11notes-blue?logo=github">](https://github.com/11notes)
+![size](https://img.shields.io/docker/image-size/11notes/kms/latest?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/latest?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6)
 
 **Activate any version of Windows and Office, forever**
 
@@ -46,7 +46,9 @@ services:
     environment:
       TZ: Europe/Zurich
     volumes:
-      - "kms-var:/kms/var"
+      - "var:/kms/var"
+    ports:
+      - "1688:1688/tcp"
     restart: always
   whodb:
     image: "11notes/whodb:latest"
@@ -59,7 +61,7 @@ services:
       - "8080:8080/tcp"
     restart: always
 volumes:
-  kms-var:
+  var:
 ```
 
 # EXAMPLES
@@ -79,6 +81,7 @@ Activate server
 slmgr /ato
 ```
 
+# DEFAULT SETTINGS
 # DEFAULT SETTINGS
 | Parameter | Value | Description |
 | --- | --- | --- |
@@ -100,6 +103,9 @@ slmgr /ato
 | `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
 | `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
 | `KMS_LOGLEVEL` | CRITICAL, ERROR, WARNING, INFO, DEBUG, MININFO | INFO |
+
+# SOURCE
+* [11notes/kms:latest](https://github.com/11notes/docker-kms/tree/latest)
 
 # PARENT IMAGE
 * [11notes/alpine:stable](https://hub.docker.com/r/11notes/alpine)

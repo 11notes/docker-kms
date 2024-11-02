@@ -1,3 +1,11 @@
+# :: Util
+  FROM alpine as util
+
+  RUN set -ex; \
+    apk add --no-cache \
+      git; \
+    git clone https://github.com/11notes/util.git;
+
 # :: Build
   FROM alpine as build
 
@@ -18,6 +26,7 @@
 # :: Header
   FROM python:3.11-alpine
   COPY --from=build /usr/local/bin/ /usr/local/bin
+  COPY --from=util /util/docker /usr/local/bin
   ENV APP_ROOT=/kms
   ENV APP_NAME="kms"
   ENV APP_VERSION="latest"
