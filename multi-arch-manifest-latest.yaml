@@ -1,10 +1,10 @@
-image: 11notes/kms:latest"
+image: 11notes/kms:latest
 manifests:
-  - image: 11notes/kms:latest"
+  - image: 11notes/kms:amd64-latest
     platform:
       architecture: amd64
       os: linux
-  - image: 11notes/kms:latest"
+  - image: 11notes/kms:arm64v8-latest
     platform:
       architecture: arm64
       os: linux
