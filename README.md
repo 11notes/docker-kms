@@ -1,7 +1,7 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
 # 🏔️ Alpine - kms
-![size](https://img.shields.io/docker/image-size/11notes/kms/latest?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/latest?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6)
+[<img src="https://img.shields.io/badge/github-source-blue?logo=github">](https://github.com/11notes/docker-kms/tree/latest) ![size](https://img.shields.io/docker/image-size/11notes/kms/latest?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/kms/latest?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6)
 
 **Activate any version of Windows and Office, forever**
 
@@ -9,7 +9,7 @@
 ![whodb](https://github.com/11notes/docker-kms/blob/main/whodb.png?raw=true)
 
 # SYNOPSIS
-What can I do with this? This image will run a KMS server you can use to activate any version of Windows and Office, forever.
+**What can I do with this?** This image will run a KMS server you can use to activate any version of Windows and Office, forever.
 
 Works with:
 - Windows Vista 
@@ -56,7 +56,7 @@ services:
     environment:
       TZ: Europe/Zurich
     volumes:
-      - "kms-var:/whodb/var"
+      - "var:/whodb/var"
     ports:
       - "8080:8080/tcp"
     restart: always
@@ -65,9 +65,9 @@ volumes:
 ```
 
 # EXAMPLES
-## Windows Server 2022 Datacenter. List of [GVLK](https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys)
+## Windows Server 2025 Datacenter. List of [GVLK](https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys)
 ```cmd
-slmgr /ipk WX4NM-KYWYW-QJJR4-XV3QB-6VM33
+slmgr /ipk D764K-2NDRG-47T6Q-P8T8W-YP6DF
 ```
 Add your KMS server information to server
 ```powershell
@@ -81,7 +81,6 @@ Activate server
 slmgr /ato
 ```
 
-# DEFAULT SETTINGS
 # DEFAULT SETTINGS
 | Parameter | Value | Description |
 | --- | --- | --- |
@@ -120,5 +119,4 @@ slmgr /ato
 * [Microsoft LICD](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a)
 
 # ElevenNotes<sup>™️</sup>
-This image is provided to you at your own risk. Always make backups before updating an image to a new version. Check the changelog for breaking changes. You can find all my repositories on [github](https://github.com/11notes).
-    
+This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [RELEASE.md](https://github.com/11notes/docker-kms/blob/latest/RELEASE.md) for breaking changes. You can find all my repositories on [github](https://github.com/11notes).
