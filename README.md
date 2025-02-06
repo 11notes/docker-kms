@@ -8,7 +8,7 @@
 ![slmgr](https://github.com/11notes/docker-kms/blob/main/slmgr.png?raw=true)
 
 # SYNOPSIS 📖
-**What can I do with this?** This image will run a KMS server you can use to activate any version of Windows and Office, forever. If you need a GUI, simply add [11notes/kms-gui](https://hub.docker.com/r/11notes/kms-gui) to your compose.
+**What can I do with this?** This image will run a KMS server you can use to activate any version of Windows and Office, forever. If you need a GUI, simply add [11notes/kms-gui](https://github.com/11notes/docker-kms-gui) to your compose.
 
 Works with:
 - Windows Vista 
