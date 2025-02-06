@@ -67,7 +67,7 @@
   # :: install application
     RUN set -ex; \
       apk --no-cache --update add \
-        python3;
+        python3=3.12.8-r1;
 
     RUN set -ex; \
       mkdir -p ${APP_ROOT}/var; \

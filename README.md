@@ -43,11 +43,21 @@ services:
     image: "11notes/kms:646f476"
     container_name: "kms"
     environment:
-      TZ: Europe/Zurich
+      TZ: "Europe/Zurich"
     volumes:
       - "var:/kms/var"
     ports:
       - "1688:1688/tcp"
+    restart: always
+  kms-gui:
+    image: "11notes/kms-gui:latest"
+    container_name: "kms-gui"
+    environment:
+      TZ: "Europe/Zurich"
+    volumes:
+      - "var:/kms/var"
+    ports:
+      - "8080:8080/tcp"
     restart: always
 volumes:
   var:
