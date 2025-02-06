@@ -75,7 +75,7 @@
       mkdir -p ${APP_ROOT}/var; \
       touch /var/log/kms.log; \
       ln -sf /dev/stdout /var/log/kms.log; \
-      pip3 install --no-cache-dir tzlocal pytz pysqlite3 --break-system-packages; \
+      pip3 install --no-cache-dir tzlocal --break-system-packages; \
       apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions
