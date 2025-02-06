@@ -54,7 +54,7 @@
     ENV KMS_LOCALE=1033
     ENV KMS_CLIENTCOUNT=26
     ENV KMS_ACTIVATIONINTERVAL=120
-    ENV KMS_RENEWALINTERVAL=259200
+    ENV KMS_RENEWALINTERVAL=10080
     ENV KMS_LOGLEVEL="INFO"
 
   # :: multi-stage
@@ -75,6 +75,7 @@
       mkdir -p ${APP_ROOT}/var; \
       touch /var/log/kms.log; \
       ln -sf /dev/stdout /var/log/kms.log; \
+      cd /usr/local/bin; \
       pip3 install --no-cache-dir tzlocal --break-system-packages; \
       apk del --no-network .build;
 

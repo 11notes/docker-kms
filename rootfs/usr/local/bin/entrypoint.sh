@@ -12,6 +12,7 @@
       -w RANDOM \
       -V ${KMS_LOGLEVEL} \
       -F /var/log/kms.log \
+      -d \
       -y
   fi
 
