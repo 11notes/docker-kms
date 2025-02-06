@@ -52,7 +52,7 @@
     ENV KMS_IP=0.0.0.0
     ENV KMS_PORT=1688
     ENV KMS_LOCALE=1033
-    ENV KMS_CLIENTCOUNT=25
+    ENV KMS_CLIENTCOUNT=26
     ENV KMS_ACTIVATIONINTERVAL=120
     ENV KMS_RENEWALINTERVAL=259200
     ENV KMS_LOGLEVEL="INFO"
@@ -67,12 +67,16 @@
   # :: install application
     RUN set -ex; \
       apk --no-cache --update add \
-        python3=3.12.8-r1;
+        python3=3.12.8-r1; \
+      apk --no-cache --update --virtual .build add \
+        py3-pip;
 
     RUN set -ex; \
       mkdir -p ${APP_ROOT}/var; \
       touch /var/log/kms.log; \
-      ln -sf /dev/stdout /var/log/kms.log;
+      ln -sf /dev/stdout /var/log/kms.log; \
+      pip3 install --no-cache-dir tzlocal pytz pysqlite3 --break-system-packages; \
+      apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions
     COPY ./rootfs /
