@@ -1,0 +1,10 @@
+{
+  "image":"11notes/kms",
+  "description":"Activate any version of Windows and Office, forever",
+  "name":"kms",
+  "version":"646f476",
+  "root":"/kms",
+  
+  "stable":"646f476",
+  "parent":"11notes/alpine:stable"
+}

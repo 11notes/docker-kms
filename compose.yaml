@@ -1,7 +1,7 @@
 name: "kms"
 services:
   kms:
-    image: "11notes/kms:latest"
+    image: "11notes/kms:646f476"
     container_name: "kms"
     environment:
       TZ: Europe/Zurich
@@ -9,16 +9,6 @@ services:
       - "var:/kms/var"
     ports:
       - "1688:1688/tcp"
-    restart: always
-  whodb:
-    image: "11notes/whodb:latest"
-    container_name: "whodb"
-    environment:
-      TZ: Europe/Zurich
-    volumes:
-      - "var:/whodb/var"
-    ports:
-      - "8080:8080/tcp"
     restart: always
 volumes:
   var:

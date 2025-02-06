@@ -1,8 +1,7 @@
 #!/bin/ash
   if [ -z "${1}" ]; then
-    elevenLogJSON info "starting ${APP_NAME}"
-    set -- "python3" \
-      /usr/local/bin/py-kms/pykms_Server.py \
+    eleven log start
+    set -- "pykms_Server" \
       ${KMS_IP} \
       ${KMS_PORT} \
       -l ${KMS_LOCALE} \
