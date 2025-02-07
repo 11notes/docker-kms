@@ -1,29 +1,22 @@
 # :: Util
-  FROM alpine AS util
+  FROM alpine/git AS util
 
   ARG NO_CACHE
 
   RUN set -ex; \
-    apk --no-cache --update add \
-      git; \
     git clone https://github.com/11notes/docker-util.git;
 
 # :: Build / redis
-  FROM python:3.12-alpine AS build
+  FROM alpine/git AS build
 
-  ARG TARGETARCH
   ARG APP_VERSION
 
-  USER root
-
   RUN set -ex; \
-    apk --update --no-cache add \
-      git; \
-    mkdir -p /opt/py-kms; \
     git clone https://github.com/Py-KMS-Organization/py-kms.git; \
-    cd /py-kms/py-kms; \
+    cd /git/py-kms; \
     git checkout ${APP_VERSION}; \
-    cp -R /py-kms/py-kms/* /opt/py-kms;
+    cp -R /git/py-kms/docker/docker-py3-kms-minimal/requirements.txt /git/py-kms/py-kms/requirements.txt; \
+    cp -R /git/py-kms/docker/docker-py3-kms/requirements.txt /git/py-kms/py-kms/requirements.gui.txt;
 
 # :: Header
   FROM 11notes/alpine:stable
@@ -50,8 +43,8 @@
     ENV KMS_LOGLEVEL="INFO"
 
   # :: multi-stage
-    COPY --from=util /docker-util/src/ /usr/local/bin
-    COPY --from=build /opt/py-kms/ /opt/py-kms
+    COPY --from=util /git/docker-util/src/ /usr/local/bin
+    COPY --from=build /git/py-kms/py-kms/ /opt/py-kms
 
   # :: Run
   USER root
@@ -65,11 +58,8 @@
 
     RUN set -ex; \
       mkdir -p ${APP_ROOT}/var; \
-      touch /var/log/kms.log; \
       ln -sf /dev/stdout /var/log/kms.log; \
-      pip3 install --no-cache-dir --break-system-packages \
-        tzlocal \
-        pytz; \
+      pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt --break-system-packages; \
       apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions
