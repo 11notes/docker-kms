@@ -12,6 +12,7 @@
       ${KMS_IP} \
       ${KMS_PORT} \
       -l ${KMS_LOCALE} \
+      -e ${KMS_ENHANCED_PRIVACY_ID} \
       -c ${KMS_CLIENTCOUNT} \
       -a ${KMS_ACTIVATIONINTERVAL} \
       -r ${KMS_RENEWALINTERVAL} \

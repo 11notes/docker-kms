@@ -98,7 +98,8 @@ slmgr /ato
 | `KMS_IP` | localhost or 127.0.0.1 or a dedicated IP | 0.0.0.0 |
 | `KMS_PORT` | any port > 1024 | 1688 |
 | `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
-| `KMS_CLIENTCOUNT` | client count >= 25 | 25 |
+| `KMS_ENHANCED_PRIVACY_ID` | set custom ePID (will overwrite KMS_LOCALE) |  |
+| `KMS_CLIENTCOUNT` | client count > 25 | 26 |
 | `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
 | `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
 | `KMS_LOGLEVEL` | CRITICAL, ERROR, WARNING, INFO, DEBUG, MININFO | INFO |
@@ -113,10 +114,11 @@ slmgr /ato
 * [py-kms](https://github.com/Py-KMS-Organization/py-kms)
 * [alpine](https://alpinelinux.org)
 
-# TIPS 📌
-* Use a reverse proxy like Traefik, Nginx, HAproxy to terminate TLS with a valid certificate
-* Use Let’s Encrypt certificates to protect your SSL endpoints
+# GENERAL TIPS 📌
+* Use a reverse proxy like Traefik, Nginx, HAproxy to terminate TLS and to protect your endpoints
+* Use Let’s Encrypt DNS-01 challenge to obtain valid SSL certificates for your services
+* Do not expose this image to WAN! You will get notified from Microsoft via your ISP to terminate the service if you do so
 * [Microsoft LICD](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a)
   
 # ElevenNotes™️
-This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-kms/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-kms/issues), thanks . You can find all my repositories on [github](https://github.com/11notes?tab=repositories).
+This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-kms/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-kms/issues), thanks. You can find all my repositories on [github](https://github.com/11notes?tab=repositories).
