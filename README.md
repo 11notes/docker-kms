@@ -6,6 +6,7 @@
 **Activate any version of Windows and Office, forever**
 
 ![activation](https://github.com/11notes/docker-kms/blob/master/img/activation.png "Windows Server 2025 Datacenter")
+![GUI](https://github.com/11notes/docker-kms/blob/master/img/GUI.png "11notes/kms-gui")
 
 # SYNOPSIS 📖
 **What can I do with this?** This image will run a KMS server you can use to activate any version of Windows and Office, forever. If you need a GUI, simply add [11notes/kms-gui](https://github.com/11notes/docker-kms-gui) to your compose.
