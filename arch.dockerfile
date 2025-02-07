@@ -68,7 +68,8 @@
     RUN set -ex; \
       chmod +x -R /usr/local/bin; \
       chown -R 1000:1000 \
-        ${APP_ROOT};
+        ${APP_ROOT} \
+        /opt/py-kms;
 
 # :: Volumes
   VOLUME ["${APP_ROOT}/var"]
