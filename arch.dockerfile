@@ -16,22 +16,15 @@
 
   RUN set -ex; \
     apk --update --no-cache add \
-      curl \
-      wget \
-      unzip \
-      build-base \
-      linux-headers \ 
-      make \
-      cmake \
-      g++ \
       git; \
-    pip3 install --upgrade pip; \
-    pip3 install pyinstaller; \
+    mkdir -p /opt/py-kms; \
     git clone https://github.com/Py-KMS-Organization/py-kms.git; \
     cd /py-kms/py-kms; \
     git checkout ${APP_VERSION}; \
-    pyinstaller --onefile pykms_Server.py; \
-    cp /py-kms/py-kms/dist/pykms_Server /usr/local/bin;
+    cp -R /py-kms/py-kms/* /opt/py-kms; \
+    cp -R /py-kms/docker/docker-py3-kms/requirements.txt /opt/py-kms; \
+    sed -i 's/^Flask.*//g' /opt/py-kms/requirements.txt; \
+    sed -i 's/^gunicorn.*//g' /opt/py-kms/requirements.txt
 
 # :: Header
   FROM 11notes/alpine:stable
@@ -59,7 +52,7 @@
 
   # :: multi-stage
     COPY --from=util /docker-util/src/ /usr/local/bin
-    COPY --from=build /usr/local/bin/ /usr/local/bin
+    COPY --from=build /opt/py-kms/ /opt/py-kms
 
   # :: Run
   USER root
@@ -75,8 +68,8 @@
       mkdir -p ${APP_ROOT}/var; \
       touch /var/log/kms.log; \
       ln -sf /dev/stdout /var/log/kms.log; \
-      cd /usr/local/bin; \
-      pip3 install --no-cache-dir tzlocal --break-system-packages; \
+      cd /opt/py-kms; \
+      pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt --break-system-packages; \
       apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions

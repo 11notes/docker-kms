@@ -1,7 +1,8 @@
 #!/bin/ash
   if [ -z "${1}" ]; then
-    eleven log start
-    set -- "pykms_Server" \
+    cd /opt/py-kms
+    set -- "python3" \
+      pykms_Server.py \
       ${KMS_IP} \
       ${KMS_PORT} \
       -l ${KMS_LOCALE} \
@@ -13,6 +14,8 @@
       -V ${KMS_LOGLEVEL} \
       -F /var/log/kms.log \
       -y
+    
+    eleven log start
   fi
 
   exec "$@"
