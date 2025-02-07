@@ -1,2 +1,2 @@
 ### 🪄 Features
-* add KMS_ENHANCED_PRIVACY_ID
+* drop KMS_ENHANCED_PRIVACY_ID
