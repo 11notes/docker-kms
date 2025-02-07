@@ -68,10 +68,8 @@
       touch /var/log/kms.log; \
       ln -sf /dev/stdout /var/log/kms.log; \
       pip3 install --no-cache-dir --break-system-packages \
-        peewee \
         tzlocal \
-        pytz \
-        pysqlite3; \
+        pytz; \
       apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions
