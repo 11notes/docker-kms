@@ -37,7 +37,6 @@
     ENV KMS_IP=0.0.0.0
     ENV KMS_PORT=1688
     ENV KMS_LOCALE=1033
-    ENV KMS_ENHANCED_PRIVACY_ID=
     ENV KMS_CLIENTCOUNT=26
     ENV KMS_ACTIVATIONINTERVAL=120
     ENV KMS_RENEWALINTERVAL=259200
@@ -59,7 +58,7 @@
 
     RUN set -ex; \
       mkdir -p ${APP_ROOT}/var; \
-      pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt --break-system-packages; \
+      pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt --break-system-packages --root-user-action; \
       pip3 install --no-cache-dir pytz --break-system-packages; \
       apk del --no-network .build;
 

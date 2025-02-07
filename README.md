@@ -98,7 +98,6 @@ slmgr /ato
 | `KMS_IP` | localhost or 127.0.0.1 or a dedicated IP | 0.0.0.0 |
 | `KMS_PORT` | any port > 1024 | 1688 |
 | `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
-| `KMS_ENHANCED_PRIVACY_ID` | set custom ePID (will overwrite KMS_LOCALE) |  |
 | `KMS_CLIENTCOUNT` | client count > 25 | 26 |
 | `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
 | `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
