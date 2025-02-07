@@ -60,6 +60,7 @@
       mkdir -p ${APP_ROOT}/var; \
       ln -sf /dev/stdout /var/log/kms.log; \
       pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt --break-system-packages; \
+      pip3 install --no-cache-dir pytz --break-system-packages; \
       apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions
