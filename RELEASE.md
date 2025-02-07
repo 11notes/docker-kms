@@ -1,2 +1,2 @@
 ### 🪄 Features
-* switch to new github workflow and build process
+* prepare base layer for GUI image
