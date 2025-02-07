@@ -1,2 +1,2 @@
 ### 🪄 Features
-* add DEBUG option via enivornment variable DEBUG
+* add KMS_ENHANCED_PRIVACY_ID
