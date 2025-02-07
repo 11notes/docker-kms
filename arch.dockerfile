@@ -6,7 +6,7 @@
   RUN set -ex; \
     git clone https://github.com/11notes/docker-util.git;
 
-# :: Build / redis
+# :: Build / py-kms
   FROM alpine/git AS build
 
   ARG APP_VERSION
