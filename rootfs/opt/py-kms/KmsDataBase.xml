@@ -1,0 +1,1042 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Modded by SystemRage for py-kms -->
+
+<!--
+<KmsData
+  Version="1.7"                                          // Version of the KmsData file, currently must be 1.7 (required), 
+  Author="Hotbird64"                                     // Enter your name here (required)
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  // Loads the xsi namespace (recommended for syntax checking in an XSD capable XML editor)
+  xsi:noNamespaceSchemaLocation="KmsDataBase.xsd"        // relative or absolute path of the validation file
+>
+
+  <WinBuild
+    BuildNumber="9200"                                      // Windows Build Number
+    DisplayName="Windows 8 / Server 2012"                   // A display name for the build number
+    PlatformId="5426"                                       // The "Platform ID" for this build number
+    UseForEpid="true"                                       // Use this build number for EPid generation. Should be true only for RTM builds that can be Windows servers
+    MayBeServer="true"                                      // Should be true for RTM builds that can be Windows servers
+    UsesNDR64="true"                                        // Genuine KMS servers use NDR64 for this build
+    WinBuildIndex="0"                                       // Index of the build (for py-kms)
+    MinDate="12/10/2016"                                    // GA release date of the build (for py-kms)
+  />
+
+  <CsvlkItem
+  >
+    Id="2e7a9ad1-a849-4b56-babe-17d5a29fe4b4"                // SkuId of the CSVLK (required)
+    DisplayName="Windows Server 2019"                        // Friendly name that should be displayed instead of the Guid (required)
+    IsLab="false"                                            // This is a lab CSVLK that also activates retail Windows > 8 (default false)
+    IsPreview="false"                                        // This is a preview (beta, Non-RTM, etc.) CSVLK (default false)
+    GroupId="206"                                            // GroupId for EPid generation. If omitted, this is taken from the pkeyconfig. Use only if you don´t have a pkeyconfig for this CSVLK
+    MinKeyId="551000000"                                     // Minimum key id for EPid generation. If omitted, this is taken from the pkeyconfig. Use only if you don´t have a pkeyconfig for this CSVLK
+    MaxKeyId="570999999"                                     // Maximum key id for EPid generation. If omitted, this is taken from the pkeyconfig. Use only if you don´t have a pkeyconfig for this CSVLK
+    VlmcsdIndex="0"                                          // Export this CsvlkItem with Index 0 to vlmcsd. (optional)
+    IniFileName="Windows"                                    // Name used in vlmcsd.ini to assign specific EPID (required for all CsvlkItems that have VlmcsdIndex=, optional for others)
+    EPid="03612-00206-568-381813-03-1033-14393.0000-2702018" // If you want a specific EPid, use this. Or omit it to generate a suitable default automatically.
+    InvalidWinBuild="[0,1,2]"                                // List of the builds not good for EPID generation with these CSVLK parameters (for py-kms)
+    
+      <Activate
+        KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148"       // List of KmsItems activated by the CSVLK. The KmsItem must be defined under <AppItem><KmsItem Id= ...>
+      />
+    
+</CsvlkItem>
+
+  <AppItem                                                   // Application (Windows, Office 2010 or Office 2013+)
+    Id="{55c92734-d682-4d71-983e-d6ec3f16059f}"              // Guid (required, braces are optional).
+    DisplayName="Windows"                                    // Friendly name that should be displayed instead of the Guid (required) 
+    VlmcsdIndex="0"                                          // VlmcsdIndex of CsvlkItem to use if an unknown KmsItem activates with that AppItem (required)
+    MinActiveClients="50"                                    // Minimum clients that this AppItem should maintain
+  >
+   
+     <KmsItem                                                   // KmsItem aka KMS Counted Id
+       Id="{e1c51358-fe3e-4203-a4a2-3b6b20c9734e}"              // Guid (required, braces are optional).
+       DisplayName="Windows 10 (Retail)"                        // Friendly name that should be displayed instead of the Guid (required) 
+       IsRetail="true"                                          // Indicates that this is a retail product group that can't be activated with a genuine KMS server (optional, default false)
+       IsPreview="false"                                        // Indicates that this a beta/preview product group that can't be activated with a genuine KMS server (optional, default false)
+       DefaultKmsProtocol="6.0"                                 // Default KMS protocol version that the KMS client uses. Must be "4.0", "5.0" or "6.0" (optional, default 6.0)
+       NCountPolicy="25"                                        // Minimum number of active clients required for the activation to succeed (optional, default 25, should be 25 for Windows clients and 5 otherwise)
+       CanMapToDefaultCsvlk="true"                              // This KmsItem can be omitted in vlmcsd export because it maps to VlmcsdIndex 0 (optional, default true)
+     >
+     
+       <SkuItem                                      // VOLUME_KMSCLIENT channel SKU ID (makes no sense to add other SKU IDs than VOLUME_KMSCLIENT channel
+         Id="{58e97c99-f377-4ef1-81d5-4ad5522b5fd8}" // Guid (required, braces are optional).
+         DisplayName="Windows 10 Home"               // Friendly name that should be displayed instead of the Guid (required)
+         Gvlk="XXXXX-XXXXX-XXXXX-XXXXX-H8Q99"        // The GVLK key to enable this VOLUME_KMSCLIENT channel (optional, recommended, no default)
+         IsGeneratedGvlk="false"                     // If true, indicates that this is a generated GVLK (optional, strongly recommended if a generated GVLK is used, default false)
+       />
+       
+   </KmsItem>
+ </AppItem>  
+</KmsData>
+-->
+
+
+<KmsData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="1.7" Author="Hotbird64" xsi:noNamespaceSchemaLocation="KmsDataBase.xsd">
+
+    <WinBuilds>
+        <!-- LM refuses 3-digit build numbers
+        <WinBuild BuildNumber="528" DisplayName="Windows NT 3.1" PlatformId="55041"/>
+        <WinBuild BuildNumber="807" DisplayName="Windows NT 3.5" PlatformId="55041"/>
+        -->
+        <WinBuild BuildNumber="1057" DisplayName="Windows NT 3.51" PlatformId="55041"/>
+        <WinBuild BuildNumber="1381" DisplayName="Windows NT 4.0" PlatformId="55041"/>
+        <WinBuild BuildNumber="2195" DisplayName="Windows 2000" PlatformId="55041"/>
+        <WinBuild BuildNumber="2600" DisplayName="Windows XP 32-bit" PlatformId="55041"/>
+        <WinBuild BuildNumber="3790" DisplayName="Windows Server 2003 / XP 64-bit" PlatformId="55041" MayBeServer="true"/>
+        <WinBuild BuildNumber="6000" DisplayName="Windows Vista / Server 2008 without SP" PlatformId="55041" MayBeServer="true"/>
+        <WinBuild BuildNumber="6001" DisplayName="Windows Vista / Server 2008 SP1" PlatformId="55041" MayBeServer="true"/>
+        <WinBuild BuildNumber="6002" DisplayName="Windows Vista / Server 2008 SP2" UseForEpid="true" PlatformId="55041" MayBeServer="true" WinBuildIndex="0" MinDate="26/5/2009"/>
+        <WinBuild BuildNumber="7600" DisplayName="Windows 7 / Server 2008 R2 without SP" PlatformId="55041" MayBeServer="true"/>
+        <WinBuild BuildNumber="7601" DisplayName="Windows 7 / Server 2008 R2 SP1" PlatformId="55041" UseForEpid="true" MayBeServer="true" WinBuildIndex="1" MinDate="22/02/2011"/>
+        <WinBuild BuildNumber="9200" DisplayName="Windows 8 / Server 2012" PlatformId="5426" UseForEpid="true" MayBeServer="true" UsesNDR64="true" WinBuildIndex="2" MinDate="04/09/2012"/>
+        <WinBuild BuildNumber="9600" DisplayName="Windows 8.1 / Server 2012 R2" PlatformId="6401" UseForEpid="true" MayBeServer="true" UsesNDR64="true" WinBuildIndex="3" MinDate="17/10/2013"/>
+        <WinBuild BuildNumber="10240" DisplayName="Windows 10 1507" PlatformId="3612" UsesNDR64="true"/>
+        <WinBuild BuildNumber="14393" DisplayName="Windows 10 1607 / Server 2016" UseForEpid="true" MayBeServer="true" PlatformId="3612" UsesNDR64="true" WinBuildIndex="4" MinDate="12/10/2016"/>
+        <WinBuild BuildNumber="15063" DisplayName="Windows 10 1703" PlatformId="3612" UsesNDR64="true" MinDate="11/04/2017"/>
+        <WinBuild BuildNumber="16299" DisplayName="Windows 10 1709" PlatformId="3612" UsesNDR64="true"/>
+        <WinBuild BuildNumber="17134" DisplayName="Windows 10 1803" PlatformId="3612" UsesNDR64="true"/>
+        <WinBuild BuildNumber="17763" DisplayName="Windows 10 1809 / Server 2019" UseForEpid="true" PlatformId="3612" MayBeServer="true" UsesNDR64="true" WinBuildIndex="5" MinDate="02/10/2018"/>
+    </WinBuilds>
+
+	<CsvlkItems>
+		<CsvlkItem DisplayName="Windows 10 China Government" VlmcsdIndex="4" GroupId="3858" MinKeyId="15000000" MaxKeyId="999999999" IniFileName="WinChinaGov" EPid="06401-03858-320-801028-03-1033-9600.0000-2802018" Id="ecc0774a-aed3-4e1a-b815-2b31781adfea" InvalidWinBuild="[0,1,2]">
+			<Activate KmsItem="7ba0bf23-d0f5-4072-91d9-d55af5a481b6" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2025 Datacenter" VlmcsdIndex="0" GroupId="206" MinKeyId="551000000" MaxKeyId="570999999" IniFileName="Windows" Id="c052f164-cdf6-409a-a0cb-853ba0f0f55a" InvalidWinBuild="[0,1,2]">
+			<Activate KmsItem="c052f164-cdf6-409a-a0cb-853ba0f0f55a" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2025 Standard" VlmcsdIndex="0" GroupId="206" MinKeyId="551000000" MaxKeyId="570999999" IniFileName="Windows" Id="7dc26449-db21-4e09-ba37-28f2958506a6" InvalidWinBuild="[0,1,2]">
+			<Activate KmsItem="7dc26449-db21-4e09-ba37-28f2958506a6" />
+		</CsvlkItem>
+		
+		<CsvlkItem DisplayName="Windows Server 2022 Datacenter" VlmcsdIndex="0" GroupId="206" MinKeyId="551000000" MaxKeyId="570999999" IniFileName="Windows" Id="ef6cfc9f-8c5d-44ac-9aad-de6a2ea0ae03" InvalidWinBuild="[0,1,2]">
+			<Activate KmsItem="ef6cfc9f-8c5d-44ac-9aad-de6a2ea0ae03" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2022 Standard" VlmcsdIndex="0" GroupId="206" MinKeyId="551000000" MaxKeyId="570999999" IniFileName="Windows" Id="de32eafd-aaee-4662-9444-c1befb41bde2" InvalidWinBuild="[0,1,2]">
+			<Activate KmsItem="de32eafd-aaee-4662-9444-c1befb41bde2" />
+		</CsvlkItem>
+		
+		<CsvlkItem DisplayName="Windows Server 2019" VlmcsdIndex="0" GroupId="206" MinKeyId="551000000" MaxKeyId="570999999" IniFileName="Windows" EPid="06401-00206-566-174993-03-1033-9600.0000-2802018" Id="2e7a9ad1-a849-4b56-babe-17d5a29fe4b4" InvalidWinBuild="[0,1,2]">
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+			<Activate KmsItem="8456efd3-0c04-4089-8740-5b7238535a65" />
+			<Activate KmsItem="6e9fc069-257d-4bc4-b4a7-750514d32743" />
+			<Activate KmsItem="969fe3c0-a3ec-491a-9f25-423605deb365" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+			<Activate KmsItem="8449b1fb-f0ea-497a-99ab-66ca96e9a0f5" />
+			<Activate KmsItem="11b15659-e603-4cf1-9c1f-f0ec01b81888" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2019 (Microsoft Internal Lab)" IsLab="true" GroupId="206" MinKeyId="2835000" MaxKeyId="2854999" IniFileName="Windows" Id="9db83b52-9904-4326-8957-ebe6feedf37c" InvalidWinBuild="[0,1,2]">
+			<Activate KmsItem="e1c51358-fe3e-4203-a4a2-3b6b20c9734e" />
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="6d646890-3606-461a-86ab-598bb84ace82" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+			<Activate KmsItem="8456efd3-0c04-4089-8740-5b7238535a65" />
+			<Activate KmsItem="6e9fc069-257d-4bc4-b4a7-750514d32743" />
+			<Activate KmsItem="969fe3c0-a3ec-491a-9f25-423605deb365" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+			<Activate KmsItem="8449b1fb-f0ea-497a-99ab-66ca96e9a0f5" />
+			<Activate KmsItem="11b15659-e603-4cf1-9c1f-f0ec01b81888" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2016" GroupId="206" MinKeyId="491000000" MaxKeyId="530999999" IniFileName="Windows" Id="d6992aac-29e7-452a-bf10-bbfb8ccabe59" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+			<Activate KmsItem="8456efd3-0c04-4089-8740-5b7238535a65" />
+			<Activate KmsItem="6e9fc069-257d-4bc4-b4a7-750514d32743" />
+			<Activate KmsItem="969fe3c0-a3ec-491a-9f25-423605deb365" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2016 (Microsoft Internal Lab)" IsLab="true" GroupId="206" MinKeyId="1510000" MaxKeyId="2009999" IniFileName="Windows" Id="3c2da9a5-1c6e-45d1-855f-fdbef536676f" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="e1c51358-fe3e-4203-a4a2-3b6b20c9734e" />
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="6d646890-3606-461a-86ab-598bb84ace82" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+			<Activate KmsItem="8456efd3-0c04-4089-8740-5b7238535a65" />
+			<Activate KmsItem="6e9fc069-257d-4bc4-b4a7-750514d32743" />
+			<Activate KmsItem="969fe3c0-a3ec-491a-9f25-423605deb365" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 10 2019" GroupId="206" MinKeyId="256000000" MaxKeyId="265999999" IniFileName="Windows" Id="90da7373-1c51-430b-bf26-c97e9c5cdc31" InvalidWinBuild="[0,1,2]">
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="969fe3c0-a3ec-491a-9f25-423605deb365" />
+			<Activate KmsItem="11b15659-e603-4cf1-9c1f-f0ec01b81888" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 10 2015" GroupId="206" MinKeyId="390000000" MaxKeyId="404999999" IniFileName="Windows" Id="0724cb7d-3437-4cb7-93cb-830375d0079d" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 10 2016" GroupId="206" MinKeyId="531000000" MaxKeyId="545999999" IniFileName="Windows" Id="30a42c86-b7a0-4a34-8c90-ff177cb2acb7" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="969fe3c0-a3ec-491a-9f25-423605deb365" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 10 2015 (Microsoft Internal Lab)" IsLab="true" GroupId="206" MinKeyId="10700000" MaxKeyId="10799999" IniFileName="Windows" Id="7a802526-4c94-4bd1-ba14-835a1aca2120" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="e1c51358-fe3e-4203-a4a2-3b6b20c9734e" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="6d646890-3606-461a-86ab-598bb84ace82" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 10 2019 (Microsoft Internal Lab)" IsLab="true" GroupId="206" MinKeyId="2860000" MaxKeyId="2864999" IniFileName="Windows" Id="60b3ec1b-9545-4921-821f-311b129dd6f6" InvalidWinBuild="[0,1,2]">
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="969fe3c0-a3ec-491a-9f25-423605deb365" />
+			<Activate KmsItem="11b15659-e603-4cf1-9c1f-f0ec01b81888" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="e1c51358-fe3e-4203-a4a2-3b6b20c9734e" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="6d646890-3606-461a-86ab-598bb84ace82" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 10 2016 (Microsoft Internal Lab)" IsLab="true" GroupId="206" MinKeyId="2015000" MaxKeyId="2114999" IniFileName="Windows" Id="d552befb-48cc-4327-8f39-47d2d94f987c" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="969fe3c0-a3ec-491a-9f25-423605deb365" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="e1c51358-fe3e-4203-a4a2-3b6b20c9734e" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="6d646890-3606-461a-86ab-598bb84ace82" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 10 [Pre-Release]" IsPreview="true" GroupId="206" MinKeyId="1000000" MaxKeyId="1009999" IniFileName="Windows" Id="d521c0fd-1732-4c15-8b98-a41b2a95bbc4" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="5f94a0bb-d5a0-4081-a685-5819418b2fe0" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server Next [Pre-Release]" IsPreview="true" GroupId="206" MinKeyId="21001500" MaxKeyId="21010499" IniFileName="Windows" Id="c609957a-dc23-48b3-8c6b-31b303479de2" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="969fe3c0-a3ec-491a-9f25-423605deb365" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="5f94a0bb-d5a0-4081-a685-5819418b2fe0" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+			<Activate KmsItem="8456efd3-0c04-4089-8740-5b7238535a65" />
+			<Activate KmsItem="6e9fc069-257d-4bc4-b4a7-750514d32743" />
+			<Activate KmsItem="6d5f5270-31ac-433e-b90a-39892923c657" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Next Beta [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="a40c3047-54c3-4bf9-8f09-fb7146cfcb02" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="09000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="10000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="11000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Next Edition Next [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="99cb2a2c-f7ee-48e9-98b0-ae72906c6d45" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="10000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Next Education [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="666dd2be-3c83-4756-9a1b-8ffb7067c8d9" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="09000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2012 R2 With Win 10" GroupId="206" MinKeyId="405000000" MaxKeyId="424999999" IniFileName="Windows" Id="20e938bb-df44-45ee-bde1-4e4fe7477f37" InvalidWinBuild="[0]">
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+			<Activate KmsItem="8456efd3-0c04-4089-8740-5b7238535a65" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2012 R2 With Win 10 (Microsoft Internal Lab)" IsLab="true" GroupId="206" MinKeyId="17650000" MaxKeyId="17849999" IniFileName="Windows" Id="9e3fde40-d4b3-4c1d-9bde-32735aa19b39" InvalidWinBuild="[0]">
+			<Activate KmsItem="e1c51358-fe3e-4203-a4a2-3b6b20c9734e" />
+			<Activate KmsItem="58e2134f-8e11-4d17-9cb2-91069c151148" />
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="6d646890-3606-461a-86ab-598bb84ace82" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+			<Activate KmsItem="8456efd3-0c04-4089-8740-5b7238535a65" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="d27cd636-1962-44e9-8b4f-27b6c23efb85" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 8.1" GroupId="206" MinKeyId="339000000" MaxKeyId="353999999" IniFileName="Windows" Id="29d0b60f-66da-4858-bcaf-9eb513cd310d" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 8.1 (Microsoft internal Lab)" IsLab="true" GroupId="206" MinKeyId="109500000" MaxKeyId="109999999" IniFileName="Windows" Id="4614b66f-a1d7-441c-9731-23f22d0ff4e5" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="6d646890-3606-461a-86ab-598bb84ace82" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2012 R2" GroupId="206" MinKeyId="271000000" MaxKeyId="310999999" IniFileName="Windows" Id="dcb88f6f-b090-405b-850e-dabcccf3693f" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+			<Activate KmsItem="8456efd3-0c04-4089-8740-5b7238535a65" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2012 R2 (Microsoft Internal Lab)" IsLab="true" GroupId="206" MinKeyId="192000000" MaxKeyId="192499999" IniFileName="Windows" Id="acf1b4fd-1c55-4f2d-a60b-415ac958ad88" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="6d646890-3606-461a-86ab-598bb84ace82" />
+			<Activate KmsItem="cb8fc780-2c05-495a-9710-85afffc904d7" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+			<Activate KmsItem="8456efd3-0c04-4089-8740-5b7238535a65" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 8" GroupId="206" MinKeyId="199000000" MaxKeyId="213999999" IniFileName="Windows" Id="24259a22-3bf0-44af-a68b-1b858bce1894" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 8 (Microsoft Internal Lab)" IsLab="true" GroupId="206" MinKeyId="21100000" MaxKeyId="21599999" IniFileName="Windows" Id="044ba67a-4c54-47ee-941a-d6f2efaa6891" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2012" GroupId="206" MinKeyId="152000000" MaxKeyId="191999999" IniFileName="Windows" Id="7b37c913-252b-46be-ad80-b2b5ceade8af" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2012 (Microsoft internal Lab)" IsLab="true" GroupId="206" MinKeyId="98500000" MaxKeyId="98999999" IniFileName="Windows" Id="fe27276b-a5a9-4b4d-88e3-14271beb79be" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" />
+			<Activate KmsItem="3c40b358-5948-45af-923b-53d21fcc7e79" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+			<Activate KmsItem="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 7" GroupId="172" MinKeyId="37000000" MaxKeyId="49749999" IniFileName="Windows" Id="d188820a-cb63-4bad-a9a2-40b843ee23b7" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 7 Client (All Editions) [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="f9aff482-8e81-47a6-8cf6-74be7649be6f" InvalidWinBuild="[0]">
+			<Activate KmsItem="05000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 7 Server (DataCenter &amp; Itanium) [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="fed62577-3bef-4309-90e8-671abdc076d8" InvalidWinBuild="[0]">
+			<Activate KmsItem="05000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="06000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="07000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="08000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows 7 Server (Standard &amp; Enterprise) [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="515ad9e6-67a8-4224-8c68-6d073038d59f" InvalidWinBuild="[0]">
+			<Activate KmsItem="05000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="06000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="07000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+ 		<CsvlkItem DisplayName="Windows 7 Server (Web no HPC) [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="95e4a692-f166-45c5-a7f8-ad76c2c1e6ad" InvalidWinBuild="">
+			<Activate KmsItem="05000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="06000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2008 R2 C (Datacenter &amp; Itanium)" GroupId="168" MinKeyId="305000000" MaxKeyId="312119999" IniFileName="Windows" Id="8fe15d04-fc66-40e6-bf34-942481e06fd8" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+			<Activate KmsItem="b2ca2689-a9a8-42d7-938d-cf8e9f201958" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2008 R2 B (Standard &amp; Enterprise)" GroupId="168" MinKeyId="312880000" MaxKeyId="332999999" IniFileName="Windows" Id="c99b641f-c4ea-4e63-bec3-5ed2ccd0f357" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+			<Activate KmsItem="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2008 R2 A (Web &amp; HPC)" GroupId="168" MinKeyId="249000000" MaxKeyId="259119999" IniFileName="Windows" Id="f73d1bcd-0802-47dd-b2d9-81bf2f8c0744" InvalidWinBuild="[0]">
+			<Activate KmsItem="7fde5219-fbfa-484a-82c9-34d1ad53e856" />
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Vista (1 of 2)" GroupId="142" MinKeyId="26000000" MaxKeyId="35999999" IniFileName="Windows" Id="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" InvalidWinBuild="[]">
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Vista (2 of 2)" GroupId="154" MinKeyId="394000000" MaxKeyId="416999999" IniFileName="Windows" Id="4871de8b-3adf-4455-a7d3-fd7b6c01c939" InvalidWinBuild="[]">
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Vista (All Volume) [Pre-Release]" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="b8cf7a60-5668-41b0-addd-6de32e69b0c6" InvalidWinBuild="[]">
+			<Activate KmsItem="01000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2008 C (Datacenter &amp; Itanium)" GroupId="152" MinKeyId="381000000" MaxKeyId="392999999" IniFileName="Windows" Id="c90d1b4e-8aa8-439e-8b9e-b6d6b6a6d975" InvalidWinBuild="[]">
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+			<Activate KmsItem="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2008 B (Standard &amp; Enterprise)" GroupId="152" MinKeyId="339000000" MaxKeyId="358999999" IniFileName="Windows" Id="56df4151-1f9f-41bf-acaa-2941c071872b" InvalidWinBuild="[]">
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+			<Activate KmsItem="8fe53387-3087-4447-8985-f75132215ac9" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Server 2008 A (Web &amp; HPC)" GroupId="152" MinKeyId="368000000" MaxKeyId="380999999" IniFileName="Windows" Id="c448fa06-49d1-44ec-82bb-0085545c3b51" InvalidWinBuild="[]">
+			<Activate KmsItem="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" />
+			<Activate KmsItem="33e156e4-b76f-4a52-9f91-f641dd95ac48" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Longhorn Server (DataCenter &amp; Itanium) [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="f1658734-6bf4-48fe-862b-074740d0e51b" InvalidWinBuild="[]">
+			<Activate KmsItem="01000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="02000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="03000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="04000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Longhorn Server (Standard &amp; Enterprise) [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="8f5c1ee4-4a9b-4fe1-96bd-e9290c5e14d4" InvalidWinBuild="[]">
+			<Activate KmsItem="01000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="02000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="03000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Windows Longhorn Server (Web &amp; HPC) [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" IniFileName="Windows" Id="625e13e0-7339-461b-a39b-1f2f0317449b" InvalidWinBuild="[]">
+			<Activate KmsItem="01000000-0000-0000-0000-000000000000" />
+			<Activate KmsItem="02000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Office 2021" VlmcsdIndex="6" GroupId="206" MinKeyId="571000000" MaxKeyId="590999999" IniFileName="Office2021" EPid="05426-00206-586-025264-03-1033-9200.0000-2602021" Id="47f3b983-7c53-4d45-abc6-bcd91e2dd90a" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="86d50b16-4808-41af-b83b-b338274318b2" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Office 2019" VlmcsdIndex="5" GroupId="206" MinKeyId="666000000" MaxKeyId="685999999" IniFileName="Office2019" EPid="06401-00206-678-008369-03-1033-9600.0000-2802018" Id="70512334-47b4-44db-a233-be5ea33b914c" InvalidWinBuild="[0,1]">
+			<Activate KmsItem="617d9eb1-ef36-4f82-86e0-a65ae07b96c6" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Office 2016" VlmcsdIndex="3" GroupId="206" MinKeyId="437000000" MaxKeyId="458999999" IniFileName="Office2016" EPid="06401-00206-456-865118-03-1033-9600.0000-2802018" Id="98ebfe73-2084-4c97-932c-c0cd1643bea7" InvalidWinBuild="[0]">
+			<Activate KmsItem="85b5f61b-320b-4be3-814a-b76b2bfafc82" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Office 2013" VlmcsdIndex="2" GroupId="206" MinKeyId="234000000" MaxKeyId="255999999" IniFileName="Office2013" EPid="06401-00206-243-662026-03-1033-9600.0000-2802018" Id="2e28138a-847f-42bc-9752-61b03fff33cd" InvalidWinBuild="[]">
+			<Activate KmsItem="e6a6f1bf-9d40-40c3-aa9f-c77ba21578c0" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Office 2013 [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" EPid="" Id="" InvalidWinBuild="">
+			<Activate KmsItem="aa4c7968-b9da-4680-92b6-acb25e2f866c" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Office 2010" VlmcsdIndex="1" GroupId="96" MinKeyId="199000000" MaxKeyId="217999999" IniFileName="Office2010" EPid="06401-00096-208-497764-03-1033-9600.0000-2802018" Id="bfe7a195-4f8f-4f0b-a622-cf13c7d16864" InvalidWinBuild="[]">
+			<Activate KmsItem="e85af946-2e25-47b7-83e1-bebcebeac611" />
+		</CsvlkItem>
+
+		<CsvlkItem DisplayName="Office16_KMSHostVL_KMS_Host [Pre-Release]" IsPreview="true" GroupId="" MinKeyId="" MaxKeyId="" Id="1114b902-9bfe-4a7c-ba7c-1a7db3669d67" InvalidWinBuild="">
+			<Activate KmsItem="00000000-0000-0000-0000-000000000000" />
+		</CsvlkItem>
+
+	</CsvlkItems>
+
+	<AppItems>
+
+		<AppItem DisplayName="Windows" VlmcsdIndex="0" Id="55c92734-d682-4d71-983e-d6ec3f16059f" MinActiveClients="50">
+
+			<KmsItem DisplayName="Windows Server 2025 Datacenter" Id="c052f164-cdf6-409a-a0cb-853ba0f0f55a" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2025 Datacenter" Id="c052f164-cdf6-409a-a0cb-853ba0f0f55a" Gvlk="D764K-2NDRG-47T6Q-P8T8W-YP6DF" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2025 Standard" Id="7dc26449-db21-4e09-ba37-28f2958506a6" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2025 Standard" Id="7dc26449-db21-4e09-ba37-28f2958506a6" Gvlk="TVRH6-WHNXV-R9WG3-9XRFY-MY832" />
+			</KmsItem>			
+			
+			<KmsItem DisplayName="Windows Server 2022 Datacenter" Id="ef6cfc9f-8c5d-44ac-9aad-de6a2ea0ae03" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2022 Datacenter" Id="ef6cfc9f-8c5d-44ac-9aad-de6a2ea0ae03" Gvlk="WX4NM-KYWYW-QJJR4-XV3QB-6VM33" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2022 Standard" Id="de32eafd-aaee-4662-9444-c1befb41bde2" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2022 Standard" Id="de32eafd-aaee-4662-9444-c1befb41bde2" Gvlk="VDYBN-27WPP-V4HQT-9VMD4-VMK7H" />
+			</KmsItem>			
+			
+			<KmsItem DisplayName="Windows Server 2019" Id="8449b1fb-f0ea-497a-99ab-66ca96e9a0f5" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2019 ARM64" Id="8de8eb62-bbe0-40ac-ac17-f75595071ea3" Gvlk="GRFBW-QNDC4-6QBHG-CCK3B-2PR88" />
+				<SkuItem DisplayName="Windows Server 2019 Azure Core" Id="a99cc1f0-7719-4306-9645-294102fbff95" Gvlk="FDNH6-VW9RW-BXPJ7-4XTYG-239TB" />
+				<SkuItem DisplayName="Windows Server 2019 Datacenter" Id="34e1ae55-27f8-4950-8877-7a03be5fb181" Gvlk="WMDGN-G9PQG-XVVXX-R3X43-63DFG" />
+				<SkuItem DisplayName="Windows Server 2019 Essentials" Id="034d3cbb-5d4b-4245-b3f8-f84571314078" Gvlk="WVDHN-86M7X-466P6-VHXV7-YY726" />
+				<SkuItem DisplayName="Windows Server 2019 Standard" Id="de32eafd-aaee-4662-9444-c1befb41bde2" Gvlk="N69G4-B89J2-4G8F4-WWYCC-J464C" />
+				<SkuItem DisplayName="Windows Server 2019 Datacenter (Semi-Annual Channel v.1809)" Id="90c362e5-0da1-4bfd-b53b-b87d309ade43" Gvlk="6NMRW-2C8FM-D24W7-TQWMY-CWH2D" />
+				<SkuItem DisplayName="Windows Server 2019 Standard (Semi-Annual Channel v.1809)" Id="73e3957c-fc0c-400d-9184-5f7b6f2eb409" Gvlk="N2KJX-J94YW-TQVFB-DG9YT-724CC" />
+				<SkuItem DisplayName="Windows Server 2019 Standard [Preview]" Id="00000000-0000-0000-0000-000000000000" Gvlk="MFY9F-XBN2F-TYFMP-CCV49-RMYVH" />
+				<SkuItem DisplayName="Windows Server 2019 Datacenter [Preview]" Id="00000000-0000-0000-0000-000000000000" Gvlk="6XBNX-4JQGW-QX6QG-74P76-72V67" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 10 2019 (Volume)" Id="11b15659-e603-4cf1-9c1f-f0ec01b81888" DefaultKmsProtocol="6.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 10 Enterprise LTSC 2019/2021" Id="32d2fab3-e4a8-42c2-923b-4bf4fd13e6ee" Gvlk="M7XTQ-FN8P6-TTKYV-9D4CC-J462D" />
+				<SkuItem DisplayName="Windows 10 Enterprise LTSC 2019/2021 N" Id="7103a333-b8c8-49cc-93ce-d37c09687f92" Gvlk="92NFX-8DJQP-P6BBQ-THF9C-7CG2H" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 10 Unknown (Volume)" Id="d27cd636-1962-44e9-8b4f-27b6c23efb85" DefaultKmsProtocol="6.0" NCountPolicy="25">
+            </KmsItem>
+
+			<KmsItem DisplayName="Windows 10/11 China Government" Id="7ba0bf23-d0f5-4072-91d9-d55af5a481b6" CanMapToDefaultCsvlk="false" DefaultKmsProtocol="6.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 10/11 Enterprise G" Id="e0b2d383-d112-413f-8a80-97f373a5820c" Gvlk="YYVX9-NTFWV-6MDM3-9PT4T-4M68B" />
+				<SkuItem DisplayName="Windows 10/11 Enterprise G N" Id="e38454fb-41a4-4f59-a5dc-25080e354730" Gvlk="44RPN-FTY23-9VTTB-MP9BX-T84FV" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 10 2016 (Volume)" Id="969fe3c0-a3ec-491a-9f25-423605deb365" DefaultKmsProtocol="6.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 10 Enterprise 2016 LTSB" Id="2d5a5a60-3040-48bf-beb0-fcd770c20ce0" Gvlk="DCPHK-NFMTC-H88MJ-PFHPY-QJ4BJ" />
+				<SkuItem DisplayName="Windows 10 Enterprise 2016 LTSB N" Id="9f776d83-7156-45b2-8a5c-359b9c9f22a3" Gvlk="QFFDN-GRT3P-VKWWX-X7T3R-8B639" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 10/11 (Retail)" Id="e1c51358-fe3e-4203-a4a2-3b6b20c9734e" IsRetail="true" DefaultKmsProtocol="6.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 10/11 Home / Core" Id="58e97c99-f377-4ef1-81d5-4ad5522b5fd8" Gvlk="TX9XD-98N7V-6WMQ6-BX7FG-H8Q99" />
+				<SkuItem DisplayName="Windows 10 Home / Core [Pre-Release]" Id="903663f7-d2ab-49c9-8942-14aa9e0a9c72" Gvlk="" />            
+				<SkuItem DisplayName="Windows 10/11 Home / Core Country Specific" Id="a9107544-f4a0-4053-a96a-1479abdef912" Gvlk="PVMJN-6DFY6-9CCP6-7BKTT-D3WVR" />
+				<SkuItem DisplayName="Windows 10 Home / Core Country Specific [Pre-Release]" Id="5fe40dd6-cf1f-4cf2-8729-92121ac2e997" Gvlk="" />
+				<SkuItem DisplayName="Windows 10/11 Home / Core N" Id="7b9e1751-a8da-4f75-9560-5fadfe3d8e38" Gvlk="3KHY7-WNT83-DGQKR-F7HPR-844BM" />
+				<SkuItem DisplayName="Windows 10 Home / Core N [Pre-Release]" Id="4dfd543d-caa6-4f69-a95f-5ddfe2b89567" Gvlk="" />
+				<SkuItem DisplayName="Windows 10/11 Home / Core Single Language" Id="cd918a57-a41b-4c82-8dce-1a538e221a83" Gvlk="7HNRX-D7KGG-3K4RQ-4WPJ4-YTDFH" />
+				<SkuItem DisplayName="Windows 10 Home / Core Single Language [Pre-Release]" Id="2cc171ef-db48-4adc-af09-7c574b37f139" Gvlk="" />
+				<SkuItem DisplayName="Windows 10 Home / Core [Technical Preview]" Id="6496e59d-89dc-49eb-a353-09ceb9404845" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 10/11 2015 (Volume)" Id="58e2134f-8e11-4d17-9cb2-91069c151148" DefaultKmsProtocol="6.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 10/11 Education" Id="e0c42288-980c-4788-a014-c080d2e1926e" Gvlk="NW6C2-QMPVW-D7KKK-3GKT6-VCFB2" />
+				<SkuItem DisplayName="Windows 10 Education [Pre-Release]" Id="af43f7f0-3b1e-4266-a123-1fdb53f4323b" Gvlk="" />
+				<SkuItem DisplayName="Windows 10/11 Education N" Id="3c102355-d027-42c6-ad23-2e7ef8a02585" Gvlk="2WH4N-8QGBV-H22JP-CT43Q-MDWWJ" />
+				<SkuItem DisplayName="Windows 10 Education N [Pre-Release]" Id="075aca1f-05d7-42e5-a3ce-e349e7be7078" Gvlk="" />
+				<SkuItem DisplayName="Windows 10/11 Enterprise" Id="73111121-5638-40f6-bc11-f1d7b0d64300" Gvlk="NPPR9-FWDCX-D2C8J-H872K-2YT43" />
+				<SkuItem DisplayName="Windows 10 Enterprise [Preview]" Id="43f2ab05-7c87-4d56-b27c-44d0f9a3dabd" Gvlk="QNMXX-GCD3W-TCCT4-872RV-G6P4J" IsGeneratedGvlk="true" />
+				<SkuItem DisplayName="Windows 10/11 Enterprise S" Id="00000000-0000-0000-0000-000000000000" Gvlk="H76BG-QBNM7-73XY9-V6W2T-684BJ" />
+				<SkuItem DisplayName="Windows 10 Enterprise 2015 LTSB" Id="7b51a46c-0c04-4e8f-9af4-8496cca90d5e" Gvlk="WNMTR-4C88C-JK8YV-HQ7T2-76DF9" />
+				<SkuItem DisplayName="Windows 10 Enterprise 2015 LTSB [Pre-Release]" Id="2cf5af84-abab-4ff0-83f8-f040fb2576eb" Gvlk="" />
+				<SkuItem DisplayName="Windows 10 Enterprise 2015 LTSB N" Id="87b838b7-41b6-4590-8318-5797951d8529" Gvlk="2F77B-TNFGY-69QQF-B8YKP-D69TJ" />
+				<SkuItem DisplayName="Windows 10 Enterprise 2015 LTSB N [Pre-Release]" Id="11a37f09-fb7f-4002-bd84-f3ae71d11e90" Gvlk="" />
+				<SkuItem DisplayName="Windows 10/11 Enterprise N" Id="e272e3e2-732f-4c65-a8f0-484747d0d947" Gvlk="DPH2V-TTNVB-4X9Q3-TJR4H-KHJW4" />
+				<SkuItem DisplayName="Windows 10/11 Enterprise S N" Id="00000000-0000-0000-0000-000000000000" Gvlk="X4R4B-NV6WD-PKTVK-F98BH-4C2J8" />
+				<SkuItem DisplayName="Windows 10 Enterprise N [Pre-Release]" Id="6ae51eeb-c268-4a21-9aae-df74c38b586d" Gvlk="" />
+				<SkuItem DisplayName="Windows 10/11 Professional Workstation" Id="82bbc092-bc50-4e16-8e18-b74fc486aec3" Gvlk="NRG8B-VKK3Q-CXVCJ-9G2XF-6Q84J" />
+				<SkuItem DisplayName="Windows 10/11 Professional Workstation N" Id="4b1571d3-bafb-4b40-8087-a961be2caf65" Gvlk="9FNHH-K3HBT-3W4TD-6383H-6XYWF" />
+				<SkuItem DisplayName="Windows 10/11 Professional" Id="2de67392-b7a7-462a-b1ca-108dd189f588" Gvlk="W269N-WFGWX-YVC9B-4J6C9-T83GX" />
+				<SkuItem DisplayName="Windows 10/11 Professional Education" Id="3f1afc82-f8ac-4f6c-8005-1d233e606eee" Gvlk="6TP4R-GNPTD-KYYHQ-7B7DP-J447Y" />
+				<SkuItem DisplayName="Windows 10/11 Professional Education N" Id="5300b18c-2e33-4dc2-8291-47ffcec746dd" Gvlk="YVWGF-BXNMC-HTQYQ-CPQ99-66QFC" />
+				<SkuItem DisplayName="Windows 10/11 Professional N" Id="a80b5abf-76ad-428b-b05d-a47d2dffeebf" Gvlk="MH37W-N47XK-V7XM9-C7227-GCQG9" />
+				<SkuItem DisplayName="Windows 10 Professional N [Pre-Release]" Id="34260150-69ac-49a3-8a0d-4a403ab55763" Gvlk="" />
+				<SkuItem DisplayName="Windows 10 Professional [Preview]" Id="ff808201-fec6-4fd4-ae16-abbddade5706" Gvlk="XQHPH-N4D9W-M8P96-DPDFP-TMVPY" IsGeneratedGvlk="true" />
+				<SkuItem DisplayName="Windows 10 Professional WMC [Pre-Release]" Id="cc17e18a-fa93-43d6-9179-72950a1e931a" Gvlk="NKPM6-TCVPT-3HRFX-Q4H9B-QJ34Y" />
+				<SkuItem DisplayName="Windows 10/11 Enterprise for Virtual Desktops" Id="ec868e65-fadf-4759-b23e-93fe37f2cc29" Gvlk="CPWHC-NT2C7-VYW78-DHDB2-PG3GK" />
+				<SkuItem DisplayName="Windows 10/11 Remote Server" Id="e4db50ea-bda1-4566-b047-0ca50abc6f07" Gvlk="7NBT4-WGBQX-MP4H7-QXFF8-YP3KX" />
+				<SkuItem DisplayName="Windows 10 S (Lean)" Id="0df4f814-3f57-4b8b-9a9d-fddadcd69fac" Gvlk="NBTWJ-3DR69-3C4V8-C26MC-GQ9M6" />
+				<SkuItem DisplayName="Windows 10 IoT Core [Pre-Release]" Id="b554b49f-4d57-4f08-955e-87886f514d49" Gvlk="7NX88-X6YM3-9Q3YT-CCGBF-KBVQF" />
+				<SkuItem DisplayName="Windows 10 Core Connected [Pre-Release]" Id="827a0032-dced-4609-ab6e-16b9d8a40280" Gvlk="DJMYQ-WN6HG-YJ2YX-82JDB-CWFCW" />
+				<SkuItem DisplayName="Windows 10 Core Connected N [Pre-Release]" Id="f18bbe32-16dc-48d4-a27b-5f3966f82513" Gvlk="JQNT7-W63G4-WX4QX-RD9M9-6CPKM" />
+				<SkuItem DisplayName="Windows 10 Core Connected Single Language [Pre-Release]" Id="964a60f6-1505-4ddb-af03-6a9ce6997d3b" Gvlk="QQMNF-GPVQ6-BFXGG-GWRCX-7XKT7" />
+				<SkuItem DisplayName="Windows 10 Core Connected Country Specific [Pre-Release]" Id="b5fe5eaa-14cc-4075-84ae-57c0206d1133" Gvlk="FTNXM-J4RGP-MYQCV-RVM8R-TVH24" />
+				<SkuItem DisplayName="Windows 10 Professional S [Pre-Release]" Id="b15187db-11c6-4f13-91ca-8121cebf5b88" Gvlk="3NF4D-GF9GY-63VKH-QRC3V-7QW8P" />
+				<SkuItem DisplayName="Windows 10 Professional S N [Pre-Release]" Id="6cdbc9fb-63f5-431b-a5c0-c6f19ae26a9b" Gvlk="KNDJ3-GVHWT-3TV4V-36K8Y-PR4PF" />
+				<SkuItem DisplayName="Windows 10 Professional Student [Pre-Release]" Id="49066601-00dc-4d2c-83a8-4343a7b990d1" Gvlk="YNXW3-HV3VB-Y83VG-KPBXM-6VH3Q" />
+				<SkuItem DisplayName="Windows 10 Professional Student N [Pre-Release]" Id="bd64ebf7-d5ec-44c5-ba00-6813441c8c87" Gvlk="8G9XJ-GN6PJ-GW787-MVV7G-GMR99" />
+				<SkuItem DisplayName="Windows 10 PPIPro [Pre-Release (build 15063)]" Id="5b2add49-b8f4-42e0-a77c-adad4efeeeb1" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 7" Id="7fde5219-fbfa-484a-82c9-34d1ad53e856" DefaultKmsProtocol="4.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 7 Enterprise" Id="ae2ee509-1b34-41c0-acb7-6d4650168915" Gvlk="33PXH-7Y6KF-2VJC9-XBBR8-HVTHH" />
+				<SkuItem DisplayName="Windows 7 Enterprise E" Id="46bbed08-9c7b-48fc-a614-95250573f4ea" Gvlk="C29WB-22CC8-VJ326-GHFJW-H9DH4" />
+				<SkuItem DisplayName="Windows 7 Enterprise N" Id="1cb6d605-11b3-4e14-bb30-da91c8e3983a" Gvlk="YDRBP-3D83W-TY26F-D46B2-XCKRJ" />
+				<SkuItem DisplayName="Windows 7 Professional" Id="b92e9980-b9d5-4821-9c94-140f632f6312" Gvlk="FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4" />
+				<SkuItem DisplayName="Windows 7 Professional E" Id="5a041529-fef8-4d07-b06f-b59b573b32d2" Gvlk="W82YF-2Q76Y-63HXB-FGJG9-GF7QX" />
+				<SkuItem DisplayName="Windows 7 Professional N" Id="54a09a0d-d57b-4c10-8b69-a842d6590ad5" Gvlk="MRPKT-YTG23-K7D7T-X2JMM-QY7MG" />
+				<SkuItem DisplayName="Windows 7 Embedded POSReady" Id="db537896-376f-48ae-a492-53d0547773d0" Gvlk="YBYF6-BHCR3-JPKRB-CDW7B-F9BK4" />
+				<SkuItem DisplayName="Windows 7 Embedded Standard" Id="e1a8296a-db37-44d1-8cce-7bc961d59c54" Gvlk="XGY72-BRBBT-FF8MH-2GG8H-W7KCW" />
+				<SkuItem DisplayName="Windows 7 ThinPC" Id="aa6dd3aa-c2b4-40e2-a544-a6bbb3f5c395" Gvlk="73KQT-CD9G6-K7TQG-66MRP-CQ22C" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 8 (Retail)" Id="bbb97b3b-8ca4-4a28-9717-89fabd42c4ac" IsRetail="true" DefaultKmsProtocol="5.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 8 Core / Server 2012" Id="c04ed6bf-55c8-4b47-9f8e-5a1f31ceee60" Gvlk="BN3D2-R7TKB-3YPBD-8DRP2-27GG4" />
+				<SkuItem DisplayName="Windows 8 Core / Server 2012 [RC]" Id="00000000-0000-0000-0000-000000000000" Gvlk="" />
+				<SkuItem DisplayName="Windows 8 Core / Server 2012 Country Specific" Id="9d5584a2-2d85-419a-982c-a00888bb9ddf" Gvlk="4K36P-JN4VD-GDC6V-KDT89-DYFKP" />
+				<SkuItem DisplayName="Windows 8 Core / Server 2012 Country Specific [RC]" Id="c7a8a09a-571c-4ea8-babc-0cbe4d48a89d" Gvlk="" />
+				<SkuItem DisplayName="Windows 8 Core / Server 2012 N" Id="197390a0-65f6-4a95-bdc4-55d58a3b0253" Gvlk="8N2M2-HWPGY-7PGT9-HGDD8-GVGGY" />
+				<SkuItem DisplayName="Windows 8 Core / Server 2012 N [RC]" Id="c6e3410d-e48d-41eb-8ca9-848397f46d02" Gvlk="" />
+				<SkuItem DisplayName="Windows 8 Core / Server 2012 Single Language" Id="8860fcd4-a77b-4a20-9045-a150ff11d609" Gvlk="2WN2H-YGCQR-KFX6K-CD6TF-84YXQ" />
+				<SkuItem DisplayName="Windows 8 Core / Server 2012 Single Language [RC]" Id="b148c3f4-6248-4d2f-8c6d-31cce7ae95c3" Gvlk="" />
+				<SkuItem DisplayName="Windows 8 Professional WMC" Id="a00018a3-f20f-4632-bf7c-8daa5351c914" Gvlk="GNBB8-YVD74-QJHX6-27H4K-8QHDG" />
+				<SkuItem DisplayName="Windows 8 Core ARM64" Id="af35d7b7-5035-4b63-8972-f0b747b9f4dc" Gvlk="" />
+				<SkuItem DisplayName="Windows 8 Core ARM64 [RC]" Id="3a9a9414-24bf-4836-866d-ba13a298efb0" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 8 (Volume)" Id="3c40b358-5948-45af-923b-53d21fcc7e79" DefaultKmsProtocol="5.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 8 Embedded Industry Professional" Id="10018baf-ce21-4060-80bd-47fe74ed4dab" Gvlk="RYXVT-BNQG7-VD29F-DBMRY-HT73M" />
+				<SkuItem DisplayName="Windows 8 Embedded Industry Professional [Beta]" Id="c8cca3ca-bea8-4f6f-87e0-4d050ce8f0a9" Gvlk="" />
+				<SkuItem DisplayName="Windows 8 Embedded Industry Enterprise" Id="18db1848-12e0-4167-b9d7-da7fcda507db" Gvlk="NKB3R-R2F8T-3XCDP-7Q2KW-XWYQ2" />
+				<SkuItem DisplayName="Windows 8 Embedded Industry Enterprise [Beta]" Id="5ca3e488-dbae-4fae-8282-a98fbcd21126" Gvlk="" />
+				<SkuItem DisplayName="Windows 8 Enterprise" Id="458e1bec-837a-45f6-b9d5-925ed5d299de" Gvlk="32JNW-9KQ84-P47T8-D8GGY-CWCK7" />
+				<SkuItem DisplayName="Windows 8 Enterprise N" Id="e14997e7-800a-4cf7-ad10-de4b45b578db" Gvlk="JMNMF-RHW7P-DMY6X-RF3DR-X2BQT" />
+				<SkuItem DisplayName="Windows 8 Professional" Id="a98bcd6d-5343-4603-8afe-5908e4611112" Gvlk="NG4HW-VH26C-733KW-K6F98-J8CK4" />
+				<SkuItem DisplayName="Windows 8 Professional N" Id="ebf245c1-29a8-4daf-9cb1-38dfc608a8c8" Gvlk="XCVCF-2NXM9-723PB-MHCB7-2RYQQ" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 8.1 (Retail)" Id="6d646890-3606-461a-86ab-598bb84ace82" IsRetail="true" DefaultKmsProtocol="6.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 8.1 Core" Id="fe1c3238-432a-43a1-8e25-97e7d1ef10f3" Gvlk="M9Q9P-WNJJT-6PXPY-DWX8H-6XWKK" />
+				<SkuItem DisplayName="Windows 8.1 Core ARM64" Id="ffee456a-cd87-4390-8e07-16146c672fd0" Gvlk="XYTND-K6QKT-K2MRH-66RTM-43JKP" />
+				<SkuItem DisplayName="Windows 8.1 Core Country Specific" Id="db78b74f-ef1c-4892-abfe-1e66b8231df6" Gvlk="NCTT7-2RGK8-WMHRF-RY7YQ-JTXG3" />
+				<SkuItem DisplayName="Windows 8.1 Core N" Id="78558a64-dc19-43fe-a0d0-8075b2a370a3" Gvlk="7B9N3-D94CG-YTVHR-QBPX3-RJP64" />
+				<SkuItem DisplayName="Windows 8.1 Core Single Language" Id="c72c6a1d-f252-4e7e-bdd1-3fca342acb35" Gvlk="BB6NG-PQ82V-VRDPW-8XVD2-V8P66" />
+				<SkuItem DisplayName="Windows 8.1 Professional Student" Id="e58d87b5-8126-4580-80fb-861b22f79296" Gvlk="MX3RK-9HNGX-K3QKC-6PJ3F-W8D7B" IsGeneratedGvlk="true" />
+				<SkuItem DisplayName="Windows 8.1 Professional Student N" Id="cab491c7-a918-4f60-b502-dab75e334f40" Gvlk="TNFGH-2R6PB-8XM3K-QYHX2-J4296" IsGeneratedGvlk="true" />
+				<SkuItem DisplayName="Windows 8.1 Professional WMC" Id="096ce63d-4fac-48a9-82a9-61ae9e800e5f" Gvlk="789NJ-TQK6T-6XTH8-J39CJ-J8D3P" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 8.1 (Volume)" Id="cb8fc780-2c05-495a-9710-85afffc904d7" DefaultKmsProtocol="6.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 8.1 Core Connected" Id="e9942b32-2e55-4197-b0bd-5ff58cba8860" Gvlk="3PY8R-QHNP9-W7XQD-G6DPH-3J2C9" IsGeneratedGvlk="true" />
+				<SkuItem DisplayName="Windows 8.1 Core Connected Country Specific" Id="ba998212-460a-44db-bfb5-71bf09d1c68b" Gvlk="R962J-37N87-9VVK2-WJ74P-XTMHR" IsGeneratedGvlk="true" />
+				<SkuItem DisplayName="Windows 8.1 Core Connected N" Id="c6ddecd6-2354-4c19-909b-306a3058484e" Gvlk="Q6HTR-N24GM-PMJFP-69CD8-2GXKR" IsGeneratedGvlk="true" />
+				<SkuItem DisplayName="Windows 8.1 Core Connected Single Language" Id="b8f5e3a3-ed33-4608-81e1-37d6c9dcfd9c" Gvlk="KF37N-VDV38-GRRTV-XH8X6-6F3BB" IsGeneratedGvlk="true" />
+				<SkuItem DisplayName="Windows 8.1 Enterprise" Id="81671aaf-79d1-4eb1-b004-8cbbe173afea" Gvlk="MHF9N-XY6XB-WVXMC-BTDCT-MKKG7" />
+				<SkuItem DisplayName="Windows 8.1 Enterprise N" Id="113e705c-fa49-48a4-beea-7dd879b46b14" Gvlk="TT4HM-HN7YT-62K67-RGRQJ-JFFXW" />
+				<SkuItem DisplayName="Windows 8.1 Professional" Id="c06b6981-d7fd-4a35-b7b4-054742b7af67" Gvlk="GCRJD-8NW9H-F2CDX-CCM8D-9D6T9" />
+				<SkuItem DisplayName="Windows 8.1 Professional N" Id="7476d79f-8e48-49b4-ab63-4d0b813a16e4" Gvlk="HMCNV-VVBFX-7HMBH-CTY9B-B4FXY" />
+				<SkuItem DisplayName="Windows 8.1 Embedded Industry Professional" Id="0ab82d54-47f4-4acb-818c-cc5bf0ecb649" Gvlk="NMMPB-38DD4-R2823-62W8D-VXKJB" />
+				<SkuItem DisplayName="Windows 8.1 Embedded Industry Automotive" Id="f7e88590-dfc7-4c78-bccb-6f3865b99d1a" Gvlk="VHXM3-NR6FT-RY6RT-CK882-KW2CJ" />
+				<SkuItem DisplayName="Windows 8.1 Embedded Industry Enterprise" Id="cd4e2d9f-5059-4a50-a92d-05d5bb1267c7" Gvlk="FNFKF-PWTVT-9RC8H-32HB2-JB34X" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Preview" Id="5f94a0bb-d5a0-4081-a685-5819418b2fe0" DefaultKmsProtocol="5.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 8.1 Enterprise [Preview]" Id="cde952c7-2f96-4d9d-8f2b-2d349f64fc51" Gvlk="2MP7K-98NK8-WPVF3-Q2WDG-VMD98" />
+				<SkuItem DisplayName="Windows 8.1 Professional (Blue) [Preview]" Id="a4383e6b-dada-423d-a43d-f25678429676" Gvlk="MTWNQ-CKDHJ-3HXW9-Q2PFX-WB2HQ" />
+				<SkuItem DisplayName="Windows 8 Professional WMC [RC]" Id="cf59a07b-1a2a-4be0-bfe0-423b5823e663" Gvlk="MY4N9-TGH34-4X4VY-8FG2T-RRDPV" />
+				<SkuItem DisplayName="Windows 8.x [Preview]" Id="2b9c337f-7a1d-4271-90a3-c6855a2b8a1c" Gvlk="MPWP3-DXNP9-BRD79-W8WFP-3YFJ6" />
+				<SkuItem DisplayName="Windows 8.x ARM64 [Preview]" Id="631ead72-a8ab-4df8-bbdf-372029989bdd" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Core Connected [Pre-Release]" Id="c436def1-0dcc-4849-9a59-8b6142eb70f3" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Core Connected N [Pre-Release]" Id="86f72c8d-8363-4188-b574-1a53cb374711" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Core Connected Country Specific [Pre-Release]" Id="a8651bfb-7fe0-40df-b156-87337ecd5acc" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Core Connected Single Language [Pre-Release]" Id="5b120df4-ea3f-4e82-b0c0-6568f719730e" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Professional Student [Pre-Release]" Id="fd5ae385-f5cf-4b53-b1fa-1af6fff7c0d8" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Professional Student N [Pre-Release]" Id="687f6358-6a21-453a-a712-3b3b57123827" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Embedded Industry Professional [Beta]" Id="c35a9336-fb02-48db-8f4d-245c17f03667" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Embedded Industry Enterprise [Beta]" Id="4daf1e3e-6be9-4848-8f5a-a18a0d2895e1" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Embedded Industry Automotive [Beta]" Id="9cc2564c-292e-4d8a-b9f9-1f5007d9409a" Gvlk="" />
+				<SkuItem DisplayName="Windows Server Next MultiPoint Standard [Preview]" Id="bfa6b683-56be-47b8-a22e-461b27b9cf11" Gvlk="" />
+				<SkuItem DisplayName="Windows Server Next MultiPoint Premium [Preview]" Id="bc20fb5b-4097-484f-84d2-55b18dac95eb" Gvlk="" />
+				<SkuItem DisplayName="Windows Server Next Enterprise [Preview]" Id="8a409d61-30fe-4903-bdbc-1fb28603ba3a" Gvlk="" />
+				<SkuItem DisplayName="Windows Server Next Standard [Preview]" Id="d3872724-5c08-4b1b-91f2-fc9eafed4990" Gvlk="" />
+				<SkuItem DisplayName="Windows Server Next Web [Preview]" Id="e5676f13-9b66-4a1f-8b0c-43490e236202" Gvlk="" />
+				<SkuItem DisplayName="Windows Server Next HPC Edition [Preview]" Id="2412bea9-b6e0-441e-8dc2-a13720b42de9" Gvlk="" />
+				<SkuItem DisplayName="Windows Server Next HI [Preview]" Id="b995b62c-eae2-40aa-afb9-111889a84ef4" Gvlk="7VX4N-3VDHQ-VYGHB-JXJVP-9QB26" />
+				<SkuItem DisplayName="Enterprise ProdKey3 Win 9984 DLA/Bypass NQR Test" Id="2a4403df-877f-4046-8271-db6fb6ec54c8" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2008 A (Web and HPC)" Id="33e156e4-b76f-4a52-9f91-f641dd95ac48" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2008 Web" Id="ddfa9f7c-f09e-40b9-8c1a-be877a9a7f4b" Gvlk="WYR28-R7TFJ-3X2YQ-YCY4H-M249D" />
+				<SkuItem DisplayName="Windows Server 2008 HPC Edition" Id="7afb1156-2c1d-40fc-b260-aab7442b62fe" Gvlk="RCTX3-KWVHP-BR6TB-RB6DM-6X7HP" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2008 B (Standard and Enterprise)" Id="8fe53387-3087-4447-8985-f75132215ac9" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2008 Standard" Id="ad2542d4-9154-4c6d-8a44-30f11ee96989" Gvlk="TM24T-X9RMF-VWXK6-X8JC9-BFGM2" />
+				<SkuItem DisplayName="Windows Server 2008 Standard without Hyper-V" Id="2401e3d0-c50a-4b58-87b2-7e794b7d2607" Gvlk="W7VD6-7JFBR-RX26B-YKQ3Y-6FFFJ" />
+				<SkuItem DisplayName="Windows Server 2008 Enterprise" Id="c1af4d90-d1bc-44ca-85d4-003ba33db3b9" Gvlk="YQGMW-MPWTJ-34KDK-48M3W-X4Q6V" />
+				<SkuItem DisplayName="Windows Server 2008 Enterprise without Hyper-V" Id="8198490a-add0-47b2-b3ba-316b12d647b4" Gvlk="39BXF-X8Q23-P2WWT-38T2F-G3FPG" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2008 C (Datacenter and Itanium)" Id="8a21fdf3-cbc5-44eb-83f3-fe284e6680a7" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2008 Datacenter" Id="68b6e220-cf09-466b-92d3-45cd964b9509" Gvlk="7M67G-PC374-GR742-YH8V4-TCBY3" />
+				<SkuItem DisplayName="Windows Server 2008 Datacenter without Hyper-V" Id="fd09ef77-5647-4eff-809c-af2b64659a45" Gvlk="22XQ2-VRXRG-P8D42-K34TD-G3QQC" />
+				<SkuItem DisplayName="Windows Server 2008 for Itanium Systems" Id="01ef176b-3e0d-422a-b4f8-4ea880035e8f" Gvlk="4DWFP-JF3DJ-B7DTH-78FJB-PDRHK" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2008 R2 A (Web and HPC)" Id="0fc6ccaf-ff0e-4fae-9d08-4370785bf7ed" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows MultiPoint Server 2010" Id="f772515c-0e87-48d5-a676-e6962c3e1195" Gvlk="736RG-XDKJK-V34PF-BHK87-J6X3K" />
+				<SkuItem DisplayName="Windows Server 2008 R2 Web" Id="a78b8bd9-8017-4df5-b86a-09f756affa7c" Gvlk="6TPJF-RBVHG-WBW2R-86QPH-6RTM4" />
+				<SkuItem DisplayName="Windows Server 2008 R2 HPC Edition" Id="cda18cf3-c196-46ad-b289-60c072869994" Gvlk="TT8MH-CG224-D3D7Q-498W2-9QCTX" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2008 R2 B (Standard and Enterprise)" Id="ca87f5b6-cd46-40c0-b06d-8ecd57a4373f" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2008 R2 Standard" Id="68531fb9-5511-4989-97be-d11a0f55633f" Gvlk="YC6KT-GKW9T-YTKYR-T4X34-R7VHC" />
+				<SkuItem DisplayName="Windows Server 2008 R2 Enterprise" Id="620e2b3d-09e7-42fd-802a-17a13652fe7a" Gvlk="489J6-VHDMP-X63PK-3K798-CPX3Y" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2008 R2 C (Datacenter and Itanium)" Id="b2ca2689-a9a8-42d7-938d-cf8e9f201958" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2008 R2 Datacenter" Id="7482e61b-c589-4b7f-8ecc-46d455ac3b87" Gvlk="74YFP-3QFB3-KQT8W-PMXWJ-7M648" />
+				<SkuItem DisplayName="Windows Server 2008 R2 for Itanium Systems" Id="8a26851c-1c7e-48d3-a687-fbca9b9ac16b" Gvlk="GT63C-RJFQ3-4GMB6-BRFB9-CB83V" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2012" Id="8665cb71-468c-4aa3-a337-cb9bc9d5eaac" DefaultKmsProtocol="5.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2012 Datacenter" Id="d3643d60-0c42-412d-a7d6-52e6635327f6" Gvlk="48HP8-DN98B-MYWDG-T2DCC-8W83P" />
+				<SkuItem DisplayName="Windows Server 2012 MultiPoint Premium" Id="95fd1c83-7df5-494a-be8b-1300e1c9d1cd" Gvlk="XNH6W-2V9GX-RGJ4K-Y8X6F-QGJ2G" />
+				<SkuItem DisplayName="Windows Server 2012 MultiPoint Standard" Id="7d5486c7-e120-4771-b7f1-7b56c6d3170c" Gvlk="HM7DN-YVMH3-46JC3-XYTG7-CYQJJ" />
+				<SkuItem DisplayName="Windows Server 2012 Standard" Id="f0f5ec41-0d55-4732-af02-440a44a3cf0f" Gvlk="XC9B7-NBPP2-83J2H-RHMBY-92BT4" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2012 R2" Id="8456efd3-0c04-4089-8740-5b7238535a65" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2012 R2 Cloud Storage" Id="b743a2be-68d4-4dd3-af32-92425b7bb623" Gvlk="3NPTF-33KPT-GGBPR-YX76B-39KDD" />
+				<SkuItem DisplayName="Windows Server 2012 R2 Datacenter" Id="00091344-1ea4-4f37-b789-01750ba6988c" Gvlk="W3GGN-FT8W3-Y4M27-J84CP-Q3VJ9" />
+				<SkuItem DisplayName="Windows Server 2012 R2 Essentials" Id="21db6ba4-9a7b-4a14-9e29-64a60c59301d" Gvlk="KNC87-3J2TX-XB4WP-VCPJV-M4FWM" />
+				<SkuItem DisplayName="Windows Server 2012 R2 Essentials [Preview]" Id="8f365ba6-c1b9-4223-98fc-282a0756a3ed" Gvlk="" />
+				<SkuItem DisplayName="Windows Server 2012 R2 Standard" Id="b3ca044e-a358-4d68-9883-aaa2941aca99" Gvlk="D2N9P-3P6X9-2R39C-7RTCD-MDVJX" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server 2016" Id="6e9fc069-257d-4bc4-b4a7-750514d32743" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2016 Azure Core" Id="3dbf341b-5f6c-4fa7-b936-699dce9e263f" Gvlk="VP34G-4NPPG-79JTQ-864T4-R3MQX" />
+				<SkuItem DisplayName="Windows Server 2016 Cloud Storage" Id="7b4433f4-b1e7-4788-895a-c45378d38253" Gvlk="QN4C6-GBJD2-FB422-GHWJK-GJG2R" />
+				<SkuItem DisplayName="Windows Server 2016 Datacenter" Id="21c56779-b449-4d20-adfc-eece0e1ad74b" Gvlk="CB7KF-BWN84-R7R2Y-793K2-8XDDG" />
+				<SkuItem DisplayName="Windows Server 2016 Essentials" Id="2b5a1b0f-a5ab-4c54-ac2f-a6d94824a283" Gvlk="JCKRF-N37P4-C2D82-9YXRT-4M63B" />
+				<SkuItem DisplayName="Windows Server 2016 Standard" Id="8c1c5410-9f39-4805-8c9d-63a07706358f" Gvlk="WC2BQ-8NRM3-FDDYY-2BFGV-KHKQY" />
+				<SkuItem DisplayName="Windows Server 2016 ARM64" Id="43d9af6e-5e86-4be8-a797-d072a046896c" Gvlk="K9FYF-G6NCK-73M32-XMVPY-F9DRR" />
+				<SkuItem DisplayName="Windows Server 2016 Datacenter (Semi-Annual Channel v.1803)" Id="e49c08e7-da82-42f8-bde2-b570fbcae76c" Gvlk="2HXDN-KRXHB-GPYC7-YCKFJ-7FVDG" />
+				<SkuItem DisplayName="Windows Server 2016 Standard (Semi-Annual Channel v.1803)" Id="61c5ef22-f14f-4553-a824-c4b31e84b100" Gvlk="PTXN8-JFHJM-4WC78-MPCBR-9W4KR" />
+				<SkuItem DisplayName="Windows Server 2016 Standard (Semi-Annual Channel v.1709)" Id="00000000-0000-0000-0000-000000000000" Gvlk="" />
+				<SkuItem DisplayName="Windows Server 2016 Datacenter (Semi-Annual Channel v.1709)" Id="00000000-0000-0000-0000-000000000000" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Server Preview" Id="6d5f5270-31ac-433e-b90a-39892923c657" IsPreview="true" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Server 2016 Datacenter [Preview]" Id="ba947c44-d19d-4786-b6ae-22770bc94c54" Gvlk="VRDD2-NVGDP-K7QG8-69BR4-TVFHB" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Vista" Id="212a64dc-43b1-4d3d-a30c-2fc69d2095c6" DefaultKmsProtocol="4.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows Vista Business" Id="4f3d1606-3fea-4c01-be3c-8d671c401e3b" Gvlk="YFKBB-PQJJV-G996G-VWGXY-2V3X8" />
+				<SkuItem DisplayName="Windows Vista Business N" Id="2c682dc2-8b68-4f63-a165-ae291d4cf138" Gvlk="HMBQG-8H2RH-C77VX-27R82-VMQBT" />
+				<SkuItem DisplayName="Windows Vista Enterprise" Id="cfd8ff08-c0d7-452b-9f60-ef5c70c32094" Gvlk="VKK3X-68KWM-X2YGT-QR4M6-4BWMV" />
+				<SkuItem DisplayName="Windows Vista Enterprise N" Id="d4f54950-26f2-4fb4-ba21-ffab16afcade" Gvlk="VTC42-BM838-43QHV-84HX6-XJXKV" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Vista Preview" Id="01000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="4.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows Vista Business [Preview 1]" Id="99ff9b26-016a-49d3-982e-fc492f352e57" Gvlk="XQYF4-QVCMY-YXQRD-9QPV8-3YP9V" />
+				<SkuItem DisplayName="Windows Vista Business [Preview 2]" Id="90284483-de09-44a2-a406-98957f8dd09d" Gvlk="YVT36-YVCP2-J97GQ-7T22R-RWV8P" />
+				<SkuItem DisplayName="Windows Vista Business N [Preview]" Id="af46f56f-f06b-49f0-a420-caa8a8d2bf8c" Gvlk="HGBJ9-RWD6M-6HDGW-6T2XD-JQ66F" />
+				<SkuItem DisplayName="Windows Vista Enterprise [Preview 1]" Id="cf67834d-db4a-402c-ab1f-2c134f02b700" Gvlk="3JHG3-Y66GP-B7F3K-JFVX2-VBH7K" />
+				<SkuItem DisplayName="Windows Vista Enterprise [Beta-2 build 5384]" Id="14478aca-ea15-4958-ac34-359281101c99" Gvlk="MF9PG-RQK7R-26BPJ-TWFYK-RHXCM" />
+				<SkuItem DisplayName="Windows Vista Enterprise N [Preview]" Id="0707c7fc-143d-46a4-a830-3705e908202c" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Longhorn Server Preview (Web and HPC)" Id="02000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Longhorn Web [Preview]" Id="3ddb92aa-332e-46f9-abb7-8bdf62f8d967" Gvlk="MDRCM-4WKCW-J93FF-J9Q48-M6KBB" />
+				<SkuItem DisplayName="Windows Longhorn HPC Edition [Preview]" Id="8372b47d-5221-41d8-88d0-3f924e50623e" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Longhorn Server Preview (Standard and Enterprise)" Id="03000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Longhorn Standard" Id="7ea4f647-9e67-453b-a7ba-56f7102afde2" Gvlk="Q37JX-P3HHB-GKRH2-PDBKG-GGXPW" />
+				<SkuItem DisplayName="Windows Longhorn Enterprise" Id="5a99526c-1c09-4481-80fb-b60e8b3d99f8" Gvlk="7KYMQ-R788Q-4RF69-KTWKM-92PFJ" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Longhorn Server Preview (Datacenter and Itanium)" Id="04000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Longhorn Datacenter [Preview]" Id="932ef1f5-4327-4548-b147-51b0f5502995" Gvlk="HR8VD-7DHG2-48378-M9D73-28F4T" />
+				<SkuItem DisplayName="Windows Longhorn for Itanium Systems [Preview]" Id="bebf03b1-a184-4c5e-9103-88af08055e68" Gvlk="CWV9H-PHGPW-V93WV-QBQV9-8V336" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 7 Client Preview" Id="05000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="4.0" NCountPolicy="25">
+				<SkuItem DisplayName="Windows 7 Business [Preview]" Id="957ec1e8-97cd-42a8-a091-01a30cf779da" Gvlk="" />
+				<SkuItem DisplayName="Windows 7 Business N [Preview]" Id="0ff4e536-a746-4018-b107-e81dd0b6d33a" Gvlk="" />
+				<SkuItem DisplayName="Windows 7 Enterprise [Preview]" Id="ea77973e-4930-4fa1-a899-02dfaeada1db" Gvlk="" />
+				<SkuItem DisplayName="Windows 7 Enterprise N [Preview]" Id="e4ecef68-4372-4740-98e8-6c157cd301c2" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 7 Server Preview (Web)" Id="06000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows 7 Server Web [Preview]" Id="4f4cfa6c-76d8-49f5-9c41-0a57f8af1bbc" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 7 Server Preview (Standard and Enterprise)" Id="07000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows 7 Server Standard [Preview]" Id="92374131-ed4c-4d1b-846a-32f43c3eb90d" Gvlk="" />
+				<SkuItem DisplayName="Windows 7 Server Standard without Hyper-V [Preview]" Id="f963bf4b-9693-46e6-9d9d-09c73eaa2b60" Gvlk="" />
+				<SkuItem DisplayName="Windows 7 Server Enterprise [Preview]" Id="9dce1f29-bb10-4be0-8027-35b953dd46d5" Gvlk="" />
+				<SkuItem DisplayName="Windows 7 Server Enterprise without Hyper-V [Preview]" Id="dc06c019-b222-4706-a820-645e77d26a91" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows 7 Server Preview (Datacenter and Itanium)" Id="08000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows 7 Server Datacenter [Preview]" Id="cc64c548-1867-4777-a1cc-0022691bc2a0" Gvlk="" />
+				<SkuItem DisplayName="Windows 7 Server Datacenter without Hyper-V [Preview]" Id="0839e017-cfef-4ac6-a97e-ed2ea7962787" Gvlk="" />
+				<SkuItem DisplayName="Windows 7 Server for Itanium Systems [Preview]" Id="bf9eda2f-74cc-4ba3-8967-cde30f18c230" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Next Education Preview" Id="09000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="5.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Next Education [Pre-Release]" Id="e8ced63e-420d-4ab6-8723-aaf165efb5eb" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Education N [Pre-Release]" Id="3885bca5-11c1-4d4e-9395-df38f7f09a0e" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Next Preview 1 (Volume)" Id="10000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="5.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Next Professional [Pre-Release]" Id="00000000-0000-0000-0000-000000000000" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Professional N [Pre-Release]" Id="64192251-81b0-4898-ac63-913cc3edf919" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Enterprise N [Pre-Release]" Id="c23947f3-3f2e-401f-a38c-f38fe0ecb0bd" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Enterprise [Pre-Release]" Id="38fbe2ac-465a-4ef7-b9d8-72044f2792b6" Gvlk="" />                
+			</KmsItem>
+
+			<KmsItem DisplayName="Windows Next Preview 2 (Volume)" Id="11000000-0000-0000-0000-000000000000" IsPreview="true" DefaultKmsProtocol="5.0" NCountPolicy="5">
+				<SkuItem DisplayName="Windows Next Enterprise S [Pre-Release]" Id="75d003b0-dc66-42c0-b3a1-308a3f35741a" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Enterprise S N [Pre-Release]" Id="4e4d5504-e7b1-419c-913d-3c80c15294fc" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Professional S [Pre-Release]" Id="aa234c15-ee34-4e5f-adb5-73afafb77143" Gvlk="" />
+				<SkuItem DisplayName="Windows Next Professional S N [Pre-Release]" Id="9f6a1bc9-5278-4991-88c9-7301c87a75ea" Gvlk="" />
+			</KmsItem>
+
+		</AppItem>
+
+		<AppItem DisplayName="Office 14 (2010)" VlmcsdIndex="1" MinActiveClients="10" Id="59a52881-a989-479d-af46-f275c6370663">
+
+			<KmsItem DisplayName="Office 2010" Id="e85af946-2e25-47b7-83e1-bebcebeac611" CanMapToDefaultCsvlk="false" DefaultKmsProtocol="4.0" NCountPolicy="5">
+				<SkuItem DisplayName="Office Access 2010" Id="8ce7e872-188c-4b98-9d90-f8f90b7aad02" Gvlk="V7Y44-9T38C-R2VJK-666HK-T7DDX" />
+				<SkuItem DisplayName="Office Excel 2010" Id="cee5d470-6e3b-4fcc-8c2b-d17428568a9f" Gvlk="H62QG-HXVKF-PP4HP-66KMR-CW9BM" />
+				<SkuItem DisplayName="Office Groove (SharePoint Workspace) 2010" Id="8947d0b8-c33b-43e1-8c56-9b674c052832" Gvlk="QYYW6-QP4CB-MBV6G-HYMCJ-4T3J4" />
+				<SkuItem DisplayName="Office InfoPath 2010" Id="ca6b6639-4ad6-40ae-a575-14dee07f6430" Gvlk="K96W8-67RPQ-62T9Y-J8FQJ-BT37T" />
+				<SkuItem DisplayName="Office Mondo 1 2010" Id="09ed9640-f020-400a-acd8-d7d867dfd9c2" Gvlk="YBJTT-JG6MD-V9Q7P-DBKXJ-38W9R" />
+				<SkuItem DisplayName="Office Mondo 2 2010" Id="ef3d4e49-a53d-4d81-a2b1-2ca6c2556b2c" Gvlk="7TC2V-WXF6P-TD7RT-BQRXR-B8K32" />
+				<SkuItem DisplayName="Office OneNote 2010" Id="ab586f5c-5256-4632-962f-fefd8b49e6f4" Gvlk="Q4Y4M-RHWJM-PY37F-MTKWH-D3XHX" />
+				<SkuItem DisplayName="Office OutLook 2010" Id="ecb7c192-73ab-4ded-acf4-2399b095d0cc" Gvlk="7YDC2-CWM8M-RRTJC-8MDVC-X3DWQ" />
+				<SkuItem DisplayName="Office PowerPoint 2010" Id="45593b1d-dfb1-4e91-bbfb-2d5d0ce2227a" Gvlk="RC8FX-88JRY-3PF7C-X8P67-P4VTT" />
+				<SkuItem DisplayName="Office Professional Plus 2010" Id="6f327760-8c5c-417c-9b61-836a98287e0c" Gvlk="VYBBJ-TRJPB-QFQRF-QFT4D-H3GVB" />
+				<SkuItem DisplayName="Office Project Professional 2010" Id="df133ff7-bf14-4f95-afe3-7b48e7e331ef" Gvlk="YGX6F-PGV49-PGW3J-9BTGG-VHKC6" />
+				<SkuItem DisplayName="Office Project Standard 2010" Id="5dc7bf61-5ec9-4996-9ccb-df806a2d0efe" Gvlk="4HP3K-88W3F-W2K3D-6677X-F9PGB" />
+				<SkuItem DisplayName="Office Publisher 2010" Id="b50c4f75-599b-43e8-8dcd-1081a7967241" Gvlk="BFK7F-9MYHM-V68C7-DRQ66-83YTP" />
+				<SkuItem DisplayName="Office Small Business Basics 2010" Id="ea509e87-07a1-4a45-9edc-eba5a39f36af" Gvlk="D6QFG-VBYP2-XQHM7-J97RH-VVRCK" />
+				<SkuItem DisplayName="Office Standard 2010" Id="9da2a678-fb6b-4e67-ab84-60dd6a9c819a" Gvlk="V7QKV-4XVVR-XYV4D-F7DFM-8R6BM" />
+				<SkuItem DisplayName="Office Visio Premium 2010" Id="92236105-bb67-494f-94c7-7f7a607929bd" Gvlk="D9DWC-HPYVV-JGF4P-BTWQB-WX8BJ" />
+				<SkuItem DisplayName="Office Visio Professional 2010" Id="e558389c-83c3-4b29-adfe-5e4d7f46c358" Gvlk="7MCW8-VRQVK-G677T-PDJCM-Q8TCP" />
+				<SkuItem DisplayName="Office Visio Standard 2010" Id="9ed833ff-4f92-4f36-b370-8683a4f13275" Gvlk="767HD-QGMWX-8QTDB-9G3R2-KHFGJ" />
+				<SkuItem DisplayName="Office Word 2010" Id="2d0882e7-a4e7-423b-8ccc-70d91e0158b1" Gvlk="HVHB3-C6FV7-KQX9W-YQG79-CRY7T" />
+				<SkuItem DisplayName="Office Starter 2010 Retail" Id="2745e581-565a-4670-ae90-6bf7c57ffe43" Gvlk="VXHHB-W7HBD-7M342-RJ7P8-CHBD6" />
+				<SkuItem DisplayName="Office SharePoint Designer (Frontpage) 2010 Retail" Id="00000000-0000-0000-0000-000000000000" Gvlk="H48K6-FB4Y6-P83GH-9J7XG-HDKKX" />
+			</KmsItem>
+
+		</AppItem>
+
+		<AppItem DisplayName="Office 15 (2013) / 16 (2016) / 17 (2019)" VlmcsdIndex="5" MinActiveClients="10" Id="0ff1ce15-a989-479d-af46-f275c6370663">
+
+			<KmsItem DisplayName="Office 2013" Id="e6a6f1bf-9d40-40c3-aa9f-c77ba21578c0" CanMapToDefaultCsvlk="false" DefaultKmsProtocol="5.0" NCountPolicy="5">
+				<SkuItem DisplayName="Office Access 2013" Id="6ee7622c-18d8-4005-9fb7-92db644a279b" Gvlk="NG2JY-H4JBT-HQXYP-78QH9-4JM2D" />
+				<SkuItem DisplayName="Office Excel 2013" Id="f7461d52-7c2b-43b2-8744-ea958e0bd09a" Gvlk="VGPNG-Y7HQW-9RHP7-TKPV3-BG7GB" />
+				<SkuItem DisplayName="Office InfoPath 2013" Id="a30b8040-d68a-423f-b0b5-9ce292ea5a8f" Gvlk="DKT8B-N7VXH-D963P-Q4PHY-F8894" />
+				<SkuItem DisplayName="Office Lync 2013" Id="1b9f11e3-c85c-4e1b-bb29-879ad2c909e3" Gvlk="2MG3G-3BNTT-3MFW9-KDQW3-TCK7R" />
+				<SkuItem DisplayName="Office Mondo 2013" Id="dc981c6b-fc8e-420f-aa43-f8f33e5c0923" Gvlk="42QTK-RN8M7-J3C4G-BBGYM-88CYV" />
+				<SkuItem DisplayName="Office Mondo 2013 Retail" Id="1dc00701-03af-4680-b2af-007ffc758a1f" Gvlk="" />
+				<SkuItem DisplayName="Office OneNote 2013" Id="efe1f3e6-aea2-4144-a208-32aa872b6545" Gvlk="TGN6P-8MMBC-37P2F-XHXXK-P34VW" />
+				<SkuItem DisplayName="Office OutLook 2013" Id="771c3afa-50c5-443f-b151-ff2546d863a0" Gvlk="QPN8Q-BJBTJ-334K3-93TGY-2PMBT" />
+				<SkuItem DisplayName="Office PowerPoint 2013" Id="8c762649-97d1-4953-ad27-b7e2c25b972e" Gvlk="4NT99-8RJFH-Q2VDH-KYG2C-4RD4F" />
+				<SkuItem DisplayName="Office Professional Plus 2013" Id="b322da9c-a2e2-4058-9e4e-f59a6970bd69" Gvlk="YC7DK-G2NP3-2QQC3-J6H88-GVGXT" />
+				<SkuItem DisplayName="Office Project Professional 2013" Id="4a5d124a-e620-44ba-b6ff-658961b33b9a" Gvlk="FN8TT-7WMH6-2D4X9-M337T-2342K" />
+				<SkuItem DisplayName="Office Project Standard 2013" Id="427a28d1-d17c-4abf-b717-32c780ba6f07" Gvlk="6NTH3-CW976-3G3Y2-JK3TX-8QHTT" />
+				<SkuItem DisplayName="Office Publisher 2013" Id="00c79ff1-6850-443d-bf61-71cde0de305f" Gvlk="PN2WF-29XG2-T9HJ7-JQPJR-FCXK4" />
+				<SkuItem DisplayName="Office Standard 2013" Id="b13afb38-cd79-4ae5-9f7f-eed058d750ca" Gvlk="KBKQT-2NMXY-JJWGP-M62JB-92CD4" />
+				<SkuItem DisplayName="Office Visio Professional 2013" Id="e13ac10e-75d0-4aff-a0cd-764982cf541c" Gvlk="C2FG9-N6J68-H8BTJ-BW3QX-RM3B3" />
+				<SkuItem DisplayName="Office Visio Standard 2013" Id="ac4efaf0-f81f-4f61-bdf7-ea32b02ab117" Gvlk="J484Y-4NKBF-W2HMG-DBMJC-PGWR7" />
+				<SkuItem DisplayName="Office Word 2013" Id="d9f5b1c6-5386-495a-88f9-9ad6b41ac9b3" Gvlk="6Q7VD-NX8JD-WJ2VH-88V73-4GBJ7" />
+				<SkuItem DisplayName="Office SharePoint Workspace (Groove) 2013" Id="fb4875ec-0c6b-450f-b82b-ab57d8D1677f" Gvlk="H7R7V-WPNXQ-WCYYC-76BGV-VT7GH" />
+				<SkuItem DisplayName="Office SharePoint Designer (Frontpage) 2013 Retail" Id="ba3e3833-6a7e-445a-89d0-7802a9a68588" Gvlk="GYJRG-NMYMF-VGBM4-T3QD4-842DW" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Office 2013 Preview" Id="aa4c7968-b9da-4680-92b6-acb25e2f866c" IsPreview="true" CanMapToDefaultCsvlk="false" DefaultKmsProtocol="5.0" NCountPolicy="5">
+				<SkuItem DisplayName="Office Access 2013 [Pre-Release]" Id="44b538e2-fb34-4732-81e4-644c17d2e746" Gvlk="DJBH8-RGN7Q-836KD-DMP3M-DM9MF" />
+				<SkuItem DisplayName="Office Excel 2013 [Pre-Release]" Id="9373bfa0-97b3-4587-ab73-30934461d55c" Gvlk="Q3BNP-3WXDT-GG8HF-24KMW-HMDBK" />
+				<SkuItem DisplayName="Office SharePoint Workspace (Groove) 2013 [Pre-Release]" Id="aa286eb4-556f-4eeb-967c-c1b771b7673e" Gvlk="WVCGG-NK4FG-7XKXM-BD4WF-3C624" />
+				<SkuItem DisplayName="Office InfoPath 2013 [Pre-Release]" Id="7ccc8256-fbaa-49c6-b2a9-f5afb4257cd2" Gvlk="7KPJJ-N8TT7-CK3KR-QTV98-YPVXQ" />
+				<SkuItem DisplayName="Office Lync 2013 [Pre-Release]" Id="c53dfe17-cc00-4967-b188-a088a965494d" Gvlk="XNVD3-RYC7T-7R6BT-WX6CF-8BYH7" />
+				<SkuItem DisplayName="Office Mondo 2013 [Pre-Release]" Id="2816a87d-e1ed-4097-b311-e2341c57b179" Gvlk="GCGCN-6FJRM-TR9Q3-BGMWJ-78KQV" />
+				<SkuItem DisplayName="Office OneNote 2013 [Pre-Release]" Id="67c0f908-184f-4f64-8250-12db797ab3c3" Gvlk="VYNYX-8GPBC-7FQMD-D6B7B-7MDFD" />
+				<SkuItem DisplayName="Office Outlook 2013 [Pre-Release]" Id="7bce4e7a-dd80-4682-98fa-f993725803d2" Gvlk="X2KNB-FRRG2-WXDPH-739DM-DM9RH" />
+				<SkuItem DisplayName="Office PowerPoint 2013 [Pre-Release]" Id="1ec10c0a-54f6-453e-b85a-6fa1bbfea9b7" Gvlk="B8CT8-BTNFQ-XQXBK-BFWV8-HMDFQ" />
+				<SkuItem DisplayName="Office Professional Plus 2013 [Pre-Release]" Id="87d2b5bf-d47b-41fb-af62-71c382f5cc85" Gvlk="PGD67-JN23K-JGVWV-KTHP4-GXR9G" />
+				<SkuItem DisplayName="Office Project Professional 2013 [Pre-Release]" Id="3cfe50a9-0e03-4b29-9754-9f193f07b71f" Gvlk="NFKVM-DVG7F-TYWYR-3RPHY-F872K" />
+				<SkuItem DisplayName="Office Project Standard 2013 [Pre-Release]" Id="39e49e57-ae68-4ee3-b098-26480df3da96" Gvlk="N89QF-GGB8J-BKD28-C4V28-W4XTK" />
+				<SkuItem DisplayName="Office Publisher 2013 [Pre-Release]" Id="15aa2117-8f79-49a8-8317-753026d6a054" Gvlk="NB67P-J8XP4-XDK9B-V73VH-M4CKR" />
+				<SkuItem DisplayName="Office Visio Professional 2013 [Pre-Release]" Id="cfbfd60e-0b5f-427d-917c-a4df42a80e44" Gvlk="B3C7Q-D6NH2-2VRFW-HHWDG-FVQB6" />
+				<SkuItem DisplayName="Office Visio Standard 2013 [Pre-Release]" Id="7012cc81-8887-42e9-b17d-4e5e42760f0d" Gvlk="9MKNF-J9XQ6-JV4XB-FJQPY-43F43" />
+				<SkuItem DisplayName="Office Word 2013 [Pre-Release]" Id="de9c7eb6-5a85-420d-9703-fff11bdd4d43" Gvlk="JBGD4-3JNG7-JWWGV-CR6TP-DC62Q" />
+				<SkuItem DisplayName="Office SharePoint Designer (Frontpage) 2013 Retail [Pre-Release]" Id="00000000-0000-0000-0000-000000000000" Gvlk="" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Office 2016" Id="85b5f61b-320b-4be3-814a-b76b2bfafc82" CanMapToDefaultCsvlk="false" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Office Access 2016" Id="67c0fc0c-deba-401b-bf8b-9c8ad8395804" Gvlk="GNH9Y-D2J4T-FJHGG-QRVH7-QPFDW" />
+				<SkuItem DisplayName="Office Excel 2016" Id="c3e65d36-141f-4d2f-a303-a842ee756a29" Gvlk="9C2PK-NWTVB-JMPW8-BFT28-7FTBF" />
+				<SkuItem DisplayName="Office Mondo 2016" Id="9caabccb-61b1-4b4b-8bec-d10a3c3ac2ce" Gvlk="HFTND-W9MK4-8B7MJ-B6C4G-XQBR2" />
+				<SkuItem DisplayName="Office Mondo Retail 2016" Id="e914ea6e-a5fa-4439-a394-a9bb3293ca09" Gvlk="DMTCJ-KNRKX-26982-JYCKT-P7KB6" />
+				<SkuItem DisplayName="Office OneNote 2016" Id="d8cace59-33d2-4ac7-9b1b-9b72339c51c8" Gvlk="DR92N-9HTF2-97XKM-XW2WJ-XW3J6" />
+				<SkuItem DisplayName="Office Outlook 2016" Id="ec9d9265-9d1e-4ed0-838a-cdc20f2551a1" Gvlk="R69KK-NTPKF-7M3Q4-QYBHW-6MT9B" />
+				<SkuItem DisplayName="Office Powerpoint 2016" Id="d70b1bba-b893-4544-96e2-b7a318091c33" Gvlk="J7MQP-HNJ4Y-WJ7YM-PFYGF-BY6C6" />
+				<SkuItem DisplayName="Office Professional Plus 2016" Id="d450596f-894d-49e0-966a-fd39ed4c4c64" Gvlk="XQNVK-8JYDB-WJ9W3-YJ8YR-WFG99" />
+				<SkuItem DisplayName="Office Project Professional 2016" Id="4f414197-0fc2-4c01-b68a-86cbb9ac254c" Gvlk="YG9NW-3K39V-2T3HJ-93F3Q-G83KT" />
+				<SkuItem DisplayName="Office Project Professional 2016 C2R [Preview]" Id="829b8110-0e6f-4349-bca4-42803577788d" Gvlk="WGT24-HCNMF-FQ7XH-6M8K7-DRTW9" />
+				<SkuItem DisplayName="Office Project Standard 2016" Id="da7ddabc-3fbe-4447-9e01-6ab7440b4cd4" Gvlk="GNFHQ-F6YQM-KQDGJ-327XX-KQBVC" />
+				<SkuItem DisplayName="Office Project Standard 2016 C2R [Preview]" Id="cbbaca45-556a-4416-ad03-bda598eaa7c8" Gvlk="D8NRQ-JTYM3-7J2DX-646CT-6836M" />
+				<SkuItem DisplayName="Office Publisher 2016" Id="041a06cb-c5b8-4772-809f-416d03d16654" Gvlk="F47MM-N3XJP-TQXJ9-BP99D-8K837" />
+				<SkuItem DisplayName="Office Skype for Business 2016" Id="83e04ee1-fa8d-436d-8994-d31a862cab77" Gvlk="869NQ-FJ69K-466HW-QYCP2-DDBV6" />
+				<SkuItem DisplayName="Office Standard 2016" Id="dedfa23d-6ed1-45a6-85dc-63cae0546de6" Gvlk="JNRGM-WHDWX-FJJG3-K47QV-DRTFM" />
+				<SkuItem DisplayName="Office Visio Professional 2016" Id="6bf301c1-b94a-43e9-ba31-d494598c47fb" Gvlk="PD3PC-RHNGV-FXJ29-8JK7D-RJRJK" />
+				<SkuItem DisplayName="Office Visio Professional 2016 C2R [Preview]" Id="b234abe3-0857-4f9c-b05a-4dc314f85557" Gvlk="69WXN-MBYV6-22PQG-3WGHK-RM6XC" />
+				<SkuItem DisplayName="Office Visio Standard 2016" Id="aa2a7821-1827-4c2c-8f1d-4513a34dda97" Gvlk="7WHWN-4T7MP-G96JF-G33KR-W8GF4" />
+				<SkuItem DisplayName="Office Visio Standard 2016 C2R [Preview]" Id="361fe620-64f4-41b5-ba77-84f8e079b1f7" Gvlk="NY48V-PPYYH-3F4PX-XJRKJ-W4423" />
+				<SkuItem DisplayName="Office Word 2016" Id="bb11badf-d8aa-470e-9311-20eaf80fe5cc" Gvlk="WXY84-JN2Q9-RBCCQ-3Q3J3-3PFJ6" />
+				<SkuItem DisplayName="Office Professional Plus 2019 C2R [Preview]" Id="0bc88885-718c-491d-921f-6f214349e79c" Gvlk="VQ9DP-NVHPH-T9HJC-J9PDT-KTQRG" />
+				<SkuItem DisplayName="Office Project Professional 2019 C2R [Preview]" Id="fc7c4d0c-2e85-4bb9-afd4-01ed1476b5e9" Gvlk="XM2V9-DN9HH-QB449-XDGKC-W2RMW" />
+				<SkuItem DisplayName="Office Visio Professional 2019 C2R [Preview]" Id="500f6619-ef93-4b75-bcb4-82819998a3ca" Gvlk="N2CG9-YD3YK-936X4-3WR82-Q3X4H" />
+			</KmsItem>
+
+			<KmsItem DisplayName="Office 2019" Id="617d9eb1-ef36-4f82-86e0-a65ae07b96c6" CanMapToDefaultCsvlk="false" DefaultKmsProtocol="6.0" NCountPolicy="5">
+				<SkuItem DisplayName="Office Access 2019" Id="9e9bceeb-e736-4f26-88de-763f87dcc485" Gvlk="9N9PT-27V4Y-VJ2PD-YXFMF-YTFQT" />
+				<SkuItem DisplayName="Office Excel 2019" Id="237854e9-79fc-4497-a0c1-a70969691c6b" Gvlk="TMJWT-YYNMB-3BKTF-644FC-RVXBD" />
+				<SkuItem DisplayName="Office Outlook 2019" Id="c8f8a301-19f5-4132-96ce-2de9d4adbd33" Gvlk="7HD7K-N4PVK-BHBCQ-YWQRW-XW4VK" />
+				<SkuItem DisplayName="Office Powerpoint 2019" Id="3131fd61-5e4f-4308-8d6d-62be1987c92c" Gvlk="RRNCX-C64HY-W2MM7-MCH9G-TJHMQ" />
+				<SkuItem DisplayName="Office Professional Plus 2019" Id="85dd8b5f-eaa4-4af3-a628-cce9e77c9a03" Gvlk="NMMKJ-6RK4F-KMJVX-8D9MJ-6MWKP" />
+				<SkuItem DisplayName="Office Project Professional 2019" Id="2ca2bf3f-949e-446a-82c7-e25a15ec78c4" Gvlk="B4NPR-3FKK7-T2MBV-FRQ4W-PKD2B" />
+				<SkuItem DisplayName="Office Project Standard 2019" Id="1777f0e3-7392-4198-97ea-8ae4de6f6381" Gvlk="C4F7P-NCP8C-6CQPT-MQHV9-JXD2M" />
+				<SkuItem DisplayName="Office Publisher 2019" Id="9d3e4cca-e172-46f1-a2f4-1d2107051444" Gvlk="G2KWX-3NW6P-PY93R-JXK2T-C9Y9V" />
+				<SkuItem DisplayName="Office Skype for Business 2019" Id="734c6c6e-b0ba-4298-a891-671772b2bd1b" Gvlk="NCJ33-JHBBY-HTK98-MYCV8-HMKHJ" />
+				<SkuItem DisplayName="Office Standard 2019" Id="6912a74b-a5fb-401a-bfdb-2e3ab46f4b02" Gvlk="6NWWJ-YQWMR-QKGCB-6TMB3-9D9HK" />
+				<SkuItem DisplayName="Office Visio Professional 2019" Id="5b5cf08f-b81a-431d-b080-3450d8620565" Gvlk="9BGNQ-K37YR-RQHF2-38RQ3-7VCBB" />
+				<SkuItem DisplayName="Office Visio Standard 2019" Id="e06d7df3-aad0-419d-8dfb-0ac37e2bdf39" Gvlk="7TQNQ-K3YQQ-3PFH7-CCPPM-X4VQ2" />
+				<SkuItem DisplayName="Office Word 2019" Id="059834fe-a8ea-4bff-b67b-4d006b5447d3" Gvlk="PBX3G-NWMT6-Q7XBW-PYJGG-WXD33" />
+			</KmsItem>
+
+            <KmsItem DisplayName="Office 2021" Id="86d50b16-4808-41af-b83b-b338274318b2" IsPreview="false" CanMapToDefaultCsvlk="false" DefaultKmsProtocol="6.0" NCountPolicy="5">
+                <SkuItem DisplayName="Office Access LTSC 2021" Id="1fe429d8-3fa7-4a39-b6f0-03dded42fe14" Gvlk="WM8YG-YNGDD-4JHDC-PG3F4-FC4T4" />
+                <SkuItem DisplayName="Office Excel LTSC 2021" Id="ea71effc-69f1-4925-9991-2f5e319bbc24" Gvlk="NWG3X-87C9K-TC7YY-BC2G7-G6RVC" />
+                <SkuItem DisplayName="Office Outlook LTSC 2021" Id="a5799e4c-f83c-4c6e-9516-dfe9b696150b" Gvlk="C9FM6-3N72F-HFJXB-TM3V9-T86R9" />
+                <SkuItem DisplayName="Office Powerpoint LTSC 2021" Id="6e166cc3-495d-438a-89e7-d7c9e6fd4dea" Gvlk="TY7XF-NFRBR-KJ44C-G83KF-GX27K" />
+                <SkuItem DisplayName="Office LTSC Professional Plus 2021" Id="fbdb3e18-a8ef-4fb3-9183-dffd60bd0984" Gvlk="FXYTK-NJJ8C-GB6DW-3DYQT-6F7TH" />
+                <SkuItem DisplayName="Office Project Pro 2021" Id="76881159-155c-43e0-9db7-2d70a9a3a4ca" Gvlk="FTNWT-C6WBT-8HMGF-K9PRX-QV9H8" />
+                <SkuItem DisplayName="Office Project Standard 2021" Id="6dd72704-f752-4b71-94c7-11cec6bfc355" Gvlk="J2JDC-NJCYY-9RGQ4-YXWMH-T3D4T" />
+                <SkuItem DisplayName="Office Publisher LTSC 2021" Id="aa66521f-2370-4ad8-a2bb-c095e3e4338f" Gvlk="2MW9D-N4BXM-9VBPG-Q7W6M-KFBGQ" />
+                <SkuItem DisplayName="Office Skype for Business LTSC 2021" Id="1f32a9af-1274-48bd-ba1e-1ab7508a23e8" Gvlk="HWCXN-K3WBT-WJBKY-R8BD9-XK29P" />
+                <SkuItem DisplayName="Office LTSC Standard 2021" Id="080a45c5-9f9f-49eb-b4b0-c3c610a5ebd3" Gvlk="KDX7X-BNVR8-TXXGX-4Q7Y8-78VT3" />
+                <SkuItem DisplayName="Office Visio LTSC Pro 2021" Id="fb61ac9a-1688-45d2-8f6b-0674dbffa33c" Gvlk="KNH8D-FGHT4-T8RK3-CTDYJ-K2HT4" />
+                <SkuItem DisplayName="Office Visio LTSC Standard 2021" Id="72fce797-1884-48dd-a860-b2f6a5efd3ca" Gvlk="MJVNY-BYWPY-CWV6J-2RKRT-4M8QG" />
+                <SkuItem DisplayName="Office Word LTSC 2021" Id="abe28aea-625a-43b1-8e30-225eb8fbd9e5" Gvlk="TN8H9-M34D3-Y64V9-TR72V-X79KV" />
+            </KmsItem>
+		</AppItem>
+
+	</AppItems>
+
+</KmsData>
