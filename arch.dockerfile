@@ -68,7 +68,7 @@
       touch /var/log/kms.log; \
       ln -sf /dev/stdout /var/log/kms.log; \
       cd /opt/py-kms; \
-      pip3 install --no-cache-dir \
+      pip3 install --no-cache-dir --break-system-packages \
         peewee \
         tzlocal \
         pytz \
