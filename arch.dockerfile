@@ -1,6 +1,8 @@
 # :: Util
   FROM alpine AS util
 
+  ARG NO_CACHE
+
   RUN set -ex; \
     apk --no-cache --update add \
       git; \

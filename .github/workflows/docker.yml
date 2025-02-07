@@ -77,6 +77,7 @@ jobs:
             APP_ROOT=${{ env.json_root }}
             APP_UID=${{ env.IMAGE_UID }}
             APP_GID=${{ env.IMAGE_GID }}
+            NO_CACHE=$(date +%s)
           tags: |
             ${{ env.json_image }}:grype
 
@@ -122,6 +123,7 @@ jobs:
             APP_ROOT=${{ env.json_root }}
             APP_UID=${{ env.IMAGE_UID }}
             APP_GID=${{ env.IMAGE_GID }}
+            NO_CACHE=$(date +%s)
           tags: |
             ${{ env.IMAGE_TAGS }}
 
