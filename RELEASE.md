@@ -1,2 +1,2 @@
 ### 🪄 Features
-* prepare base layer for GUI image
+* add DEBUG option via enivornment variable DEBUG

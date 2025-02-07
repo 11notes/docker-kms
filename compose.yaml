@@ -9,7 +9,7 @@ services:
       - "var:/kms/var"
     ports:
       - "1688:1688/tcp"
-    restart: always
+    restart: "always"
   kms-gui:
     image: "11notes/kms-gui:latest"
     container_name: "kms-gui"
@@ -19,6 +19,6 @@ services:
       - "var:/kms/var"
     ports:
       - "8080:8080/tcp"
-    restart: always
+    restart: "always"
 volumes:
   var:

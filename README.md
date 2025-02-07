@@ -49,7 +49,7 @@ services:
       - "var:/kms/var"
     ports:
       - "1688:1688/tcp"
-    restart: always
+    restart: "always"
   kms-gui:
     image: "11notes/kms-gui:latest"
     container_name: "kms-gui"
@@ -59,7 +59,7 @@ services:
       - "var:/kms/var"
     ports:
       - "8080:8080/tcp"
-    restart: always
+    restart: "always"
 volumes:
   var:
 ```
@@ -94,7 +94,7 @@ slmgr /ato
 | Parameter | Value | Default |
 | --- | --- | --- |
 | `TZ` | [Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) | |
-| `DEBUG` | Show debug messages from image **not** app | |
+| `DEBUG` | Will activate debug option for container image and app (if available) | |
 | `KMS_IP` | localhost or 127.0.0.1 or a dedicated IP | 0.0.0.0 |
 | `KMS_PORT` | any port > 1024 | 1688 |
 | `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
