@@ -23,10 +23,7 @@
     git clone https://github.com/Py-KMS-Organization/py-kms.git; \
     cd /py-kms/py-kms; \
     git checkout ${APP_VERSION}; \
-    cp -R /py-kms/py-kms/* /opt/py-kms; \
-    cp -R /py-kms/docker/docker-py3-kms/requirements.txt /opt/py-kms; \
-    sed -i 's/^Flask.*//g' /opt/py-kms/requirements.txt; \
-    sed -i 's/^gunicorn.*//g' /opt/py-kms/requirements.txt
+    cp -R /py-kms/py-kms/* /opt/py-kms;
 
 # :: Header
   FROM 11notes/alpine:stable
@@ -71,7 +68,11 @@
       touch /var/log/kms.log; \
       ln -sf /dev/stdout /var/log/kms.log; \
       cd /opt/py-kms; \
-      pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt --break-system-packages; \
+      pip3 install --no-cache-dir \
+        peewee \
+        tzlocal \
+        pytz \
+        pysqlite3; \
       apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions
