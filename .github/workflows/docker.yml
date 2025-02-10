@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: 'create release or not'
-        required: false
+        description: 'set WORKFLOW_GITHUB_RELEASE'
+        required: true
+        default: 'true'
   push:
     tags:
       - 'v*'
@@ -59,7 +60,7 @@ jobs:
       - name: github / set workflow release
         if: github.event_name == 'workflow_dispatch'
         run: |
-          echo "WORKFLOW_GITHUB_RELEASE=${{ github.event.inputs.release }}" >> $GITHUB_ENV
+          echo "WORKFLOW_GITHUB_RELEASE=${{ inputs.release }}" >> $GITHUB_ENV
 
       - name: docker / login to hub
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
