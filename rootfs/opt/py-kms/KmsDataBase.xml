@@ -613,12 +613,12 @@
 			</KmsItem>
 
 			<KmsItem DisplayName="Windows 10 2019 (Volume)" Id="11b15659-e603-4cf1-9c1f-f0ec01b81888" DefaultKmsProtocol="6.0" NCountPolicy="25">
-				<SkuItem DisplayName="Windows 10 Enterprise LTSC 2019/2021" Id="32d2fab3-e4a8-42c2-923b-4bf4fd13e6ee" Gvlk="M7XTQ-FN8P6-TTKYV-9D4CC-J462D" />
-				<SkuItem DisplayName="Windows 10 Enterprise LTSC 2019/2021 N" Id="7103a333-b8c8-49cc-93ce-d37c09687f92" Gvlk="92NFX-8DJQP-P6BBQ-THF9C-7CG2H" />
+				<SkuItem DisplayName="Windows 10 Enterprise LTSC 2019/2021/2024" Id="32d2fab3-e4a8-42c2-923b-4bf4fd13e6ee" Gvlk="M7XTQ-FN8P6-TTKYV-9D4CC-J462D" />
+				<SkuItem DisplayName="Windows 10 Enterprise LTSC 2019/2021/2024 N" Id="7103a333-b8c8-49cc-93ce-d37c09687f92" Gvlk="92NFX-8DJQP-P6BBQ-THF9C-7CG2H" />
 			</KmsItem>
 
 			<KmsItem DisplayName="Windows 10 Unknown (Volume)" Id="d27cd636-1962-44e9-8b4f-27b6c23efb85" DefaultKmsProtocol="6.0" NCountPolicy="25">
-            </KmsItem>
+      </KmsItem>
 
 			<KmsItem DisplayName="Windows 10/11 China Government" Id="7ba0bf23-d0f5-4072-91d9-d55af5a481b6" CanMapToDefaultCsvlk="false" DefaultKmsProtocol="6.0" NCountPolicy="25">
 				<SkuItem DisplayName="Windows 10/11 Enterprise G" Id="e0b2d383-d112-413f-8a80-97f373a5820c" Gvlk="YYVX9-NTFWV-6MDM3-9PT4T-4M68B" />

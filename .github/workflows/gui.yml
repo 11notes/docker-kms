@@ -1,10 +1,10 @@
-name: build kms gui
+name: kms-gui
 
 on:
   workflow_dispatch:
 
 jobs:
-  cron:
+  kms-gui:
     runs-on: ubuntu-latest
     steps:   
       - name: auto build and update downstream image
@@ -12,5 +12,6 @@ jobs:
         with:
           workflow: docker.yml
           repo: 11notes/docker-kms-gui
+          ref: master
           token: "${{ secrets.REPOSITORY_TOKEN }}"
           inputs: '{ "release": false }'
