@@ -1,13 +1,7 @@
-name: kms-gui
+name: build kms gui
 
 on:
   workflow_dispatch:
-    inputs:
-      release:
-        description: 'create release or not'
-        required: false
-        default: true
-        type: 'boolean'
 
 jobs:
   cron:
