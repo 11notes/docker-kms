@@ -6,15 +6,12 @@ on:
       release:
         description: 'create release or not'
         required: false
-        default: true
-        type: 'boolean'
   push:
     tags:
       - 'v*'
 
 env:
-  DOCKER_USERNAME: 11notes
-  RELEASE: true
+  WORKFLOW_GITHUB_RELEASE: true
 
 jobs:
   build-and-push-image:
@@ -59,15 +56,15 @@ jobs:
           : # echo inputs
           echo "${{ toJSON(github.event.inputs) }}"
 
-      - name: github / disable release
-        if: ${{ inputs.release != null }}
+      - name: github / set workflow release
+        if: github.event_name == 'workflow_dispatch'
         run: |
-          echo "RELEASE=${{ inputs.release }}" >> $GITHUB_ENV
+          echo "WORKFLOW_GITHUB_RELEASE=${{ github.event.inputs.release }}" >> $GITHUB_ENV
 
       - name: docker / login to hub
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
         with:
-          username: ${{ env.DOCKER_USERNAME }}
+          username: 11notes
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: docker / setup qemu
@@ -144,7 +141,7 @@ jobs:
             ${{ env.IMAGE_TAGS }}
 
       - name: github / create release notes
-        if: ${{ env.RELEASE == 'true' && hashFiles('RELEASE.md') != '' }}
+        if: env.WORKFLOW_GITHUB_RELEASE == 'true' && hashFiles('RELEASE.md') != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -169,7 +166,7 @@ jobs:
       - name: docker / push README.md to docker hub
         uses: christian-korneck/update-container-description-action@d36005551adeaba9698d8d67a296bd16fa91f8e8
         env:
-          DOCKER_USER: ${{ env.DOCKER_USERNAME }}
+          DOCKER_USER: 11notes
           DOCKER_PASS: ${{ secrets.DOCKER_TOKEN }}
         with:
           destination_container_repo: ${{ env.json_image }}
@@ -178,7 +175,7 @@ jobs:
           readme_file: 'README.md'
 
       - name: github / dispatch workflow
-        if: ${{ env.json_dispatch_workflow != null }}
+        if: env.json_dispatch_workflow != null
         uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
         with:
           workflow: ${{ env.json_dispatch_workflow }}
