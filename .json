@@ -6,5 +6,6 @@
   "root":"/kms",
   
   "stable":"465f4d1",
+  "latest":"465f4d1",
   "parent":"11notes/alpine:stable"
 }
