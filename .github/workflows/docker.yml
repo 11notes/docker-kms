@@ -60,9 +60,9 @@ jobs:
           echo "${{ toJSON(github.event.inputs) }}"
 
       - name: github / disable release
-        if: ${{ inputs.release != null && inputs.release == false }}
+        if: ${{ inputs.release != null }}
         run: |
-          echo "RELEASE=false" >> $GITHUB_ENV
+          echo "RELEASE=${{ inputs.release }}" >> $GITHUB_ENV
 
       - name: docker / login to hub
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
