@@ -7,5 +7,9 @@
   
   "stable":"465f4d1",
   "latest":"465f4d1",
-  "parent":"11notes/alpine:stable"
+  "parent":"11notes/alpine:stable",
+
+  "dispatch":{
+    "workflow":"gui.yml"
+  }
 }

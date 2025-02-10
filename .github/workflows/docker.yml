@@ -176,3 +176,10 @@ jobs:
           provider: dockerhub
           short_description: ${{ env.json_description }}
           readme_file: 'README.md'
+
+      - name: github / dispatch workflow
+        if: ${{ env.json_dispatch_workflow != null }}
+        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        with:
+          workflow: ${{ env.json_dispatch_workflow }}
+          inputs: '{ "release": false }'

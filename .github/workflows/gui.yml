@@ -1,0 +1,22 @@
+name: kms-gui
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'create release or not'
+        required: false
+        default: true
+        type: 'boolean'
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:   
+      - name: auto build and update downstream image
+        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        with:
+          workflow: docker.yml
+          repo: 11notes/docker-kms-gui
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release": false }'
