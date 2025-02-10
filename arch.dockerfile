@@ -45,7 +45,7 @@
   # :: install application
     RUN set -ex; \
       apk --no-cache --update add \
-        python3=3.12.9-r0; \
+        python3; \
       apk --no-cache --update --virtual .build add \
         py3-pip;
 
