@@ -1,18 +1,11 @@
 # :: Util
-  FROM alpine/git AS util
-
-  ARG NO_CACHE
-
-  RUN set -ex; \
-    git clone https://github.com/11notes/docker-util.git;
+  FROM 11notes/util AS util
 
 # :: Build / py-kms
   FROM alpine/git AS build
-
   ARG APP_VERSION
-
   RUN set -ex; \
-    git clone https://github.com/Py-KMS-Organization/py-kms.git; \
+    git clone https://github.com/Py-KMS-Organization/py-kms.git -b next; \
     cd /git/py-kms; \
     git checkout ${APP_VERSION}; \
     cp -R /git/py-kms/docker/docker-py3-kms-minimal/requirements.txt /git/py-kms/py-kms/requirements.txt; \
@@ -43,7 +36,7 @@
     ENV KMS_LOGLEVEL="INFO"
 
   # :: multi-stage
-    COPY --from=util /git/docker-util/src/ /usr/local/bin
+    COPY --from=util /usr/local/bin/ /usr/local/bin
     COPY --from=build /git/py-kms/py-kms/ /opt/py-kms
 
   # :: Run

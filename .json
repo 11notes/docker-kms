@@ -2,9 +2,9 @@
   "image":"11notes/kms",
   "description":"Activate any version of Windows and Office, forever",
   "name":"kms",
-  "version":"646f476",
+  "version":"465f4d1",
   "root":"/kms",
   
-  "stable":"646f476",
+  "stable":"465f4d1",
   "parent":"11notes/alpine:stable"
 }

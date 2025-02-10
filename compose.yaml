@@ -1,7 +1,7 @@
 name: "kms"
 services:
   kms:
-    image: "11notes/kms:646f476"
+    image: "11notes/kms:465f4d1"
     container_name: "kms"
     environment:
       TZ: "Europe/Zurich"

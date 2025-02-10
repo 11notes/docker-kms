@@ -1,7 +1,7 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
 # 🏔️ kms on Alpine
-[<img src="https://img.shields.io/badge/github-source-blue?logo=github&color=040308">](https://github.com/11notes/docker-kms)![size](https://img.shields.io/docker/image-size/11notes/kms/646f476?color=0eb305)![version](https://img.shields.io/docker/v/11notes/kms/646f476?color=eb7a09)![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6)[<img src="https://img.shields.io/github/issues/11notes/docker-kms?color=7842f5">](https://github.com/11notes/docker-kms/issues)
+[<img src="https://img.shields.io/badge/github-source-blue?logo=github&color=040308">](https://github.com/11notes/docker-kms)![size](https://img.shields.io/docker/image-size/11notes/kms/465f4d1?color=0eb305)![version](https://img.shields.io/docker/v/11notes/kms/465f4d1?color=eb7a09)![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6)[<img src="https://img.shields.io/github/issues/11notes/docker-kms?color=7842f5">](https://github.com/11notes/docker-kms/issues)
 
 **Activate any version of Windows and Office, forever**
 
@@ -41,7 +41,7 @@ Works with:
 name: "kms"
 services:
   kms:
-    image: "11notes/kms:646f476"
+    image: "11notes/kms:465f4d1"
     container_name: "kms"
     environment:
       TZ: "Europe/Zurich"

@@ -2,12 +2,19 @@ name: create and publish docker image
 
 on:
   workflow_dispatch:
+    inputs:
+      release:
+        description: 'create release or not'
+        required: false
+        default: true
+        type: 'boolean'
   push:
     tags:
       - 'v*'
 
 env:
   DOCKER_USERNAME: 11notes
+  RELEASE: true
 
 jobs:
   build-and-push-image:
@@ -36,18 +43,26 @@ jobs:
           export LOCAL_SEMVER_MAJOR=$(awk -F. '{ print $1 }' <<< ${json_version})
           export LOCAL_SEMVER_MINOR=$(awk -F. '{ print $2 }' <<< ${json_version})
           export LOCAL_SEMVER_PATCH=$(awk -F. '{ print $3 }' <<< ${json_version})
-          export LOCAL_TAGS="${json_image}:latest"
+          export LOCAL_TAGS="${json_image}:${LOCAL_SHA}"
           if [ ! -z ${LOCAL_SEMVER_MAJOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:${LOCAL_SEMVER_MAJOR}"; fi
           if [ ! -z ${LOCAL_SEMVER_MINOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}"; fi
           if [ ! -z ${LOCAL_SEMVER_PATCH} ]; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}.${LOCAL_SEMVER_PATCH}"; fi
           if echo "${LOCAL_TAGS}" | grep -q "${json_stable}" ; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:stable"; fi
+          if echo "${LOCAL_TAGS}" | grep -q "${json_latest}" ; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:latest"; fi
           if [ ! -z ${json_tags} ]; then SPECIAL_LOCAL_TAGS=$(echo ${json_tags} | sed 's/,/ /g'); for LOCAL_TAG in ${json_tags}; do LOCAL_TAGS="${LOCAL_TAGS},${json_image}:${LOCAL_TAG}"; done; fi
-          LOCAL_TAGS="${LOCAL_TAGS},${json_image}:${LOCAL_SHA}"
           echo "IMAGE_TAGS=${LOCAL_TAGS}" >> $GITHUB_ENV
 
           : # if for whatever reason UID/GID must be changed at build time
           echo "IMAGE_UID=${json_uid:-1000}" >> $GITHUB_ENV
           echo "IMAGE_GID=${json_gid:-1000}" >> $GITHUB_ENV
+
+          : # echo inputs
+          echo "${{ toJSON(github.event.inputs) }}"
+
+      - name: github / disable release
+        if: ${{ inputs.release != null && inputs.release == false }}
+        run: |
+          echo "RELEASE=false" >> $GITHUB_ENV
 
       - name: docker / login to hub
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
@@ -88,6 +103,10 @@ jobs:
           image: ${{ env.json_image }}:grype
           severity-cutoff: high
 
+      - name: grype / report / print
+        if: success() || failure()
+        run: cat ${{ steps.scan.outputs.sarif }}
+
       - name: grype / delete tag
         if: success() || failure()
         run: |
@@ -101,9 +120,6 @@ jobs:
         uses: github/codeql-action/upload-sarif@48ab28a6f5dbc2a99bf1e0131198dd8f1df78169
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
-
-      - name: grype / report / print
-        run: cat ${{ steps.scan.outputs.sarif }}
 
       - name: docker / build & push
         uses: docker/build-push-action@67a2d409c0a876cbe6b11854e3e25193efe4e62d
@@ -128,9 +144,11 @@ jobs:
             ${{ env.IMAGE_TAGS }}
 
       - name: github / create release notes
+        if: ${{ env.RELEASE == 'true' && hashFiles('RELEASE.md') != '' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create ${{ github.ref_name }} -F RELEASE.md
+        run: |
+          gh release create ${{ github.ref_name }} -F RELEASE.md
 
       - name: github / update description and set repo defaults
         run: |

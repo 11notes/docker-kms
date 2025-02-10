@@ -1,2 +1,2 @@
-### 🪄 Features
-* drop KMS_ENHANCED_PRIVACY_ID
+### 🚀 Updates
+* switch to branch next on upstream py-kms
