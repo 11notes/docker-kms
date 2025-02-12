@@ -14,9 +14,5 @@
     "parent":{
       "image":"11notes/alpine:stable"
     }
-  },
-
-  "dispatch":{
-    "workflow":"gui.yml"
   }
 }

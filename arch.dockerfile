@@ -20,6 +20,8 @@
     ARG APP_NAME
     ARG APP_VERSION
     ARG APP_ROOT
+    ARG APP_UID
+    ARG APP_GID
 
   # :: environment
     ENV APP_IMAGE=${APP_IMAGE}
@@ -39,6 +41,7 @@
 
   # :: Run
   USER root
+  RUN eleven printenv;
 
   # :: install application
     RUN set -ex; \
@@ -60,6 +63,10 @@
       chown -R 1000:1000 \
         ${APP_ROOT} \
         /opt/py-kms;
+
+  # :: support unraid
+    RUN set -ex; \
+      eleven unraid
 
 # :: Volumes
   VOLUME ["${APP_ROOT}/var"]

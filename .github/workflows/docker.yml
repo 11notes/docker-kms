@@ -1,4 +1,4 @@
-name: create and publish docker image
+name: docker
 
 on:
   workflow_dispatch:
@@ -7,31 +7,29 @@ on:
         description: 'set WORKFLOW_GITHUB_RELEASE'
         required: false
         default: 'false'
+
       image:
         description: 'set IMAGE'
         required: false
+
       uid:
         description: 'set IMAGE_UID'
         required: false
+
       gid:
         description: 'set IMAGE_GID'
         required: false
+
       semverprefix:
         description: 'prefix for semver tags'
         required: false
+
       semversuffix:
         description: 'suffix for semver tags'
         required: false
-      dispatch:
-        description: 'run dispatch at end'
-        required: false
-        default: 'false'
-  push:
-    tags:
-      - 'v*'
 
 jobs:
-  build-and-push-image:
+  docker:
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -66,7 +64,6 @@ jobs:
           echo "IMAGE_ARCH=${json_arch:-linux/amd64,linux/arm64}" >> $GITHUB_ENV
           echo "WORKFLOW_GRYPE_SEVERITY_CUTOFF=${json_grype_severity:-high}" >> $GITHUB_ENV;
           echo "WORKFLOW_GITHUB_RELEASE=${input_release:-true}" >> $GITHUB_ENV;
-          echo "WORKFLOW_DISPATCH=${input_dispatch:-true}" >> $GITHUB_ENV;
 
           : # create tags for semver, stable and other shenanigans
           LOCAL_SHA=$(git rev-parse --short HEAD)
@@ -81,9 +78,9 @@ jobs:
           if [ ! -z ${LOCAL_SEMVER_MAJOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_SEMVER_MAJOR}${LOCAL_SEMVER_SUFFIX}"; fi
           if [ ! -z ${LOCAL_SEMVER_MINOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}${LOCAL_SEMVER_SUFFIX}"; fi
           if [ ! -z ${LOCAL_SEMVER_PATCH} ]; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}.${LOCAL_SEMVER_PATCH}${LOCAL_SEMVER_SUFFIX}"; fi
-          if echo "${LOCAL_TAGS}" | grep -q "${json_semver_stable}" ; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:stable"; fi
-          if echo "${LOCAL_TAGS}" | grep -q "${json_semver_latest}" ; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:latest"; fi
-          if [ ! -z ${json_semver_tags} ]; then SPECIAL_LOCAL_TAGS=$(echo ${json_semver_tags} | sed 's/,/ /g'); for LOCAL_TAG in ${json_semver_tags}; do LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_TAG}"; done; fi
+          if echo "${LOCAL_TAGS}" | grep -q "${json_semver_stable}" ; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}stable${LOCAL_SEMVER_SUFFIX}"; fi
+          if echo "${LOCAL_TAGS}" | grep -q "${json_semver_latest}" ; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}latest${LOCAL_SEMVER_SUFFIX}"; fi
+          if [ ! -z ${json_semver_tags} ]; then SPECIAL_LOCAL_TAGS=$(echo ${json_semver_tags} | sed 's/,/ /g'); for LOCAL_TAG in ${json_semver_tags}; do LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_TAG}${LOCAL_SEMVER_SUFFIX}"; done; fi
           echo "IMAGE_TAGS=${LOCAL_TAGS}" >> $GITHUB_ENV
 
           : # if for whatever reason UID/GID must be changed at build time
@@ -132,12 +129,6 @@ jobs:
       - name: grype / report / print
         if: success() || failure()
         run: cat ${{ steps.scan.outputs.sarif }}
-
-      - name: grype / report / annotation
-        if: success() || failure()
-        uses: Miragon/sarif-report-parse@f8bcc5ece9c2b9a786ff4e7392cca2bb72ae8b4b
-        with:
-          sarif-file: ${{ steps.scan.outputs.sarif }}
 
       - name: grype / delete tag
         if: success() || failure()
@@ -209,10 +200,3 @@ jobs:
           provider: dockerhub
           short_description: ${{ env.json_readme_description }}
           readme_file: 'README.md'
-
-      - name: github / dispatch workflow
-        if: env.WORKFLOW_DISPATCH == 'true' && env.json_dispatch_workflow != null
-        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
-        with:
-          workflow: ${{ env.json_dispatch_workflow }}
-          token: "${{ secrets.REPOSITORY_TOKEN }}"

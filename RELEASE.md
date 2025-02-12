@@ -1,2 +1,2 @@
-### 📣 Breaking
-* Removed KMS_IP and KMS_PORT since this is done by the container networking anyway
+### 🪄 Features
+* add unraid version to base kms image (GUI will follow)

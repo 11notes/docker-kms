@@ -1,0 +1,25 @@
+name: tags
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:   
+      - name: build docker image
+        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        with:
+          workflow: docker.yml
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"true" }'
+
+  docker-unraid:
+    runs-on: ubuntu-latest
+    steps:   
+      - name: build docker image for unraid community
+        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        with:
+          workflow: docker.yml
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"false", "uid":"99", "gid":"100", "semversuffix":"-unraid" }'

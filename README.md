@@ -1,6 +1,6 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
-# 🏔️  on Alpine
+# 🏔️ kms on Alpine
 [<img src="https://img.shields.io/badge/github-source-blue?logo=github&color=040308">](https://github.com/11notes/docker-kms)![size](https://img.shields.io/docker/image-size/11notes/kms/465f4d1?color=0eb305)![version](https://img.shields.io/docker/v/11notes/kms/465f4d1?color=eb7a09)![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6)[<img src="https://img.shields.io/github/issues/11notes/docker-kms?color=7842f5">](https://github.com/11notes/docker-kms/issues)
 
 **Activate any version of Windows and Office, forever**
@@ -80,6 +80,9 @@ Activate server
 ```cmd
 slmgr /ato
 ```
+
+# UNRAID VERSION 🟠
+This image supports unraid by default. Simply add **-unraid** to any tag and the image will run as 99:100 instead of 1000:1000 causing no issues on unraid. Enjoy.
 
 # DEFAULT SETTINGS 🗃️
 | Parameter | Value | Description |
