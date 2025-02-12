@@ -9,8 +9,8 @@
     cd /opt/py-kms
     set -- "python3" \
       pykms_Server.py \
-      ${KMS_IP} \
-      ${KMS_PORT} \
+      0.0.0.0 \
+      1688 \
       -l ${KMS_LOCALE} \
       -c ${KMS_CLIENTCOUNT} \
       -a ${KMS_ACTIVATIONINTERVAL} \

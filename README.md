@@ -1,15 +1,15 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
-# 🏔️ kms on Alpine
+# 🏔️  on Alpine
 [<img src="https://img.shields.io/badge/github-source-blue?logo=github&color=040308">](https://github.com/11notes/docker-kms)![size](https://img.shields.io/docker/image-size/11notes/kms/465f4d1?color=0eb305)![version](https://img.shields.io/docker/v/11notes/kms/465f4d1?color=eb7a09)![pulls](https://img.shields.io/docker/pulls/11notes/kms?color=2b75d6)[<img src="https://img.shields.io/github/issues/11notes/docker-kms?color=7842f5">](https://github.com/11notes/docker-kms/issues)
 
 **Activate any version of Windows and Office, forever**
 
-![activation](https://github.com/11notes/docker-kms/blob/master/img/activation.png "Windows Server 2025 Datacenter")
-![GUI](https://github.com/11notes/docker-kms/blob/master/img/GUI.png "11notes/kms-gui")
+![activation](https://github.com/11notes/docker-/blob/master/img/activation.png?raw=true)
+![GUI](https://github.com/11notes/docker-/blob/master/img/GUI.png?raw=true)
 
 # SYNOPSIS 📖
-**What can I do with this?** This image will run a KMS server you can use to activate any version of Windows and Office, forever. If you need a GUI, simply add [11notes/kms-gui](https://github.com/11notes/docker-kms-gui) to your compose.
+**What can I do with this?** This image will run a KMS server you can use to activate any version of Windows and Office, forever.
 
 Works with:
 - Windows Vista 
@@ -34,7 +34,7 @@ Works with:
 - Microsoft Office 2024 ( Volume License )
 
 # VOLUMES 📁
-* **/kms/var** - Directory of the activation database
+* **/var** - Directory of the activation database
 
 # COMPOSE ✂️
 ```yaml
@@ -51,7 +51,7 @@ services:
       - "1688:1688/tcp"
     restart: "always"
   kms-gui:
-    image: "11notes/kms-gui:latest"
+    image: "11notes/kms-gui:stable"
     container_name: "kms-gui"
     environment:
       TZ: "Europe/Zurich"
@@ -69,7 +69,7 @@ volumes:
 ```cmd
 slmgr /ipk D764K-2NDRG-47T6Q-P8T8W-YP6DF
 ```
-Add your KMS server information to server
+Add your KMS server information to server via registry
 ```powershell
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "KMS_IP"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "KMS_PORT"
@@ -95,8 +95,6 @@ slmgr /ato
 | --- | --- | --- |
 | `TZ` | [Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) | |
 | `DEBUG` | Will activate debug option for container image and app (if available) | |
-| `KMS_IP` | localhost or 127.0.0.1 or a dedicated IP | 0.0.0.0 |
-| `KMS_PORT` | any port > 1024 | 1688 |
 | `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
 | `KMS_CLIENTCOUNT` | client count > 25 | 26 |
 | `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
@@ -118,6 +116,7 @@ slmgr /ato
 * Use Let’s Encrypt DNS-01 challenge to obtain valid SSL certificates for your services
 * Do not expose this image to WAN! You will get notified from Microsoft via your ISP to terminate the service if you do so
 * [Microsoft LICD](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a)
+* Use [11notes/kms-gui](https://github.com/11notes/docker-kms-gui) if you want to see the clients you activated in a nice GUI
   
 # ElevenNotes™️
-This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-kms/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-kms/issues), thanks. You can find all my repositories on [github](https://github.com/11notes?tab=repositories).
+This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-kms/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-kms/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-kms/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).

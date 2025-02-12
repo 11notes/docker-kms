@@ -1,13 +1,20 @@
 {
   "image":"11notes/kms",
-  "description":"Activate any version of Windows and Office, forever",
   "name":"kms",
-  "version":"465f4d1",
   "root":"/kms",
   
-  "stable":"465f4d1",
-  "latest":"465f4d1",
-  "parent":"11notes/alpine:stable",
+  "semver":{
+    "version":"465f4d1",
+    "stable":"465f4d1",
+    "latest":"465f4d1"
+  },
+
+  "readme":{
+    "description":"Activate any version of Windows and Office, forever",
+    "parent":{
+      "image":"11notes/alpine:stable"
+    }
+  },
 
   "dispatch":{
     "workflow":"gui.yml"

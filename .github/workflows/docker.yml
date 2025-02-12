@@ -5,18 +5,34 @@ on:
     inputs:
       release:
         description: 'set WORKFLOW_GITHUB_RELEASE'
-        required: true
-        default: 'true'
+        required: false
+        default: 'false'
+      image:
+        description: 'set IMAGE'
+        required: false
+      uid:
+        description: 'set IMAGE_UID'
+        required: false
+      gid:
+        description: 'set IMAGE_GID'
+        required: false
+      semverprefix:
+        description: 'prefix for semver tags'
+        required: false
+      semversuffix:
+        description: 'suffix for semver tags'
+        required: false
+      dispatch:
+        description: 'run dispatch at end'
+        required: false
+        default: 'false'
   push:
     tags:
       - 'v*'
 
-env:
-  WORKFLOW_GITHUB_RELEASE: true
-
 jobs:
   build-and-push-image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
       packages: write
@@ -26,6 +42,14 @@ jobs:
       - name: init / checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
+      - name: init / inputs to env
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          cat << 'EOF' > .inputs
+          ${{ toJSON(github.event.inputs) }}
+          EOF
+          for KEY in $(cat .inputs | jq --raw-output 'keys[]' | tr '\n' ' '); do echo "input_$(echo ${KEY} | tr '[:upper:]' '[:lower:]')=$(cat .inputs | jq --raw-output '.'${KEY}'')" >> $GITHUB_ENV; done
+
       - name: init / .json to env
         uses: rgarcia-phi/json-to-variables@9835d537368468c4e4de5254dc3efeadda183793
         with:
@@ -33,34 +57,38 @@ jobs:
 
       - name: init / setup environment
         run: |
-          : # set default arch if not set
+          : # set image
+          LOCAL_IMAGE=${json_image}
+          if [ ! -z ${input_image} ]; then LOCAL_IMAGE=${input_image}; fi
+          echo "IMAGE=${LOCAL_IMAGE}" >> $GITHUB_ENV
+
+          : # set defaults
           echo "IMAGE_ARCH=${json_arch:-linux/amd64,linux/arm64}" >> $GITHUB_ENV
+          echo "WORKFLOW_GRYPE_SEVERITY_CUTOFF=${json_grype_severity:-high}" >> $GITHUB_ENV;
+          echo "WORKFLOW_GITHUB_RELEASE=${input_release:-true}" >> $GITHUB_ENV;
+          echo "WORKFLOW_DISPATCH=${input_dispatch:-true}" >> $GITHUB_ENV;
 
           : # create tags for semver, stable and other shenanigans
-          export LOCAL_SHA=$(git rev-parse --short HEAD)
-          export LOCAL_SEMVER_MAJOR=$(awk -F. '{ print $1 }' <<< ${json_version})
-          export LOCAL_SEMVER_MINOR=$(awk -F. '{ print $2 }' <<< ${json_version})
-          export LOCAL_SEMVER_PATCH=$(awk -F. '{ print $3 }' <<< ${json_version})
-          export LOCAL_TAGS="${json_image}:${LOCAL_SHA}"
-          if [ ! -z ${LOCAL_SEMVER_MAJOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:${LOCAL_SEMVER_MAJOR}"; fi
-          if [ ! -z ${LOCAL_SEMVER_MINOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}"; fi
-          if [ ! -z ${LOCAL_SEMVER_PATCH} ]; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}.${LOCAL_SEMVER_PATCH}"; fi
-          if echo "${LOCAL_TAGS}" | grep -q "${json_stable}" ; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:stable"; fi
-          if echo "${LOCAL_TAGS}" | grep -q "${json_latest}" ; then LOCAL_TAGS="${LOCAL_TAGS},${json_image}:latest"; fi
-          if [ ! -z ${json_tags} ]; then SPECIAL_LOCAL_TAGS=$(echo ${json_tags} | sed 's/,/ /g'); for LOCAL_TAG in ${json_tags}; do LOCAL_TAGS="${LOCAL_TAGS},${json_image}:${LOCAL_TAG}"; done; fi
+          LOCAL_SHA=$(git rev-parse --short HEAD)
+          LOCAL_SEMVER_MAJOR=$(awk -F. '{ print $1 }' <<< ${json_semver_version})
+          LOCAL_SEMVER_MINOR=$(awk -F. '{ print $2 }' <<< ${json_semver_version})
+          LOCAL_SEMVER_PATCH=$(awk -F. '{ print $3 }' <<< ${json_semver_version})
+          LOCAL_SEMVER_PREFIX=""
+          LOCAL_SEMVER_SUFFIX=""
+          LOCAL_TAGS="${LOCAL_IMAGE}:${LOCAL_SHA}"
+          if [ ! -z ${input_semverprefix} ]; then LOCAL_SEMVER_PREFIX="${input_semverprefix}-"; fi
+          if [ ! -z ${input_semversuffix} ]; then LOCAL_SEMVER_SUFFIX="-${input_semversuffix}"; fi
+          if [ ! -z ${LOCAL_SEMVER_MAJOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_SEMVER_MAJOR}${LOCAL_SEMVER_SUFFIX}"; fi
+          if [ ! -z ${LOCAL_SEMVER_MINOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}${LOCAL_SEMVER_SUFFIX}"; fi
+          if [ ! -z ${LOCAL_SEMVER_PATCH} ]; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}.${LOCAL_SEMVER_PATCH}${LOCAL_SEMVER_SUFFIX}"; fi
+          if echo "${LOCAL_TAGS}" | grep -q "${json_semver_stable}" ; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:stable"; fi
+          if echo "${LOCAL_TAGS}" | grep -q "${json_semver_latest}" ; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:latest"; fi
+          if [ ! -z ${json_semver_tags} ]; then SPECIAL_LOCAL_TAGS=$(echo ${json_semver_tags} | sed 's/,/ /g'); for LOCAL_TAG in ${json_semver_tags}; do LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_TAG}"; done; fi
           echo "IMAGE_TAGS=${LOCAL_TAGS}" >> $GITHUB_ENV
 
           : # if for whatever reason UID/GID must be changed at build time
-          echo "IMAGE_UID=${json_uid:-1000}" >> $GITHUB_ENV
-          echo "IMAGE_GID=${json_gid:-1000}" >> $GITHUB_ENV
-
-          : # echo inputs
-          echo "${{ toJSON(github.event.inputs) }}"
-
-      - name: github / set workflow release
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          echo "WORKFLOW_GITHUB_RELEASE=${{ inputs.release }}" >> $GITHUB_ENV
+          if [ ! -z ${input_uid} ]; then echo "IMAGE_UID=${input_uid}" >> $GITHUB_ENV; else echo "IMAGE_UID=${json_uid:-1000}" >> $GITHUB_ENV; fi
+          if [ ! -z ${input_gid} ]; then echo "IMAGE_GID=${input_gid}" >> $GITHUB_ENV; else echo "IMAGE_GID=${json_gid:-1000}" >> $GITHUB_ENV; fi
 
       - name: docker / login to hub
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
@@ -81,35 +109,41 @@ jobs:
           file: arch.dockerfile
           push: true
           platforms: ${{ env.IMAGE_ARCH }}
-          cache-from: type=registry,ref=${{ env.json_image }}:buildcache
-          cache-to: type=registry,ref=${{ env.json_image }}:buildcache,mode=max,compression=zstd,force-compression=true
+          cache-from: type=registry,ref=${{ env.IMAGE }}:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE }}:buildcache,mode=max,compression=zstd,force-compression=true
           build-args: |
-            APP_IMAGE=${{ env.json_image }}
+            APP_IMAGE=${{ env.IMAGE }}
             APP_NAME=${{ env.json_name }}
-            APP_VERSION=${{ env.json_version }}
+            APP_VERSION=${{ env.json_semver_version }}
             APP_ROOT=${{ env.json_root }}
             APP_UID=${{ env.IMAGE_UID }}
             APP_GID=${{ env.IMAGE_GID }}
             NO_CACHE=$(date +%s)
           tags: |
-            ${{ env.json_image }}:grype
+            ${{ env.IMAGE }}:grype
 
       - name: grype / scan
         id: scan
         uses: anchore/scan-action@abae793926ec39a78ab18002bc7fc45bbbd94342
         with:
-          image: ${{ env.json_image }}:grype
-          severity-cutoff: high
+          image: ${{ env.IMAGE }}:grype
+          severity-cutoff: ${{ env.WORKFLOW_GRYPE_SEVERITY_CUTOFF }}
 
       - name: grype / report / print
         if: success() || failure()
         run: cat ${{ steps.scan.outputs.sarif }}
 
+      - name: grype / report / annotation
+        if: success() || failure()
+        uses: Miragon/sarif-report-parse@f8bcc5ece9c2b9a786ff4e7392cca2bb72ae8b4b
+        with:
+          sarif-file: ${{ steps.scan.outputs.sarif }}
+
       - name: grype / delete tag
         if: success() || failure()
         run: |
           curl --request DELETE \
-            --url https://hub.docker.com/v2/repositories/${{ env.json_image }}/tags/grype/ \
+            --url https://hub.docker.com/v2/repositories/${{ env.IMAGE }}/tags/grype/ \
             --header 'authorization: jwt ${{ secrets.DOCKER_TOKEN }}' \
             --header 'content-type: application/json' \
             --fail
@@ -128,12 +162,12 @@ jobs:
           sbom: true
           provenance: mode=max
           platforms: ${{ env.IMAGE_ARCH }}
-          cache-from: type=registry,ref=${{ env.json_image }}:buildcache
-          cache-to: type=registry,ref=${{ env.json_image }}:buildcache,mode=max,compression=zstd,force-compression=true
+          cache-from: type=registry,ref=${{ env.IMAGE }}:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE }}:buildcache,mode=max,compression=zstd,force-compression=true
           build-args: |
-            APP_IMAGE=${{ env.json_image }}
+            APP_IMAGE=${{ env.IMAGE }}
             APP_NAME=${{ env.json_name }}
-            APP_VERSION=${{ env.json_version }}
+            APP_VERSION=${{ env.json_semver_version }}
             APP_ROOT=${{ env.json_root }}
             APP_UID=${{ env.IMAGE_UID }}
             APP_GID=${{ env.IMAGE_GID }}
@@ -155,7 +189,7 @@ jobs:
             --header 'authorization: Bearer ${{ secrets.REPOSITORY_TOKEN }}' \
             --header 'content-type: application/json' \
             --data '{
-              "description":"${{ env.json_description }}",
+              "description":"${{ env.json_readme_description }}",
               "homepage":"",
               "has_issues":true,
               "has_discussions":true,
@@ -165,18 +199,19 @@ jobs:
             --fail
 
       - name: docker / push README.md to docker hub
+        if: hashFiles('README.md') != ''
         uses: christian-korneck/update-container-description-action@d36005551adeaba9698d8d67a296bd16fa91f8e8
         env:
           DOCKER_USER: 11notes
           DOCKER_PASS: ${{ secrets.DOCKER_TOKEN }}
         with:
-          destination_container_repo: ${{ env.json_image }}
+          destination_container_repo: ${{ env.IMAGE }}
           provider: dockerhub
-          short_description: ${{ env.json_description }}
+          short_description: ${{ env.json_readme_description }}
           readme_file: 'README.md'
 
       - name: github / dispatch workflow
-        if: env.json_dispatch_workflow != null
+        if: env.WORKFLOW_DISPATCH == 'true' && env.json_dispatch_workflow != null
         uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
         with:
           workflow: ${{ env.json_dispatch_workflow }}

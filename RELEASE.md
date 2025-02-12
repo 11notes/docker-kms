@@ -1,3 +1,2 @@
-### 🪄 Features
-* add Server 2025 KMS IDs by @ProfessorCha0s (thanks)
-* add Office LTSC 2024 KMS IDs by @MrRubberDucky (thanks)
+### 📣 Breaking
+* Removed KMS_IP and KMS_PORT since this is done by the container networking anyway
