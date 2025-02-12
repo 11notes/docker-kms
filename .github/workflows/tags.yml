@@ -8,18 +8,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:   
       - name: build docker image
-        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        uses: the-actions-org/workflow-dispatch@3133c5d135c7dbe4be4f9793872b6ef331b53bc7
         with:
           workflow: docker.yml
           token: "${{ secrets.REPOSITORY_TOKEN }}"
           inputs: '{ "release":"true" }'
 
   docker-unraid:
-    needs: docker
     runs-on: ubuntu-latest
+    needs: docker
     steps:   
       - name: build docker image for unraid community
-        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        uses: the-actions-org/workflow-dispatch@3133c5d135c7dbe4be4f9793872b6ef331b53bc7
         with:
           workflow: docker.yml
           token: "${{ secrets.REPOSITORY_TOKEN }}"
