@@ -16,11 +16,36 @@ jobs:
 
   docker-unraid:
     runs-on: ubuntu-latest
-    needs: docker
     steps:   
       - name: build docker image for unraid community
         uses: the-actions-org/workflow-dispatch@3133c5d135c7dbe4be4f9793872b6ef331b53bc7
         with:
           workflow: docker.yml
           token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"false", "uid":"99", "gid":"100", "semversuffix":"unraid" }'
+
+  kms-gui:
+    runs-on: ubuntu-latest
+    needs: docker
+    steps:   
+      - name: build downstream kms gui
+        uses: the-actions-org/workflow-dispatch@3133c5d135c7dbe4be4f9793872b6ef331b53bc7
+        with:
+          workflow: docker.yml
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          repo: 11notes/docker-kms-gui
+          ref: master
+          inputs: '{ "release":"false" }'
+
+  kms-gui-unraid:
+    runs-on: ubuntu-latest
+    needs: docker-unraid
+    steps:   
+      - name: build downstream kms gui for unraid community
+        uses: the-actions-org/workflow-dispatch@3133c5d135c7dbe4be4f9793872b6ef331b53bc7
+        with:
+          workflow: docker.yml
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          repo: 11notes/docker-kms-gui
+          ref: master
           inputs: '{ "release":"false", "uid":"99", "gid":"100", "semversuffix":"unraid" }'

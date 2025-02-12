@@ -87,6 +87,11 @@ jobs:
           if [ ! -z ${input_uid} ]; then echo "IMAGE_UID=${input_uid}" >> $GITHUB_ENV; else echo "IMAGE_UID=${json_uid:-1000}" >> $GITHUB_ENV; fi
           if [ ! -z ${input_gid} ]; then echo "IMAGE_GID=${input_gid}" >> $GITHUB_ENV; else echo "IMAGE_GID=${json_gid:-1000}" >> $GITHUB_ENV; fi
 
+          : # set prefix or suffix globally
+          echo "IMAGE_SEMVER_PREFIX=${LOCAL_SEMVER_PREFIX}" >> $GITHUB_ENV
+          echo "IMAGE_SEMVER_SUFFIX=${LOCAL_SEMVER_SUFFIX}" >> $GITHUB_ENV
+
+
       - name: docker / login to hub
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
         with:
@@ -106,8 +111,8 @@ jobs:
           file: arch.dockerfile
           push: true
           platforms: ${{ env.IMAGE_ARCH }}
-          cache-from: type=registry,ref=${{ env.IMAGE }}:buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE }}:buildcache,mode=max,compression=zstd,force-compression=true
+          cache-from: type=registry,ref=${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}buildcache${{ env.IMAGE_SEMVER_SUFFIX }}
+          cache-to: type=registry,ref=${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}buildcache${{ env.IMAGE_SEMVER_SUFFIX }}e,mode=max,compression=zstd,force-compression=true
           build-args: |
             APP_IMAGE=${{ env.IMAGE }}
             APP_NAME=${{ env.json_name }}
@@ -115,15 +120,17 @@ jobs:
             APP_ROOT=${{ env.json_root }}
             APP_UID=${{ env.IMAGE_UID }}
             APP_GID=${{ env.IMAGE_GID }}
-            NO_CACHE=$(date +%s)
+            APP_VERSION_PREFIX=${{ env.IMAGE_SEMVER_PREFIX }}
+            APP_VERSION_SUFFIX=${{ env.IMAGE_SEMVER_SUFFIX }}
+            APP_NO_CACHE=$(date +%s)
           tags: |
-            ${{ env.IMAGE }}:grype
+            ${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}grype${{ env.IMAGE_SEMVER_SUFFIX }}
 
       - name: grype / scan
         id: scan
         uses: anchore/scan-action@abae793926ec39a78ab18002bc7fc45bbbd94342
         with:
-          image: ${{ env.IMAGE }}:grype
+          image: ${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}grype${{ env.IMAGE_SEMVER_SUFFIX }}
           severity-cutoff: ${{ env.WORKFLOW_GRYPE_SEVERITY_CUTOFF }}
 
       - name: grype / report / print
@@ -134,7 +141,7 @@ jobs:
         if: success() || failure()
         run: |
           curl --request DELETE \
-            --url https://hub.docker.com/v2/repositories/${{ env.IMAGE }}/tags/grype/ \
+            --url https://hub.docker.com/v2/repositories/${{ env.IMAGE }}/tags/${{ env.IMAGE_SEMVER_PREFIX }}grype${{ env.IMAGE_SEMVER_SUFFIX }}/ \
             --header 'authorization: jwt ${{ secrets.DOCKER_TOKEN }}' \
             --header 'content-type: application/json' \
             --fail
@@ -153,8 +160,8 @@ jobs:
           sbom: true
           provenance: mode=max
           platforms: ${{ env.IMAGE_ARCH }}
-          cache-from: type=registry,ref=${{ env.IMAGE }}:buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE }}:buildcache,mode=max,compression=zstd,force-compression=true
+          cache-from: type=registry,ref=${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}buildcache${{ env.IMAGE_SEMVER_SUFFIX }}
+          cache-to: type=registry,ref=${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}buildcache${{ env.IMAGE_SEMVER_SUFFIX }},mode=max,compression=zstd,force-compression=true
           build-args: |
             APP_IMAGE=${{ env.IMAGE }}
             APP_NAME=${{ env.json_name }}
@@ -162,7 +169,9 @@ jobs:
             APP_ROOT=${{ env.json_root }}
             APP_UID=${{ env.IMAGE_UID }}
             APP_GID=${{ env.IMAGE_GID }}
-            NO_CACHE=$(date +%s)
+            APP_VERSION_PREFIX=${{ env.IMAGE_SEMVER_PREFIX }}
+            APP_VERSION_SUFFIX=${{ env.IMAGE_SEMVER_SUFFIX }}
+            APP_NO_CACHE=$(date +%s)
           tags: |
             ${{ env.IMAGE_TAGS }}
 
