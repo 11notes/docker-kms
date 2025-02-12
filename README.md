@@ -5,8 +5,8 @@
 
 **Activate any version of Windows and Office, forever**
 
-![activation](https://github.com/11notes/docker-/blob/master/img/activation.png?raw=true)
-![GUI](https://github.com/11notes/docker-/blob/master/img/GUI.png?raw=true)
+![activation](https://github.com/11notes/docker-kms/blob/master/img/activation.png?raw=true)
+![GUI](https://github.com/11notes/docker-kms/blob/master/img/GUI.png?raw=true)
 
 # SYNOPSIS 📖
 **What can I do with this?** This image will run a KMS server you can use to activate any version of Windows and Office, forever.

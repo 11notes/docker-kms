@@ -14,4 +14,3 @@ jobs:
           repo: 11notes/docker-kms-gui
           ref: master
           token: "${{ secrets.REPOSITORY_TOKEN }}"
-          inputs: '{ "release": "false" }'
