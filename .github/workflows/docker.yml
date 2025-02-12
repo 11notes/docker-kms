@@ -112,7 +112,7 @@ jobs:
           push: true
           platforms: ${{ env.IMAGE_ARCH }}
           cache-from: type=registry,ref=${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}buildcache${{ env.IMAGE_SEMVER_SUFFIX }}
-          cache-to: type=registry,ref=${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}buildcache${{ env.IMAGE_SEMVER_SUFFIX }}e,mode=max,compression=zstd,force-compression=true
+          cache-to: type=registry,ref=${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}buildcache${{ env.IMAGE_SEMVER_SUFFIX }},mode=max,compression=zstd,force-compression=true
           build-args: |
             APP_IMAGE=${{ env.IMAGE }}
             APP_NAME=${{ env.json_name }}
