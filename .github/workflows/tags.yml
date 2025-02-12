@@ -15,6 +15,7 @@ jobs:
           inputs: '{ "release":"true" }'
 
   docker-unraid:
+    needs: docker
     runs-on: ubuntu-latest
     steps:   
       - name: build docker image for unraid community
