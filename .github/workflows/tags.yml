@@ -23,4 +23,4 @@ jobs:
         with:
           workflow: docker.yml
           token: "${{ secrets.REPOSITORY_TOKEN }}"
-          inputs: '{ "release":"false", "uid":"99", "gid":"100", "semversuffix":"-unraid" }'
+          inputs: '{ "release":"false", "uid":"99", "gid":"100", "semversuffix":"unraid" }'
