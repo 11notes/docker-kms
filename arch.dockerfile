@@ -39,7 +39,7 @@
     COPY --from=util /usr/local/bin/ /usr/local/bin
     COPY --from=build /git/py-kms/py-kms/ /opt/py-kms
 
-  # :: Run
+# :: Run
   USER root
   RUN eleven printenv;
 
@@ -72,7 +72,7 @@
   VOLUME ["${APP_ROOT}/var"]
 
 # :: Monitor
-  HEALTHCHECK --interval=5s --timeout=2s CMD /usr/local/bin/healthcheck.sh || exit 1
+  HEALTHCHECK --interval=5s --timeout=2s CMD netstat -an | grep -q 1688 || exit 1
 
 # :: Start
   USER docker

@@ -6,6 +6,7 @@
 **Activate any version of Windows and Office, forever**
 
 ![activation](https://github.com/11notes/docker-kms/blob/master/img/activation.png?raw=true)
+![Office](https://github.com/11notes/docker-kms/blob/master/img/Office.png?raw=true)
 ![GUI](https://github.com/11notes/docker-kms/blob/master/img/GUI.png?raw=true)
 
 # MAIN TAGS 🏷️
@@ -17,6 +18,7 @@ These are the main tags for the image. There is also a tag for each commit and i
 * [465f4d1-unraid](https://hub.docker.com/r/11notes/kms/tags?name=465f4d1-unraid)
 * [stable-unraid](https://hub.docker.com/r/11notes/kms/tags?name=stable-unraid)
 * [latest-unraid](https://hub.docker.com/r/11notes/kms/tags?name=latest-unraid)
+
 
 # SYNOPSIS 📖
 **What can I do with this?** This image will run a KMS server you can use to activate any version of Windows and Office, forever.
@@ -94,6 +96,7 @@ slmgr /ato
 # UNRAID VERSION 🟠
 This image supports unraid by default. Simply add **-unraid** to any tag and the image will run as 99:100 instead of 1000:1000 causing no issues on unraid. Enjoy.
 
+
 # DEFAULT SETTINGS 🗃️
 | Parameter | Value | Description |
 | --- | --- | --- |
@@ -130,6 +133,7 @@ This image supports unraid by default. Simply add **-unraid** to any tag and the
 * Do not expose this image to WAN! You will get notified from Microsoft via your ISP to terminate the service if you do so
 * [Microsoft LICD](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a)
 * Use [11notes/kms-gui](https://github.com/11notes/docker-kms-gui) if you want to see the clients you activated in a nice GUI
-  
+
+    
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-kms/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-kms/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-kms/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
