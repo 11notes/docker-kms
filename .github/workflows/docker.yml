@@ -144,7 +144,7 @@ jobs:
         id: sarif-to-md
         if: success() || failure()
         continue-on-error: true
-        uses: 11notes/action-sarif-to-markdown@b2656b3171cb3cddc50d50b2f86921cb2e6aeab1
+        uses: 11notes/action-sarif-to-markdown@bc689850bd33a1037ea1d0a609ab4ea14b3c4396
         with:
           sarif_file: grype.sarif
 
