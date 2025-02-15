@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kms-pvc
+  namespace: kms
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn #Change to whatever storage class you're using, if needed
+  resources:
+    requests:
+      storage: 1Gi

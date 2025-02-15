@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kms-ingress
+  namespace: kms
+  annotations: #You can delete this annotation if you're not using cert-manager
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  tls: #You can delete this tls block if you're not using tls
+  - hosts:
+    - kms.example.com
+    secretName: kms-cert
+  rules:
+    - host: kms.example.com
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: kms-service
+              port:
+                number: 8080

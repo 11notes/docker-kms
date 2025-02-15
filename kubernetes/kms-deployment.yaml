@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kms
+  namespace: kms
+  labels:
+    app: kms
+spec:
+  selector:
+    matchLabels:
+      app: kms
+  replicas: 1
+  template:
+    metadata:
+      name: kms
+      namespace: kms
+      labels:
+        app: kms
+    spec:
+      volumes:
+      - name: kms-var
+        persistentVolumeClaim:
+          claimName: kms-pvc
+      containers:
+      - name: kms
+        image: 11notes/kms:465f4d1
+        volumeMounts:
+        - name: kms-var
+          mountPath: /var/kms
+        ports:
+        - containerPort: 1688
+        env:
+        - name: TZ
+          value: Europe/Berlin #Adjust to your local timezone
+      - name: kms-gui
+        image: 11notes/kms-gui:stable
+        volumeMounts:
+        - name: kms-var
+          mountPath: /var/kms
+        ports:
+        - containerPort: 8080
+        env:
+        - name: TZ
+          value: Europe/Berlin #Adjust to your local timezone
