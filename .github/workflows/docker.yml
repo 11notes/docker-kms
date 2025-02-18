@@ -8,6 +8,11 @@ on:
         required: false
         default: 'false'
 
+      readme:
+        description: 'set WORKFLOW_GITHUB_README'
+        required: false
+        default: 'false'
+
       image:
         description: 'set IMAGE'
         required: false
@@ -32,6 +37,7 @@ jobs:
   docker:
     runs-on: ubuntu-22.04
     permissions:
+      actions: read
       contents: write
       packages: write
       security-events: write
@@ -39,6 +45,8 @@ jobs:
     steps:   
       - name: init / checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: master
 
       - name: init / inputs to env
         if: github.event_name == 'workflow_dispatch'
@@ -62,8 +70,10 @@ jobs:
 
           : # set defaults
           echo "IMAGE_ARCH=${json_arch:-linux/amd64,linux/arm64}" >> $GITHUB_ENV
-          echo "WORKFLOW_GRYPE_SEVERITY_CUTOFF=${json_grype_severity:-high}" >> $GITHUB_ENV;
           echo "WORKFLOW_GITHUB_RELEASE=${input_release:-true}" >> $GITHUB_ENV;
+          echo "WORKFLOW_GITHUB_README=${input_readme:-true}" >> $GITHUB_ENV;
+          echo "WORKFLOW_GRYPE_SCAN=${json_grype_scan:-true}" >> $GITHUB_ENV;
+          echo "WORKFLOW_GRYPE_SEVERITY_CUTOFF=${json_grype_severity:-high}" >> $GITHUB_ENV;
 
           : # create tags for semver, stable and other shenanigans
           LOCAL_SHA=$(git rev-parse --short HEAD)
@@ -76,7 +86,7 @@ jobs:
           LOCAL_TAGS="${LOCAL_IMAGE}:${LOCAL_SHA}"
           if [ ! -z ${input_semverprefix} ]; then LOCAL_SEMVER_PREFIX="${input_semverprefix}-"; fi
           if [ ! -z ${input_semversuffix} ]; then LOCAL_SEMVER_SUFFIX="-${input_semversuffix}"; fi
-          if [ ! -z ${json_semver_rc} ]; then LOCAL_SEMVER_RC="-${json_semver_rc}"; fi
+          if [ ! -z ${json_semver_rc} ]; then LOCAL_SEMVER_RC="${json_semver_rc}"; fi
           if [ ! -z ${LOCAL_SEMVER_MAJOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_SEMVER_MAJOR}${LOCAL_SEMVER_SUFFIX}"; fi
           if [ ! -z ${LOCAL_SEMVER_MINOR} ]; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}${LOCAL_SEMVER_SUFFIX}"; fi
           if [ ! -z ${LOCAL_SEMVER_PATCH} ]; then LOCAL_TAGS="${LOCAL_TAGS},${LOCAL_IMAGE}:${LOCAL_SEMVER_PREFIX}${LOCAL_SEMVER_MAJOR}.${LOCAL_SEMVER_MINOR}.${LOCAL_SEMVER_PATCH}${LOCAL_SEMVER_SUFFIX}"; fi
@@ -89,7 +99,7 @@ jobs:
           if [ ! -z ${input_uid} ]; then echo "IMAGE_UID=${input_uid}" >> $GITHUB_ENV; else echo "IMAGE_UID=${json_uid:-1000}" >> $GITHUB_ENV; fi
           if [ ! -z ${input_gid} ]; then echo "IMAGE_GID=${input_gid}" >> $GITHUB_ENV; else echo "IMAGE_GID=${json_gid:-1000}" >> $GITHUB_ENV; fi
 
-          : # set rc, prefix or suffix globally
+          : # set rc, prefix or suffix globally for semver and version
           echo "IMAGE_SEMVER_PREFIX=${LOCAL_SEMVER_PREFIX}" >> $GITHUB_ENV
           echo "IMAGE_SEMVER_SUFFIX=${LOCAL_SEMVER_SUFFIX}" >> $GITHUB_ENV
           echo "IMAGE_VERSION_RC=${LOCAL_SEMVER_RC}" >> $GITHUB_ENV
@@ -131,6 +141,7 @@ jobs:
             ${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}grype${{ env.IMAGE_SEMVER_SUFFIX }}
 
       - name: grype / scan
+        if: env.WORKFLOW_GRYPE_SCAN == 'true'
         id: grype-scan
         uses: anchore/scan-action@abae793926ec39a78ab18002bc7fc45bbbd94342
         with:
@@ -138,15 +149,6 @@ jobs:
           severity-cutoff: ${{ env.WORKFLOW_GRYPE_SEVERITY_CUTOFF }}
           by-cve: true
           output-format: 'sarif'
-          output-file: ${{ runner.temp }}/_github_home/grype.sarif
-
-      - name: grype / report / sarif to markdown
-        id: sarif-to-md
-        if: success() || failure()
-        continue-on-error: true
-        uses: 11notes/action-sarif-to-markdown@bc689850bd33a1037ea1d0a609ab4ea14b3c4396
-        with:
-          sarif_file: grype.sarif
 
       - name: grype / delete tag
         if: steps.grype-tag.outcome == 'success'
@@ -157,11 +159,13 @@ jobs:
             --header 'content-type: application/json' \
             --fail
 
-      - name: grype / report / upload
+      - name: codeql / upload
+        id: codeql-upload
         if: steps.grype-scan.outcome == 'success'
         uses: github/codeql-action/upload-sarif@48ab28a6f5dbc2a99bf1e0131198dd8f1df78169
         with:
           sarif_file: ${{ steps.grype-scan.outputs.sarif }}
+          wait-for-processing: false
           category: grype
 
       - name: docker / build & push
@@ -211,6 +215,22 @@ jobs:
               "has_wiki":false
             }' \
             --fail
+
+      - name: github / create README.md
+        if: env.WORKFLOW_GITHUB_README == 'true'
+        id: github-readme
+        uses: 11notes/action-docker-readme@v1.1.1
+        with:
+          sarif_file: ${{ steps.grype-scan.outputs.sarif }}
+
+      - name: github / commit & push
+        if: steps.github-readme.outcome == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "update README.md"
+          git push
 
       - name: docker / push README.md to docker hub
         if: hashFiles('README.md') != ''

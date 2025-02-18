@@ -13,6 +13,9 @@
     "description":"Activate any version of Windows and Office, forever",
     "parent":{
       "image":"11notes/alpine:stable"
+    },
+    "built":{
+      "py-kms":"https://github.com/Py-KMS-Organization/py-kms"
     }
   }
 }
