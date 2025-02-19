@@ -19,7 +19,7 @@ These are the main tags for the image. There is also a tag for each commit and i
 This image supports unraid by default. Simply add **-unraid** to any tag and the image will run as 99:100 instead of 1000:1000 causing no issues on unraid. Enjoy.
 
 ![Windows Server 2025](https://github.com/11notes/docker-kms/blob/master/img/WindowsSRV2025.png?raw=true)
-![Windows 11 LTSC 2024](https://github.com/11notes/docker-kms/blob/master/img/Windows11ENTLTSC.png?raw=true)
+
 ![Web GUI](https://github.com/11notes/docker-kms/blob/master/img/webGUICustomIcon.png?raw=true)
 
 # SYNOPSIS 📖
@@ -140,3 +140,5 @@ slmgr /ato
 
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-kms/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-kms/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-kms/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
+
+*created Wed, 19 Feb 2025 08:12:23 GMT*
