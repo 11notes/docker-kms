@@ -219,7 +219,7 @@ jobs:
       - name: github / create README.md
         if: env.WORKFLOW_GITHUB_README == 'true'
         id: github-readme
-        uses: 11notes/action-docker-readme@v1.1.1
+        uses: 11notes/action-docker-readme@v1.1.2
         with:
           sarif_file: ${{ steps.grype-scan.outputs.sarif }}
 
