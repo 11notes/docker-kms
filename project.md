@@ -1,5 +1,5 @@
 ![Windows Server 2025](https://github.com/11notes/docker-${{ json_name }}/blob/master/img/WindowsSRV2025.png?raw=true)
-![Windows 11 LTSC 2024](https://github.com/11notes/docker-${{ json_name }}/blob/master/img/Windows11ENTLTSC.png?raw=true)
+
 ![Web GUI](https://github.com/11notes/docker-${{ json_name }}/blob/master/img/webGUICustomIcon.png?raw=true)
 
 ${{ content_synopsis }} This image will run a KMS server you can use to activate any version of Windows and Office, forever.
