@@ -1,8 +1,15 @@
 name: docker
+run-name: ${{ inputs.run-name }}
 
 on:
   workflow_dispatch:
     inputs:
+      run-name:
+        description: 'set run-name for workflow (multiple calls)'
+        type: string
+        required: false
+        default: 'docker'
+
       release:
         description: 'set WORKFLOW_GITHUB_RELEASE'
         required: false
@@ -217,6 +224,7 @@ jobs:
             --fail
 
       - name: github / create README.md
+        continue-on-error: true
         if: env.WORKFLOW_GITHUB_README == 'true'
         id: github-readme
         uses: 11notes/action-docker-readme@v1
@@ -224,6 +232,7 @@ jobs:
           sarif_file: ${{ steps.grype-scan.outputs.sarif }}
 
       - name: github / commit & push
+        continue-on-error: true
         if: steps.github-readme.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
