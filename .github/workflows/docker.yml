@@ -53,7 +53,7 @@ jobs:
       - name: init / checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: master
+          fetch-depth: 0
 
       - name: init / inputs to env
         if: github.event_name == 'workflow_dispatch'
@@ -200,12 +200,36 @@ jobs:
           tags: |
             ${{ env.IMAGE_TAGS }}
 
-      - name: github / create release notes
-        if: env.WORKFLOW_GITHUB_RELEASE == 'true' && hashFiles('RELEASE.md') != ''
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: github / release / log
+        id: git-log
         run: |
-          gh release create ${{ github.ref_name }} -F RELEASE.md
+          LOCAL_LAST_TAG=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`)
+          echo "using last tag: ${LOCAL_LAST_TAG}"
+          LOCAL_COMMITS=$(git log ${LOCAL_LAST_TAG}..HEAD --oneline)
+
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "commits<<${EOF}" >> ${GITHUB_OUTPUT}
+          echo "${LOCAL_COMMITS}" >> ${GITHUB_OUTPUT}
+          echo "${EOF}" >> ${GITHUB_OUTPUT}
+
+      - name: github / release / markdown
+        if: env.WORKFLOW_GITHUB_RELEASE == 'true'
+        id: git-release
+        uses: 11notes/action-docker-release@v1
+        with:
+          git_log: ${{ steps.git-log.outputs.commits }}
+
+      - name: github / release / create
+        if: env.WORKFLOW_GITHUB_RELEASE == 'true' && steps.git-release.outcome == 'success'
+        uses: actions/create-release@4c11c9fe1dcd9636620a16455165783b20fc7ea0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: ${{ steps.git-release.outputs.release }}
+          draft: false
+          prerelease: false
 
       - name: github / update description and set repo defaults
         run: |
@@ -238,7 +262,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "update README.md"
+          git commit -m "auto update README.md"
           git push
 
       - name: docker / push README.md to docker hub
