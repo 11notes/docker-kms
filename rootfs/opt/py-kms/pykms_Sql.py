@@ -55,7 +55,7 @@ def sql_get_all(dbName):
                 return None
         with sqlite3.connect(dbName) as con:
                 cur = con.cursor()
-                cur.execute("SELECT * FROM clients")
+                cur.execute("SELECT * FROM clients ORDER BY lastRequestTime DESC")
                 clients = []
                 for row in cur.fetchall():
                         clients.append({

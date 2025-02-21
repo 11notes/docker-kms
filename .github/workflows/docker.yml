@@ -53,6 +53,7 @@ jobs:
       - name: init / checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: init / inputs to env
@@ -62,6 +63,7 @@ jobs:
           ${{ toJSON(github.event.inputs) }}
           EOF
           for KEY in $(cat .inputs | jq --raw-output 'keys[]' | tr '\n' ' '); do echo "input_$(echo ${KEY} | tr '[:upper:]' '[:lower:]')=$(cat .inputs | jq --raw-output '.'${KEY}'')" >> $GITHUB_ENV; done
+          rm -rf .inputs
 
       - name: init / .json to env
         uses: rgarcia-phi/json-to-variables@9835d537368468c4e4de5254dc3efeadda183793
@@ -231,6 +233,41 @@ jobs:
           draft: false
           prerelease: false
 
+      - name: github / checkout master
+        continue-on-error: true
+        run: |         
+          git checkout master
+
+      - name: github / create README.md
+        continue-on-error: true
+        if: env.WORKFLOW_GITHUB_README == 'true'
+        id: github-readme
+        uses: 11notes/action-docker-readme@v1
+        with:
+          sarif_file: ${{ steps.grype-scan.outputs.sarif }}
+
+      - name: github / commit & push
+        continue-on-error: true
+        if: steps.github-readme.outcome == 'success'
+        run: |         
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "auto update README.md"
+          git push
+
+      - name: docker / push README.md to docker hub
+        if: hashFiles('README.md') != ''
+        uses: christian-korneck/update-container-description-action@d36005551adeaba9698d8d67a296bd16fa91f8e8
+        env:
+          DOCKER_USER: 11notes
+          DOCKER_PASS: ${{ secrets.DOCKER_TOKEN }}
+        with:
+          destination_container_repo: ${{ env.IMAGE }}
+          provider: dockerhub
+          short_description: ${{ env.json_readme_description }}
+          readme_file: 'README.md'
+
       - name: github / update description and set repo defaults
         run: |
           curl --request PATCH \
@@ -246,33 +283,3 @@ jobs:
               "has_wiki":false
             }' \
             --fail
-
-      - name: github / create README.md
-        continue-on-error: true
-        if: env.WORKFLOW_GITHUB_README == 'true'
-        id: github-readme
-        uses: 11notes/action-docker-readme@v1
-        with:
-          sarif_file: ${{ steps.grype-scan.outputs.sarif }}
-
-      - name: github / commit & push
-        continue-on-error: true
-        if: steps.github-readme.outcome == 'success'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "auto update README.md"
-          git push
-
-      - name: docker / push README.md to docker hub
-        if: hashFiles('README.md') != ''
-        uses: christian-korneck/update-container-description-action@d36005551adeaba9698d8d67a296bd16fa91f8e8
-        env:
-          DOCKER_USER: 11notes
-          DOCKER_PASS: ${{ secrets.DOCKER_TOKEN }}
-        with:
-          destination_container_repo: ${{ env.IMAGE }}
-          provider: dockerhub
-          short_description: ${{ env.json_readme_description }}
-          readme_file: 'README.md'
