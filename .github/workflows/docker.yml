@@ -124,9 +124,9 @@ jobs:
               const semver = opt.dot.semver.version.split('.');
               docker.image.tags.push(`${context.sha.substring(0,7)}`);
               if(Array.isArray(semver)){
-                if(semver.length >= 0) docker.image.tags.push(`${semver[0]}`);
-                if(semver.length >= 1) docker.image.tags.push(`${semver[0]}.${semver[1]}`);
-                if(semver.length >= 2) docker.image.tags.push(`${semver[0]}.${semver[1]}.${semver[2]}`);
+                if(semver.length >= 1) docker.image.tags.push(`${semver[0]}`);
+                if(semver.length >= 2) docker.image.tags.push(`${semver[0]}.${semver[1]}`);
+                if(semver.length >= 3) docker.image.tags.push(`${semver[0]}.${semver[1]}.${semver[2]}`);
               }
               if(opt.dot.semver?.stable && new RegExp(opt.dot.semver.stable, 'ig').test(docker.image.tags.join(','))) docker.image.tags.push('stable');
               if(opt.dot.semver?.latest && new RegExp(opt.dot.semver.latest, 'ig').test(docker.image.tags.join(','))) docker.image.tags.push('latest');
