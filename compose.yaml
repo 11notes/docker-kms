@@ -12,6 +12,10 @@ services:
     restart: "always"
   kms-gui:
     image: "11notes/kms-gui:stable"
+    depends_on:
+      kms:
+        condition: "service_healthy"
+        restart: true
     container_name: "kms-gui"
     environment:
       TZ: "Europe/Zurich"

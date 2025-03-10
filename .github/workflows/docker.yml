@@ -105,6 +105,7 @@ jobs:
                 tags:[],
               },
               app:{
+                image:opt.dot.image,
                 name:opt.dot.name,
                 version:opt.dot.semver.version,
                 root:opt.dot.root,
@@ -119,6 +120,8 @@ jobs:
 
             docker.cache.name = `${docker.image.name}:${docker.image.prefix}buildcache${docker.image.suffix}`;
             docker.cache.grype = `${docker.cache.registry}${docker.image.name}:${docker.image.prefix}grype${docker.image.suffix}`;
+            docker.app.prefix = docker.image.prefix;
+            docker.app.suffix = docker.image.suffix;
 
             // setup tags
               const semver = opt.dot.semver.version.split('.');
