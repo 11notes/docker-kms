@@ -1,8 +1,7 @@
 name: "kms"
 services:
-  kms:
+  app:
     image: "11notes/kms:465f4d1"
-    container_name: "kms"
     environment:
       TZ: "Europe/Zurich"
     volumes:
@@ -10,19 +9,20 @@ services:
     ports:
       - "1688:1688/tcp"
     restart: "always"
-  kms-gui:
-    image: "11notes/kms-gui:stable"
+
+  gui:
+    image: "11notes/kms-gui:465f4d1"
     depends_on:
-      kms:
+      app:
         condition: "service_healthy"
         restart: true
-    container_name: "kms-gui"
     environment:
       TZ: "Europe/Zurich"
     volumes:
       - "var:/kms/var"
     ports:
-      - "8080:8080/tcp"
+      - "3000:3000/tcp"
     restart: "always"
+
 volumes:
   var:

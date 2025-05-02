@@ -22,6 +22,7 @@
     ARG APP_ROOT
     ARG APP_UID
     ARG APP_GID
+    ARG APP_NO_CACHE
 
   # :: environment
     ENV APP_IMAGE=${APP_IMAGE}
@@ -36,8 +37,8 @@
     ENV KMS_LOGLEVEL="INFO"
 
   # :: multi-stage
-    COPY --from=util /usr/local/bin/ /usr/local/bin
-    COPY --from=build /git/py-kms/py-kms/ /opt/py-kms
+    COPY --from=util /usr/local/bin /usr/local/bin
+    COPY --from=build /git/py-kms/py-kms /opt/py-kms
 
 # :: Run
   USER root

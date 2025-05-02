@@ -4,9 +4,7 @@
   "root":"/kms",
   
   "semver":{
-    "version":"465f4d1",
-    "stable":"465f4d1",
-    "latest":"465f4d1"
+    "version":"465f4d1"
   },
 
   "readme":{
