@@ -25,6 +25,7 @@ ARG APP_GID=1000
     ARG APP_ROOT
     ARG APP_UID
     ARG APP_GID
+    ARG APP_NO_CACHE
 
   # :: environment
     ENV APP_IMAGE=${APP_IMAGE}
