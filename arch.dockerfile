@@ -22,7 +22,6 @@
     ARG APP_ROOT
     ARG APP_UID
     ARG APP_GID
-    ARG APP_NO_CACHE
 
   # :: environment
     ENV APP_IMAGE=${APP_IMAGE}
@@ -55,6 +54,7 @@
       mkdir -p ${APP_ROOT}/var; \
       pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt --break-system-packages; \
       pip3 install --no-cache-dir pytz --break-system-packages; \
+      pip3 list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install -U --break-system-packages; \
       apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions
