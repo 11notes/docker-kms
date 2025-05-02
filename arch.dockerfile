@@ -54,9 +54,9 @@
 
     RUN set -ex; \
       mkdir -p ${APP_ROOT}/var; \
-      pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt; \
-      pip3 install --no-cache-dir pytz; \
-      pip3 list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install --no-cache-dir -U; \
+      pip3 install --no-cache-dir --break-system-packages -r /opt/py-kms/requirements.txt; \
+      pip3 install --no-cache-dir --break-system-packages pytz; \
+      pip3 list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install --no-cache-dir --break-system-packages -U; \
       apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions
