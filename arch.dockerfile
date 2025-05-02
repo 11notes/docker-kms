@@ -35,6 +35,8 @@
     ENV KMS_RENEWALINTERVAL=259200
     ENV KMS_LOGLEVEL="INFO"
 
+    ENV PIP_ROOT_USER_ACTION=ignore
+
   # :: multi-stage
     COPY --from=util /usr/local/bin /usr/local/bin
     COPY --from=build /git/py-kms/py-kms /opt/py-kms
@@ -52,9 +54,9 @@
 
     RUN set -ex; \
       mkdir -p ${APP_ROOT}/var; \
-      pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt --break-system-packages; \
-      pip3 install --no-cache-dir pytz --break-system-packages; \
-      pip3 list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install -U --break-system-packages; \
+      pip3 install --no-cache-dir -r /opt/py-kms/requirements.txt; \
+      pip3 install --no-cache-dir pytz; \
+      pip3 list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install --no-cache-dir -U; \
       apk del --no-network .build;
 
   # :: copy filesystem changes and set correct permissions
