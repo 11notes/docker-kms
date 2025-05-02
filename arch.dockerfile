@@ -1,3 +1,6 @@
+ARG APP_UID=1000
+ARG APP_GID=1000
+
 # :: Util
   FROM 11notes/util AS util
 
@@ -63,7 +66,7 @@
     COPY ./rootfs /
     RUN set -ex; \
       chmod +x -R /usr/local/bin; \
-      chown -R 1000:1000 \
+      chown -R ${APP_UID}:${APP_GID} \
         ${APP_ROOT} \
         /opt/py-kms;
 
@@ -78,4 +81,4 @@
   HEALTHCHECK --interval=5s --timeout=2s CMD netstat -an | grep -q 1688 || exit 1
 
 # :: Start
-  USER docker
+  USER ${APP_UID}:${APP_GID}
