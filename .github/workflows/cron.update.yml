@@ -1,0 +1,115 @@
+name: cron-update
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *"
+
+jobs:
+  cron-update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:   
+      - name: init / checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+        with:
+          ref: 'master'
+          fetch-depth: 0
+
+      - name: cron-update / get latest version
+        run: |
+          echo "LATEST_VERSION=$(curl -s https://api.github.com/repos/11notes/fork-py-kms/releases/latest | jq -r '.tag_name' | sed 's/v//')" >> "${GITHUB_ENV}"
+          echo "LATEST_TAG=$(git describe --abbrev=0 --tags `git rev-list --tags --max-count=1` | sed 's/v//')" >> "${GITHUB_ENV}"
+
+      - name: cron-update / setup node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '20'
+      - run: npm i semver
+
+      - name: cron-update / compare latest with current version
+        uses: actions/github-script@62c3794a3eb6788d9a2a72b219504732c0c9a298
+        with:
+          script: |
+            const { existsSync, readFileSync, writeFileSync } = require('node:fs');
+            const { resolve } = require('node:path');
+            const { inspect } = require('node:util');
+            const semver = require('semver')
+            const repository = {dot:{}};
+
+            try{
+              const path = resolve('.json');
+              if(existsSync(path)){
+                try{
+                  repository.dot = JSON.parse(readFileSync(path).toString());
+                }catch(e){
+                  throw new Error('could not parse .json');
+                }
+              }else{
+                throw new Error('.json does not exist');
+              }
+            }catch(e){
+              core.setFailed(e);
+            }
+
+            const latest = semver.valid(semver.coerce('${{ env.LATEST_VERSION }}'));
+            const current = semver.valid(semver.coerce(repository.dot.semver.version));
+            const tag = semver.valid(semver.coerce('${{ env.LATEST_TAG }}'));
+
+            if(latest && latest !== current){
+              core.info(`new ${semver.diff(current, latest)} release found (${latest})!`)
+              repository.dot.semver.version = latest;
+              if(tag){
+                core.exportVariable('WORKFLOW_NEW_TAG', semver.inc(tag, semver.diff(current, latest)));
+              }
+
+              if(repository.dot.semver?.latest){
+                repository.dot.semver.latest = repository.dot.semver.version;
+              }
+
+              if(repository.dot?.readme?.comparison?.image){
+                repository.dot.readme.comparison.image = repository.dot.readme.comparison.image.replace(current, repository.dot.semver.version);
+              }
+
+              try{
+                writeFileSync(resolve('.json'), JSON.stringify(repository.dot, null, 2));
+                core.exportVariable('WORKFLOW_AUTO_UPDATE', true);
+              }catch(e){
+                core.setFailed(e);
+              }
+            }else{
+              core.info('no new release found');
+            }
+
+            core.info(inspect(repository.dot, {showHidden:false, depth:null, colors:true}));
+
+      - name: cron-update / checkout
+        id: checkout
+        if: env.WORKFLOW_AUTO_UPDATE == 'true'
+        run: |         
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .json
+          git commit -m "[upgrade] ${{ env.LATEST_VERSION }}"
+          git push origin HEAD:master
+
+      - name: cron-update / tag
+        if: env.WORKFLOW_AUTO_UPDATE == 'true' && steps.checkout.outcome == 'success'
+        run: |         
+          SHA256=$(git rev-list --branches --max-count=1)
+          git tag -a v${{ env.WORKFLOW_NEW_TAG }} -m "v${{ env.WORKFLOW_NEW_TAG }}" ${SHA256}
+          git push --follow-tags
+
+      - name: cron-update / build docker image
+        if: env.WORKFLOW_AUTO_UPDATE == 'true' && steps.checkout.outcome == 'success'
+        uses: the-actions-org/workflow-dispatch@3133c5d135c7dbe4be4f9793872b6ef331b53bc7
+        with:
+          workflow: docker.yml
+          wait-for-completion: false
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"true", "readme":"true" }'
+          ref: "v${{ env.WORKFLOW_NEW_TAG }}"
