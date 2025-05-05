@@ -4,7 +4,7 @@
   "root":"/kms",
   
   "semver":{
-    "version":"465f4d1"
+    "version":"1.0.0"
   },
 
   "readme":{
@@ -13,7 +13,7 @@
       "image":"11notes/alpine:stable"
     },
     "built":{
-      "py-kms":"https://github.com/Py-KMS-Organization/py-kms"
+      "11notes/py-kms":"https://github.com/11notes/fork-py-kms"
     }
   }
 }

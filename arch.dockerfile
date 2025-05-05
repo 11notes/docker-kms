@@ -7,12 +7,13 @@ ARG APP_GID=1000
 # :: Build / py-kms
   FROM alpine/git AS build
   ARG APP_VERSION
+  ARG BUILD_ROOT=/git/fork-py-kms
   RUN set -ex; \
-    git clone https://github.com/Py-KMS-Organization/py-kms.git -b next; \
-    cd /git/py-kms; \
-    git checkout ${APP_VERSION}; \
-    cp -R /git/py-kms/docker/docker-py3-kms-minimal/requirements.txt /git/py-kms/py-kms/requirements.txt; \
-    cp -R /git/py-kms/docker/docker-py3-kms/requirements.txt /git/py-kms/py-kms/requirements.gui.txt;
+    git clone https://github.com/11notes/fork-py-kms -b next; \
+    cd ${BUILD_ROOT}; \
+    git checkout v${APP_VERSION}; \
+    cp -R ${BUILD_ROOT}/docker/docker-py3-kms-minimal/requirements.txt ${BUILD_ROOT}/py-kms/requirements.txt; \
+    cp -R ${BUILD_ROOT}/docker/docker-py3-kms/requirements.txt ${BUILD_ROOT}/py-kms/requirements.gui.txt;
 
 # :: Header
   FROM 11notes/alpine:stable
@@ -27,6 +28,12 @@ ARG APP_GID=1000
     ARG APP_GID
     ARG APP_NO_CACHE
 
+    # :: python image
+      ARG PIP_ROOT_USER_ACTION=ignore
+      ARG PIP_BREAK_SYSTEM_PACKAGES=1
+      ARG PIP_DISABLE_PIP_VERSION_CHECK=1
+      ARG PIP_NO_CACHE_DIR=1
+
   # :: environment
     ENV APP_IMAGE=${APP_IMAGE}
     ENV APP_NAME=${APP_NAME}
@@ -39,11 +46,9 @@ ARG APP_GID=1000
     ENV KMS_RENEWALINTERVAL=259200
     ENV KMS_LOGLEVEL="INFO"
 
-    ENV PIP_ROOT_USER_ACTION=ignore
-
   # :: multi-stage
     COPY --from=util /usr/local/bin /usr/local/bin
-    COPY --from=build /git/py-kms/py-kms /opt/py-kms
+    COPY --from=build ${BUILD_ROOT}/py-kms /opt/py-kms
 
 # :: Run
   USER root
@@ -58,9 +63,9 @@ ARG APP_GID=1000
 
     RUN set -ex; \
       mkdir -p ${APP_ROOT}/var; \
-      pip3 install --no-cache-dir --break-system-packages -r /opt/py-kms/requirements.txt; \
-      pip3 install --no-cache-dir --break-system-packages pytz; \
-      pip3 list -o | sed 's/pip.*//' | grep . | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install --no-cache-dir --break-system-packages -U; \
+      pip3 install -r /opt/py-kms/requirements.txt; \
+      pip3 install pytz; \
+      pip3 list -o | sed 's/pip.*//' | grep . | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install -U; \
       apk del --no-network .build; \
       rm -rf /usr/lib/python3.12/site-packages/pip;
 
