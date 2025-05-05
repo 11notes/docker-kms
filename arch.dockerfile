@@ -1,5 +1,6 @@
 ARG APP_UID=1000
 ARG APP_GID=1000
+ARG BUILD_ROOT=/git/fork-py-kms
 
 # :: Util
   FROM 11notes/util AS util
@@ -7,7 +8,7 @@ ARG APP_GID=1000
 # :: Build / py-kms
   FROM alpine/git AS build
   ARG APP_VERSION
-  ARG BUILD_ROOT=/git/fork-py-kms
+  ARG BUILD_ROOT
   RUN set -ex; \
     git clone https://github.com/11notes/fork-py-kms -b next; \
     cd ${BUILD_ROOT}; \
@@ -27,6 +28,7 @@ ARG APP_GID=1000
     ARG APP_UID
     ARG APP_GID
     ARG APP_NO_CACHE
+    ARG BUILD_ROOT
 
     # :: python image
       ARG PIP_ROOT_USER_ACTION=ignore
