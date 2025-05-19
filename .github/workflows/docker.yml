@@ -127,7 +127,9 @@ jobs:
             docker.app.suffix = docker.image.suffix;
 
             // setup tags
-              docker.image.tags.push('rolling');
+              if(!opt.dot.semver?.disable?.rolling){
+                docker.image.tags.push('rolling');
+              }
               if(opt.input?.etc?.dockerfile !== 'arch.dockerfile' && opt.input?.etc?.tag){
                 docker.image.tags.push(`${context.sha.substring(0,7)}`);
                 docker.image.tags.push(opt.input.etc.tag);
