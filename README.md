@@ -42,7 +42,7 @@ Works with:
 name: "kms"
 services:
   app:
-    image: "11notes/kms:1.0.0"
+    image: "11notes/kms:1.0.1"
     environment:
       TZ: "Europe/Zurich"
     volumes:
@@ -52,7 +52,7 @@ services:
     restart: "always"
 
   gui:
-    image: "11notes/kms-gui:1.0.0"
+    image: "11notes/kms-gui:1.0.1"
     depends_on:
       app:
         condition: "service_healthy"
@@ -102,7 +102,6 @@ slmgr /ato
 | `TZ` | [Time Zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) | |
 | `DEBUG` | Will activate debug option for container image and app (if available) | |
 | `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
-| `KMS_CLIENTCOUNT` | client count > 25 | 26 |
 | `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
 | `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
 | `KMS_LOGLEVEL` | CRITICAL, ERROR, WARNING, INFO, DEBUG, MININFO | INFO |
@@ -149,4 +148,4 @@ This image supports unraid by default. Simply add **-unraid** to any tag and the
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-kms/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-kms/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-kms/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 20.05.2025, 15:15:49 (CET)*
+*created 20.05.2025, 15:48:05 (CET)*
