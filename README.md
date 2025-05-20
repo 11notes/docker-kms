@@ -116,6 +116,8 @@ These are the main tags for the image. There is also a tag for each commit and i
 ### There is no latest tag, what am I supposed to do about updates?
 It is of my opinion that the ```:latest``` tag is super dangerous. Many times, I’ve introduced **breaking** changes to my images. This would have messed up everything for some people. If you don’t want to change the tag to the latest [semver](https://semver.org/), simply use the short versions of [semver](https://semver.org/). Instead of using ```:1.0.0``` you can use ```:1``` or ```:1.0```. Since on each new version these tags are updated to the latest version of the software, using them is identical to using ```:latest``` but at least fixed to a major or minor version.
 
+If you still insist on having the bleeding edge release of this app, simply use the ```:rolling``` tag, but be warned! You will get the latest version of the app instantly, regardless of breaking changes or security issues or what so ever. You do this at your own risk!
+
 # REGISTRIES ☁️
 ```
 docker pull 11notes/kms:1.0.0
@@ -123,7 +125,7 @@ docker pull ghcr.io/11notes/kms:1.0.0
 docker pull quay.io/11notes/kms:1.0.0
 ```
 
-${{ title_unraid }}
+# UNRAID VERSION 🟠
 This image supports unraid by default. Simply add **-unraid** to any tag and the image will run as 99:100 instead of 1000:1000 causing no issues on unraid. Enjoy.
 
 # SOURCE 💾
@@ -147,4 +149,4 @@ This image supports unraid by default. Simply add **-unraid** to any tag and the
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-kms/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-kms/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-kms/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 05.05.2025, 11:03:41 (CET)*
+*created 19.05.2025, 15:39:09 (CET)*
