@@ -12,7 +12,6 @@
       0.0.0.0 \
       1688 \
       -l ${KMS_LOCALE} \
-      -c ${KMS_CLIENTCOUNT} \
       -a ${KMS_ACTIVATIONINTERVAL} \
       -r ${KMS_RENEWALINTERVAL} \
       -s /kms/var/kms.db \
