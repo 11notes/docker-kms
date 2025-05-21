@@ -4,6 +4,8 @@
     if [ ! -z "${DEBUG}" ]; then
       KMS_LOGLEVEL="DEBUG"
       eleven log debug "setting kms log level to DEBUG"
+    else
+      KMS_LOGLEVEL="INFO"
     fi
 
     cd /opt/py-kms

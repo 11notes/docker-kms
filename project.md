@@ -56,7 +56,6 @@ ${{ content_environment }}
 | `KMS_LOCALE` | see Microsoft LICD specification | 1033 (en-US) |
 | `KMS_ACTIVATIONINTERVAL` | Retry unsuccessful after N minutes | 120 (2 hours) |
 | `KMS_RENEWALINTERVAL` | re-activation after N minutes | 259200 (180 days) |
-| `KMS_LOGLEVEL` | CRITICAL, ERROR, WARNING, INFO, DEBUG, MININFO | INFO |
 
 ${{ content_source }}
 

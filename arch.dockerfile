@@ -43,10 +43,8 @@ ARG BUILD_ROOT=/git/fork-py-kms
     ENV APP_ROOT=${APP_ROOT}
 
     ENV KMS_LOCALE=1033
-    ENV KMS_CLIENTCOUNT=26
     ENV KMS_ACTIVATIONINTERVAL=120
     ENV KMS_RENEWALINTERVAL=259200
-    ENV KMS_LOGLEVEL="INFO"
 
   # :: multi-stage
     COPY --from=util /usr/local/bin /usr/local/bin
@@ -87,7 +85,8 @@ ARG BUILD_ROOT=/git/fork-py-kms
   VOLUME ["${APP_ROOT}/var"]
 
 # :: Monitor
-  HEALTHCHECK --interval=5s --timeout=2s CMD netstat -an | grep -q 1688 || exit 1
+  HEALTHCHECK --interval=5s --timeout=2s --start-interval=5s \
+    CMD netstat -an | grep -q 1688
 
 # :: Start
   USER ${APP_UID}:${APP_GID}
