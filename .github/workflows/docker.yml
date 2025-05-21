@@ -109,7 +109,7 @@ jobs:
               app:{
                 image:opt.dot.image,
                 name:opt.dot.name,
-                version:(opt.input?.etc?.version || opt.dot.semver.version),
+                version:(opt.input?.etc?.version || opt.dot?.semver?.version),
                 root:opt.dot.root,
                 UID:(opt.input?.etc?.uid || 1000),
                 GID:(opt.input?.etc?.gid || 1000),
@@ -127,7 +127,7 @@ jobs:
             docker.app.suffix = docker.image.suffix;
 
             // setup tags
-              if(!opt.dot.semver?.disable?.rolling){
+              if(!opt.dot?.semver?.disable?.rolling){
                 docker.image.tags.push('rolling');
               }
               if(opt.input?.etc?.dockerfile !== 'arch.dockerfile' && opt.input?.etc?.tag){
@@ -136,15 +136,15 @@ jobs:
                 docker.image.tags.push(`${opt.input.etc.tag}-${docker.app.version}`);
                 docker.cache.name = `${docker.image.name}:buildcache-${opt.input.etc.tag}`;
               }else if(opt.dot?.semver?.version){
-                const semver = opt.dot.semver.version.split('.');
+                const semver = opt.dot?.semver?.version.split('.');
                 docker.image.tags.push(`${context.sha.substring(0,7)}`);
                 if(Array.isArray(semver)){
                   if(semver.length >= 1) docker.image.tags.push(`${semver[0]}`);
                   if(semver.length >= 2) docker.image.tags.push(`${semver[0]}.${semver[1]}`);
                   if(semver.length >= 3) docker.image.tags.push(`${semver[0]}.${semver[1]}.${semver[2]}`);
                 }
-                if(opt.dot.semver?.stable && new RegExp(opt.dot.semver.stable, 'ig').test(docker.image.tags.join(','))) docker.image.tags.push('stable');
-                if(opt.dot.semver?.latest && new RegExp(opt.dot.semver.latest, 'ig').test(docker.image.tags.join(','))) docker.image.tags.push('latest');
+                if(opt.dot?.semver?.stable && new RegExp(opt.dot?.semver.stable, 'ig').test(docker.image.tags.join(','))) docker.image.tags.push('stable');
+                if(opt.dot?.semver?.latest && new RegExp(opt.dot?.semver.latest, 'ig').test(docker.image.tags.join(','))) docker.image.tags.push('latest');
               }else if(opt.input?.etc?.version && opt.input.etc.version === 'latest'){
                 docker.image.tags.push('latest');
               }
