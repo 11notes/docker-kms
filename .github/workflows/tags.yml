@@ -40,6 +40,24 @@ jobs:
     runs-on: ubuntu-latest
     needs: docker
     steps:   
+      - name: init / base64 nested json
+        uses: actions/github-script@62c3794a3eb6788d9a2a72b219504732c0c9a298
+        with:
+          script: |
+            const { Buffer } = require('node:buffer');
+            (async()=>{
+              try{
+                const master = await fetch('https://raw.githubusercontent.com/11notes/docker-kms/refs/heads/master/.json');
+                const dot = await master.json();
+                const etc = {
+                  version:dot.semver.version,
+                };
+                core.exportVariable('WORKFLOW_BASE64JSON', Buffer.from(JSON.stringify(etc)).toString('base64'));
+              }catch(e){
+                core.setFailed(`workflow failed: ${e}`);
+              }
+            })();
+
       - name: build downstream kms gui
         uses: the-actions-org/workflow-dispatch@3133c5d135c7dbe4be4f9793872b6ef331b53bc7
         with:
@@ -47,7 +65,7 @@ jobs:
           token: "${{ secrets.REPOSITORY_TOKEN }}"
           repo: 11notes/docker-kms-gui
           ref: master
-          inputs: '{ "release":"false", "readme":"true" }'
+          inputs: '{ "release":"false", "readme":"true", "etc":"${{ env.WORKFLOW_BASE64JSON }}" }'
 
   kms-gui-unraid:
     runs-on: ubuntu-latest
@@ -58,12 +76,21 @@ jobs:
         with:
           script: |
             const { Buffer } = require('node:buffer');
-            const etc = {
-              semversuffix:"unraid",
-              uid:99,
-              gid:100,
-            };
-            core.exportVariable('WORKFLOW_BASE64JSON', Buffer.from(JSON.stringify(etc)).toString('base64'));
+            (async()=>{
+              try{
+                const master = await fetch('https://raw.githubusercontent.com/11notes/docker-kms/refs/heads/master/.json');
+                const dot = await master.json();
+                const etc = {
+                  version:dot.semver.version,
+                  semversuffix:"unraid",
+                  uid:99,
+                  gid:100,
+                };
+                core.exportVariable('WORKFLOW_BASE64JSON', Buffer.from(JSON.stringify(etc)).toString('base64'));
+              }catch(e){
+                core.setFailed(`workflow failed: ${e}`);
+              }
+            })();
 
       - name: build downstream kms gui for unraid community
         uses: the-actions-org/workflow-dispatch@3133c5d135c7dbe4be4f9793872b6ef331b53bc7
