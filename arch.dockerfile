@@ -1,14 +1,21 @@
-ARG APP_UID=1000
-ARG APP_GID=1000
-ARG BUILD_ROOT=/git/fork-py-kms
+# ╔═════════════════════════════════════════════════════╗
+# ║                       SETUP                         ║
+# ╚═════════════════════════════════════════════════════╝
+  # GLOBAL
+  ARG APP_UID=1000 \
+      APP_GID=1000 \
+      BUILD_ROOT=/git/fork-py-kms
 
-# :: Util
+  # :: FOREIGN IMAGES
   FROM 11notes/util AS util
 
-# :: Build / py-kms
+# ╔═════════════════════════════════════════════════════╗
+# ║                       BUILD                         ║
+# ╚═════════════════════════════════════════════════════╝
+  # :: PY-KMS
   FROM alpine/git AS build
-  ARG APP_VERSION
-  ARG BUILD_ROOT
+  ARG APP_VERSION \
+      BUILD_ROOT
   RUN set -ex; \
     git clone https://github.com/11notes/fork-py-kms -b next; \
     cd ${BUILD_ROOT}; \
@@ -16,51 +23,61 @@ ARG BUILD_ROOT=/git/fork-py-kms
     cp -R ${BUILD_ROOT}/docker/docker-py3-kms-minimal/requirements.txt ${BUILD_ROOT}/py-kms/requirements.txt; \
     cp -R ${BUILD_ROOT}/docker/docker-py3-kms/requirements.txt ${BUILD_ROOT}/py-kms/requirements.gui.txt;
 
-# :: Header
+# ╔═════════════════════════════════════════════════════╗
+# ║                       IMAGE                         ║
+# ╚═════════════════════════════════════════════════════╝
+  # :: HEADER
   FROM 11notes/alpine:stable
 
-  # :: arguments
-    ARG TARGETARCH
-    ARG APP_IMAGE
-    ARG APP_NAME
-    ARG APP_VERSION
-    ARG APP_ROOT
-    ARG APP_UID
-    ARG APP_GID
-    ARG APP_NO_CACHE
+  # :: default arguments
+    ARG TARGETPLATFORM \
+        TARGETOS \
+        TARGETARCH \
+        TARGETVARIANT \
+        APP_IMAGE \
+        APP_NAME \
+        APP_VERSION \
+        APP_ROOT \
+        APP_UID \
+        APP_GID \
+        APP_NO_CACHE
+
+  # :: default python image
+    ARG PIP_ROOT_USER_ACTION=ignore \
+        PIP_BREAK_SYSTEM_PACKAGES=1 \
+        PIP_DISABLE_PIP_VERSION_CHECK=1 \
+        PIP_NO_CACHE_DIR=1
+
+  # :: image specific arguments
     ARG BUILD_ROOT
 
-    # :: python image
-      ARG PIP_ROOT_USER_ACTION=ignore
-      ARG PIP_BREAK_SYSTEM_PACKAGES=1
-      ARG PIP_DISABLE_PIP_VERSION_CHECK=1
-      ARG PIP_NO_CACHE_DIR=1
+  # :: default environment
+    ENV APP_IMAGE=${APP_IMAGE} \
+        APP_NAME=${APP_NAME} \
+        APP_VERSION=${APP_VERSION} \
+        APP_ROOT=${APP_ROOT}
 
-  # :: environment
-    ENV APP_IMAGE=${APP_IMAGE}
-    ENV APP_NAME=${APP_NAME}
-    ENV APP_VERSION=${APP_VERSION}
-    ENV APP_ROOT=${APP_ROOT}
-
-    ENV KMS_LOCALE=1033
-    ENV KMS_ACTIVATIONINTERVAL=120
-    ENV KMS_RENEWALINTERVAL=259200
+  # :: app specific variables
+    ENV KMS_LOCALE=1033 \
+        KMS_ACTIVATIONINTERVAL=120 \
+        KMS_RENEWALINTERVAL=259200
 
   # :: multi-stage
     COPY --from=util /usr/local/bin /usr/local/bin
     COPY --from=build ${BUILD_ROOT}/py-kms /opt/py-kms
 
-# :: Run
+# :: RUN
   USER root
   RUN eleven printenv;
 
-  # :: install application
+  # :: install dependencies
     RUN set -ex; \
       apk --no-cache --update add \
         python3; \
       apk --no-cache --update --virtual .build add \
         py3-pip;
 
+  # :: install and update application
     RUN set -ex; \
       mkdir -p ${APP_ROOT}/var; \
       pip3 install -r /opt/py-kms/requirements.txt; \
@@ -69,7 +86,7 @@ ARG BUILD_ROOT=/git/fork-py-kms
       apk del --no-network .build; \
       rm -rf /usr/lib/python3.12/site-packages/pip;
 
-  # :: copy filesystem changes and set correct permissions
+  # :: copy root filesystem and set correct permissions
     COPY ./rootfs /
     RUN set -ex; \
       chmod +x -R /usr/local/bin; \
@@ -77,16 +94,16 @@ ARG BUILD_ROOT=/git/fork-py-kms
         ${APP_ROOT} \
         /opt/py-kms;
 
-  # :: support unraid
+  # :: enable unraid support
     RUN set -ex; \
       eleven unraid
 
-# :: Volumes
+# :: PERSISTENT DATA
   VOLUME ["${APP_ROOT}/var"]
 
-# :: Monitor
+# :: HEALTH
   HEALTHCHECK --interval=5s --timeout=2s --start-interval=5s \
     CMD netstat -an | grep -q 1688
 
-# :: Start
+# :: EXECUTE
   USER ${APP_UID}:${APP_GID}
