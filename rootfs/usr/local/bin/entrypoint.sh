@@ -11,7 +11,7 @@
     cd /opt/py-kms
     set -- "python3" \
       pykms_Server.py \
-      0.0.0.0 \
+      :: \
       1688 \
       -l ${KMS_LOCALE} \
       -a ${KMS_ACTIVATIONINTERVAL} \
