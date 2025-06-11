@@ -135,7 +135,7 @@ jobs:
                 docker.image.tags.push(opt.input.etc.tag);
                 docker.image.tags.push(`${opt.input.etc.tag}-${docker.app.version}`);
                 docker.cache.name = `${docker.image.name}:buildcache-${opt.input.etc.tag}`;
-              }else{
+              }else if(docker.app.version !== 'latest'){
                 const semver = docker.app.version.split('.');
                 docker.image.tags.push(`${context.sha.substring(0,7)}`);
                 if(Array.isArray(semver)){
@@ -145,6 +145,8 @@ jobs:
                 }
                 if(opt.dot?.semver?.stable && new RegExp(opt.dot?.semver.stable, 'ig').test(docker.image.tags.join(','))) docker.image.tags.push('stable');
                 if(opt.dot?.semver?.latest && new RegExp(opt.dot?.semver.latest, 'ig').test(docker.image.tags.join(','))) docker.image.tags.push('latest');
+              }else{
+                docker.image.tags.push('latest');
               }
 
               for(const tag of docker.image.tags){
