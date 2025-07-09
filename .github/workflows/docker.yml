@@ -16,6 +16,7 @@ on:
         required: false
         default: 'ubuntu-22.04'
 
+
       build:
         description: 'set WORKFLOW_BUILD'
         required: false
@@ -411,6 +412,9 @@ jobs:
           git add README.md
           if [ -f compose.yaml ]; then
             git add compose.yaml
+          fi
+          if [ -f compose.yml ]; then
+            git add compose.yml
           fi
           if [ -f LICENSE ]; then
             git add LICENSE
