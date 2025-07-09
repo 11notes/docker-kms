@@ -228,7 +228,7 @@ jobs:
         with:
           driver-opts: network=host
 
-      - name: docker / build & push & tag grype
+      - name: docker / build image locally
         if: env.WORKFLOW_BUILD == 'true'
         id: docker-build
         uses: docker/build-push-action@67a2d409c0a876cbe6b11854e3e25193efe4e62d
@@ -257,7 +257,7 @@ jobs:
           cache-db: true
 
       - name: grype / fail
-        if: env.WORKFLOW_BUILD == 'true' && (failure() || steps.grype.outcome == 'failure')
+        if: env.WORKFLOW_BUILD == 'true' && (failure() || steps.grype.outcome == 'failure') && steps.docker-build.outcome == 'success'
         uses: anchore/scan-action@dc6246fcaf83ae86fcc6010b9824c30d7320729e
         with:
           image: ${{ env.DOCKER_CACHE_GRYPE }}
@@ -267,7 +267,7 @@ jobs:
           by-cve: true
           cache-db: true
 
-      - name: docker / build & push
+      - name: docker / build image from cache and push to registries
         if: env.WORKFLOW_BUILD == 'true'
         uses: docker/build-push-action@67a2d409c0a876cbe6b11854e3e25193efe4e62d
         with:
