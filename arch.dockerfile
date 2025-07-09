@@ -4,6 +4,7 @@
   # GLOBAL
   ARG APP_UID=1000 \
       APP_GID=1000 \
+      BUILD_SRC=https://github.com/11notes/fork-py-kms.git \
       BUILD_ROOT=/git/fork-py-kms
 
   # :: FOREIGN IMAGES
@@ -15,11 +16,16 @@
   # :: PY-KMS
   FROM alpine/git AS build
   ARG APP_VERSION \
+      BUILD_SRC \
       BUILD_ROOT
+
   RUN set -ex; \
-    git clone https://github.com/11notes/fork-py-kms -b next; \
+    git clone ${BUILD_SRC} -b next; \
     cd ${BUILD_ROOT}; \
-    git checkout v${APP_VERSION}; \
+    git checkout v${APP_VERSION};
+
+  RUN set -ex; \
+    cd ${BUILD_ROOT}; \
     cp -R ${BUILD_ROOT}/docker/docker-py3-kms-minimal/requirements.txt ${BUILD_ROOT}/py-kms/requirements.txt; \
     cp -R ${BUILD_ROOT}/docker/docker-py3-kms/requirements.txt ${BUILD_ROOT}/py-kms/requirements.gui.txt;
 
@@ -27,7 +33,7 @@
 # ║                       IMAGE                         ║
 # ╚═════════════════════════════════════════════════════╝
   # :: HEADER
-  FROM 11notes/alpine:stable
+  FROM 11notes/python:3.13
 
   # :: default arguments
     ARG TARGETPLATFORM \
@@ -68,12 +74,9 @@
 
 # :: RUN
   USER root
-  RUN eleven printenv;
 
   # :: install dependencies
     RUN set -ex; \
-      apk --no-cache --update add \
-        python3; \
       apk --no-cache --update --virtual .build add \
         py3-pip;
 
@@ -84,7 +87,7 @@
       pip3 install pytz; \
       pip3 list -o | sed 's/pip.*//' | grep . | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install -U; \
       apk del --no-network .build; \
-      rm -rf /usr/lib/python3.12/site-packages/pip;
+      rm -rf /usr/lib/python3.13/site-packages/pip;
 
   # :: copy root filesystem and set correct permissions
     COPY ./rootfs /
@@ -103,7 +106,8 @@
 
 # :: HEALTH
   HEALTHCHECK --interval=5s --timeout=2s --start-interval=5s \
-    CMD netstat -an | grep -q 1688
+    CMD ["/usr/bin/nc", "-z", "localhost", "1688"]
 
 # :: EXECUTE
   USER ${APP_UID}:${APP_GID}
+  ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/entrypoint.sh"]
