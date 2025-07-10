@@ -1,18 +1,18 @@
 {
-  "image":"11notes/kms",
-  "name":"kms",
-  "root":"/kms",
-  "arch":"linux/amd64,linux/arm64,linux/arm/v7",
+  "image": "11notes/kms",
+  "name": "kms",
+  "root": "/kms",
+  "arch": "linux/amd64,linux/arm64,linux/arm/v7",
   "semver": {
-    "version":"1.0.3"
+    "version": "1.0.1"
   },
   "readme": {
-    "description":"Activate any version of Windows and Office, forever",
+    "description": "Activate any version of Windows and Office, forever",
     "parent": {
-      "image":"11notes/python:3.13"
+      "image": "11notes/python:3.13"
     },
     "built": {
-      "11notes/py-kms":"https://github.com/11notes/fork-py-kms"
+      "11notes/py-kms": "https://github.com/11notes/fork-py-kms"
     }
   }
 }
