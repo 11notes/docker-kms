@@ -6,12 +6,14 @@ services:
       TZ: "Europe/Zurich"
     volumes:
       - "var:/kms/var"
+    networks:
+      frontend:
     ports:
       - "1688:1688/tcp"
     restart: "always"
 
   gui:
-    image: "11notes/kms:1.0.3"
+    image: "11notes/kms-gui:1.0.3"
     depends_on:
       app:
         condition: "service_healthy"
@@ -20,9 +22,14 @@ services:
       TZ: "Europe/Zurich"
     volumes:
       - "var:/kms/var"
+    networks:
+      frontend:
     ports:
       - "3000:3000/tcp"
     restart: "always"
 
 volumes:
   var:
+
+networks:
+  frontend:
