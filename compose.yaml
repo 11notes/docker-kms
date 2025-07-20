@@ -13,7 +13,7 @@ services:
     restart: "always"
 
   gui:
-    image: "11notes/kms-gui:1.0.3"
+    image: "11notes/kms:1.0.3"
     depends_on:
       app:
         condition: "service_healthy"

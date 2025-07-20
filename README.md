@@ -47,6 +47,8 @@ services:
       TZ: "Europe/Zurich"
     volumes:
       - "var:/kms/var"
+    networks:
+      frontend:
     ports:
       - "1688:1688/tcp"
     restart: "always"
@@ -61,12 +63,17 @@ services:
       TZ: "Europe/Zurich"
     volumes:
       - "var:/kms/var"
+    networks:
+      frontend:
     ports:
       - "3000:3000/tcp"
     restart: "always"
 
 volumes:
   var:
+
+networks:
+  frontend:
 ```
 
 # EXAMPLE
@@ -147,4 +154,4 @@ This image supports unraid by default. Simply add **-unraid** to any tag and the
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-kms/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-kms/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-kms/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 10.07.2025, 07:54:05 (CET)*
+*created 20.07.2025, 13:10:47 (CET)*
