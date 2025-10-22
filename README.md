@@ -81,7 +81,11 @@ networks:
 ```cmd
 slmgr /ipk D764K-2NDRG-47T6Q-P8T8W-YP6DF
 ```
-Add your KMS server information to server via registry
+Add your KMS server information (OS only)
+```
+ slmgr /skms fqdn or ip address
+```
+or add your KMS server information via registry
 ```powershell
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "KMS_IP"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "KMS_PORT"
