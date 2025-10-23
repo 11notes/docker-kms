@@ -77,23 +77,32 @@ networks:
 ```
 
 # EXAMPLE
-## Windows Server 2025 Datacenter. List of [GVLK](https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys)
+## Add your product key
+Windows Server 2025 Datacenter. List of [GVLK](https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys)
 ```cmd
 slmgr /ipk D764K-2NDRG-47T6Q-P8T8W-YP6DF
 ```
-Add your KMS server information (OS only)
+## Add your KMS server information
+... via CLI
 ```
- slmgr /skms fqdn or ip address
+ slmgr /skms KMS_IP:KMS_PORT
 ```
-or add your KMS server information via registry
+... via registry (or add these key to your GPO)
 ```powershell
+"Windows"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "KMS_IP"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "KMS_PORT"
 
+"Office"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\OfficeSoftwareProtectionPlatform" -Name "KeyManagementServiceName" -Value "KMS_IP"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\OfficeSoftwareProtectionPlatform" -Name "KeyManagementServicePort" -Value "KMS_PORT"
 ```
-Activate server
+... via DNS
+```sh
+# BIND
+_vlmcs._tcp SRV 0 0 KMS_PORT KMS_IP
+```
+## Activate server
 ```cmd
 slmgr /ato
 ```
