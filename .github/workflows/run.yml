@@ -1,0 +1,50 @@
+name: run
+
+on:
+  workflow_dispatch:
+    inputs:
+      job:
+        description: 'which job to run'
+        type: string
+        required: false
+
+jobs:
+  # ╔═════════════════════════════════════════════════════╗
+  # ║                                                     ║
+  # ║                                                     ║
+  # ║            CHECK FOR AVAILABLE UPDATES              ║
+  # ║                                                     ║
+  # ║                                                     ║
+  # ╚═════════════════════════════════════════════════════╝
+  update:
+    if: ${{ github.event.inputs.job == 'update' }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+      - name: checkout all tags
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: 'master'
+          fetch-depth: 0
+
+      - name: get latest version and build
+        run: |
+          echo "LATEST_VERSION=$(curl -s https://api.github.com/repos/11notes/fork-py-kms/releases/latest | jq -r '.tag_name' | sed 's|v||')" >> "${GITHUB_ENV}"
+
+      - name: check if updated is needed
+        uses: 11notes/actions/update@v1 # v1
+        with:
+          latest: ${{ env.LATEST_VERSION }}
+
+      - name: call org.update
+        if: env.ACTIONS_UPDATE == 'true'
+        uses: benc-uk/workflow-dispatch@7a027648b88c2413826b6ddd6c76114894dc5ec4 # v1.3.1
+        with:
+          wait-for-completion: false
+          workflow: org.update.yml
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "etc":"${{ env.ACTIONS_UPDATE_BASE64JSON }}" }'

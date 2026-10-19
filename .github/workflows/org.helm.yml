@@ -1,0 +1,68 @@
+name: org.helm
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  workflow_dispatch:
+
+jobs:
+  helm:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # ╔═════════════════════════════════════════════════════╗
+      # ║                 SETUP ENVIRONMENT                   ║
+      # ╚═════════════════════════════════════════════════════╝
+      # CHECKOUT ALL DEPTHS (ALL TAGS)
+      - name: init / checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: master
+
+      # ╔═════════════════════════════════════════════════════╗
+      # ║             CONTAINER REGISTRY LOGIN                ║
+      # ╚═════════════════════════════════════════════════════╝
+      # GITHUB CONTAINER REGISTRY
+      - name: github / login to ghcr
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        with:
+          registry: ghcr.io
+          username: 11notes
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # ╔═════════════════════════════════════════════════════╗
+      # ║                        HELM                         ║
+      # ╚═════════════════════════════════════════════════════╝
+      # HELM SETUP
+      - name: helm / setup
+        uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+        with:
+          version: 'latest'
+
+      # HELM SINGLE CHART
+      - name: helm / single chart
+        if: hashFiles('./chart/Chart.yaml') != ''
+        run: |
+          helm package ./chart -d ${{ runner.temp }}/helm
+          mv ${{ runner.temp }}/helm/*.tgz ${{ runner.temp }}/helm/chart.tgz
+          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u "11notes" --password-stdin
+          helm push "${{ runner.temp }}/helm/chart.tgz" "oci://ghcr.io/11notes/charts"
+
+      # HELM MULTIPLE CHARTS
+      - name: helm / multiple charts
+        run: |
+          if [ -d "./charts" ]; then
+            for CHART in ./charts/*; do
+              NAME=$(echo "${CHART}" | awk -F '/' '{print $NF}')
+              echo "publishing chart: ${CHART}"
+              helm package ${CHART} -d ${{ runner.temp }}/helm-${NAME}
+              mv ${{ runner.temp }}/helm-${NAME}/*.tgz ${{ runner.temp }}/helm-${NAME}/chart.tgz
+              echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u "11notes" --password-stdin
+              helm push "${{ runner.temp }}/helm-${NAME}/chart.tgz" "oci://ghcr.io/11notes/charts"
+            done
+          fi

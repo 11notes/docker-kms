@@ -1,0 +1,284 @@
+name: org.update
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      etc:
+        description: 'base64 encoded json string'
+        required: true
+
+      release:
+        description: 'create a release'
+        required: false
+        default: 'true'
+
+      readme:
+        description: 'create a readme'
+        required: false
+        default: 'true'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+      # ╔═════════════════════════════════════════════════════╗
+      # ║                 SETUP ENVIRONMENT                   ║
+      # ╚═════════════════════════════════════════════════════╝
+      # CHECKOUT
+      - name: init / checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: 'master'
+          fetch-depth: 0
+
+      # INSTALL SEMVER PACKAGE
+      - name: update / setup node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+      - run: npm i semver yaml
+
+      # ╔═════════════════════════════════════════════════════╗
+      # ║                   COMPARE SEMVER                    ║
+      # ╚═════════════════════════════════════════════════════╝
+      # COMPARE SEMVER OF CURRENT AND LATEST AND TAGS
+      - name: update / compare latest with current version
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            (async()=>{
+              const { Buffer } = require('node:buffer');
+              const { inspect } = require('node:util');
+              const { existsSync, readFileSync, writeFileSync, readdirSync } = require('node:fs');
+              const { resolve } = require('node:path');
+              const semver = require('semver');
+              const YAML = require('yaml');
+
+              const semverExceptions = (s) => {
+                switch('${{ github.event.repository.name }}'){
+                  case 'docker-chrony': core.warning(`semver exception found for chrony version ${s}, setting version to major.minor`); return(s.split('.').slice(0, 2).join('.'));
+                  case 'docker-cron': core.warning(`semver exception found for cron version ${s}, setting version to major.minor`); return(s.split('.').slice(0, 2).join('.'));
+                }
+                return(s);
+              }
+
+              const updateHelmChart = (file, version, diff) => {
+                try{
+                  const path = resolve(file);
+                  if(existsSync(path)){
+                    try{
+                      const chart = YAML.parse(readFileSync(path).toString());
+                      chart.appVersion = version;
+                      chart.version = semver.inc(semver.valid(semver.coerce(chart.version)), diff);
+                      writeFileSync(path, YAML.stringify(chart));
+                    }catch(e){
+                      throw new Error(`could not parse ${file}`);
+                    }
+                  }else{
+                    throw new Error(`${file} does not exist!`);
+                  }
+                }catch(e){
+                  core.warning(e);
+                }
+              }
+
+              const updateHelm = (version, diff) => {
+                try{
+                  let path = resolve('./chart/Chart.yaml');
+                  if(existsSync(path)){
+                    updateHelmChart(path, version, diff);
+                  }else{
+                    path = resolve('./charts');
+                    if(existsSync(path)){
+                      const charts = readdirSync(path, {withFileTypes:false});
+                      for(chart of charts){
+                        path = resolve(`./charts/${chart}/Chart.yaml`);
+                        if(existsSync(path)){
+                          updateHelmChart(path, version, diff);
+                        }
+                      }
+                    }
+                  }
+                }catch(e){
+                  core.warning(e);
+                }
+              }
+
+              // defaults
+              const json = `${{ toJSON(github.event.inputs) }}`;
+              const job = {inputs:{}, json:{}, fail:false};
+
+              // check if inputs is valid base64 encoded json
+              try{
+                if(json.length > 0){
+                  const n = JSON.parse(json);
+                  if(n?.etc){
+                    try{
+                      job.inputs = JSON.parse(Buffer.from(n.etc, 'base64').toString('ascii'));
+                      if(!job.inputs?.version){
+                        core.setFailed(`input does not contain valid semver version: ${inspect(job.inputs, {showHidden:false, depth:null, colors:true})}`);
+                      }else if(!job.inputs?.tag){
+                        core.setFailed(`input does not contain valid git tag: ${inspect(job.inputs, {showHidden:false, depth:null, colors:true})}`);
+                      }else if(job.inputs.version == 'null' || null === job.inputs.version){
+                        core.warning(`input version is null: ${inspect(job.inputs, {showHidden:false, depth:null, colors:true})}`);
+                        job.fail = true;
+                      }
+                    }catch(e){
+                      core.setFailed(`could not parse github.event.inputs.etc: ${n.etc} (${Buffer.from(n.etc, 'base64').toString('ascii')})`);
+                    }
+                  }
+                }
+              }catch(e){
+                core.setFailed(`could not parse github.event.inputs: ${json}`);
+              }
+
+              if(!job.fail){
+                // check if .json exists
+                try{
+                  const path = resolve('.json');
+                  if(existsSync(path)){
+                    try{
+                      job.json = JSON.parse(readFileSync(path).toString());
+                    }catch(e){
+                      throw new Error('could not parse .json');
+                    }
+                  }else{
+                    throw new Error('.json does not exist!');
+                  }
+                }catch(e){
+                  core.setFailed(e);
+                }
+
+                // semver
+                const latest = semver.valid(semver.coerce(job.inputs.version));
+                const current = semver.valid(semver.coerce(job.json.semver.version));
+                const tag = semver.valid(semver.coerce(job.inputs.tag));
+                const checks = {latestTagExists:false};
+                const force = job.inputs?.force || false;
+
+                try{
+                  const tag = await fetch(`https://hub.docker.com/v2/repositories/${job.json.image}/tags/${latest}`);
+                  if(tag.status === 200){
+                    checks.latestTagExists = true;
+                    core.warning(`${latest} tag already exists, aborting`);
+                  }
+                }catch(e){
+                  core.warning(e);
+                }
+
+                // compare
+                if(force || (latest && latest !== current && !checks.latestTagExists)){
+                  if(force){
+                    core.info('force update image');
+                  }
+                  core.info(`new ${semver.diff(current, latest)} release found (${latest}), updating ...`);
+                  job.json.semver.version = latest;
+
+                  // check if app has additional parameters
+                  const build = {};
+                  if(job.inputs?.build && typeof(job.inputs.build) === 'string'){
+                    build.args = {
+                      version_build:job.inputs.build,
+                    };
+                    job.json.build = job.inputs.build;
+                  }else if(job.inputs?.build?.args){
+                    job.json.build.args = job.inputs.build.args;
+                  }
+
+                  // update .json
+                  try{
+                    writeFileSync(resolve('.json'), JSON.stringify(job.json, null, 2));
+
+                    // export variables
+                    core.exportVariable('WORKFLOW_UPDATE', true);
+                    core.exportVariable('WORKFLOW_UPDATE_BASE64JSON', Buffer.from(JSON.stringify({build:build, update:true, update_etc:job.inputs})).toString('base64'));
+                    if(job.inputs?.unraid){
+                      core.exportVariable('WORKFLOW_UPDATE_UNRAID', 'true');
+                      core.exportVariable('WORKFLOW_UPDATE_UNRAID_BASE64JSON', Buffer.from(JSON.stringify({semversuffix:"unraid", uid:99, gid:100, build:build, update:true, update_etc:job.inputs})).toString('base64'));
+                    }
+                    if(job.inputs?.nobody){
+                      core.exportVariable('WORKFLOW_UPDATE_NOBODY', 'true');
+                      core.exportVariable('WORKFLOW_UPDATE_NOBODY_BASE64JSON', Buffer.from(JSON.stringify({semversuffix:"nobody", uid:65534, gid:65534, build:build, update:true, update_etc:job.inputs})).toString('base64'));
+                    }
+                    core.exportVariable('LATEST_TAG', semver.inc(tag, semver.diff(current, latest)));
+                    core.exportVariable('LATEST_VERSION', latest);
+                    if(job.inputs?.build) core.exportVariable('LATEST_BUILD', job.inputs.build);
+                    updateHelm(latest, semver.diff(current, latest));
+                  }catch(e){
+                    core.setFailed(e);
+                  }
+                }else{
+                  core.info('no update required')
+                }
+              }
+
+              core.info(inspect(job, {showHidden:false, depth:null, colors:true}));
+            })();
+
+      - name: update / checkout
+        id: checkout
+        if: env.WORKFLOW_UPDATE == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "WORKFLOW_UPDATE_PRE_COMMIT=$(git log --oneline | head -n 1 | awk -F ' ' '{print $1}')" >> "${GITHUB_ENV}"
+          git add .json
+          git add ./chart 2>/dev/null || true
+          git add ./charts 2>/dev/null || true
+          git commit -m "chore: auto upgrade to v${{ env.LATEST_VERSION }}"
+          git push origin HEAD:master
+
+      - name: update / tag
+        if: env.WORKFLOW_UPDATE == 'true' && steps.checkout.outcome == 'success'
+        run: |
+          SHA256=$(git rev-list --branches --max-count=1)
+          git tag -a v${{ env.LATEST_TAG }} -m "v${{ env.LATEST_TAG }}" ${SHA256}
+          git push --follow-tags
+
+      - name: update / build container image
+        id: build
+        if: env.WORKFLOW_UPDATE == 'true' && steps.checkout.outcome == 'success'
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 #v1.3.2
+        with:
+          workflow: org.container.yml
+          wait-for-completion: true
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"${{ github.event.inputs.release }}", "readme":"${{ github.event.inputs.readme }}", "run-name":"update v${{ env.LATEST_VERSION }}", "etc":"${{ env.WORKFLOW_UPDATE_BASE64JSON }}" }'
+          ref: "v${{ env.LATEST_TAG }}"
+          sync-status: true
+          wait-interval-seconds: 30
+
+      - name: "update / revert if build failed"
+        if: env.WORKFLOW_UPDATE == 'true' && failure()
+        run: |
+          git reset --hard ${{ env.WORKFLOW_UPDATE_PRE_COMMIT }}
+          git push -f
+          git push --delete origin v${{ env.LATEST_TAG }}
+
+      - name: update / build container image for unraid
+        if: env.WORKFLOW_UPDATE_UNRAID == 'true' && steps.build.conclusion == 'success'
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 #v1.3.2
+        with:
+          workflow: org.container.yml
+          wait-for-completion: false
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"false", "readme":"false", "run-name":"update unraid v${{ env.LATEST_VERSION }}", "etc":"${{ env.WORKFLOW_UPDATE_UNRAID_BASE64JSON }}" }'
+          ref: "v${{ env.LATEST_TAG }}"
+
+      - name: update / build container image for nobody
+        if: env.WORKFLOW_UPDATE_NOBODY == 'true' && steps.build.conclusion == 'success'
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 #v1.3.2
+        with:
+          workflow: org.container.yml
+          wait-for-completion: false
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"false", "readme":"false", "run-name":"update nobody v${{ env.LATEST_VERSION }}", "etc":"${{ env.WORKFLOW_UPDATE_NOBODY_BASE64JSON }}" }'
+          ref: "v${{ env.LATEST_TAG }}"

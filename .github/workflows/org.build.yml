@@ -1,0 +1,92 @@
+name: org.build
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'reference'
+        required: true
+
+      etc:
+        description: 'base64 encoded json string'
+        required: false
+        default: 'null'
+
+      release:
+        description: 'create a release'
+        required: false
+        default: 'true'
+
+      readme:
+        description: 'create a readme'
+        required: false
+        default: 'true'
+
+      wait:
+        description: 'wait for last build'
+        required: false
+        default: 'true'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # check if additional builds need to happen
+      - name: etc to environment variable
+        if: github.event.inputs.etc != 'null'
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const { Buffer } = require('node:buffer');
+
+            (async()=>{
+              try{
+                const etc = JSON.parse(Buffer.from('${{ github.event.inputs.etc }}', 'base64').toString('ascii'));
+                core.exportVariable('WORKFLOW_BUILD_BASE64JSON', Buffer.from(JSON.stringify(etc)).toString('base64'));
+                if(etc?.unraid){
+                  core.exportVariable(`WORKFLOW_BUILD_UNRAID`, `${etc.unraid}`);
+                  core.exportVariable('WORKFLOW_BUILD_UNRAID_BASE64JSON', Buffer.from(JSON.stringify({semversuffix:"unraid", uid:99, gid:100, build:etc?.build})).toString('base64'));
+                }
+                if(etc?.nobody){
+                  core.exportVariable(`WORKFLOW_BUILD_NOBODY`, `${etc.nobody}`);
+                  core.exportVariable('WORKFLOW_BUILD_NOBODY_BASE64JSON', Buffer.from(JSON.stringify({semversuffix:"nobody", uid:65534, gid:65534, build:etc?.build})).toString('base64'));
+                }
+              }catch(e){
+                core.setFailed(`could not parse: ${e}`);
+              }
+            })();
+
+      # DEFAULT
+      - name: build container image
+        id: build
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 #v1.3.2
+        with:
+          workflow: org.container.yml
+          wait-for-completion: true
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"${{ github.event.inputs.release }}", "readme":"${{ github.event.inputs.readme }}", "run-name":"build ${{ github.event.inputs.ref }}", "etc":"${{ env.WORKFLOW_BUILD_BASE64JSON }}" }'
+          sync-status: true
+          wait-interval-seconds: 30
+
+      # UNRAID
+      - name: build container image for unraid
+        if: env.WORKFLOW_BUILD_UNRAID == 'true' && steps.build.conclusion == 'success'
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 #v1.3.2
+        with:
+          workflow: org.container.yml
+          wait-for-completion: ${{ github.event.inputs.wait == 'true' }}
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"false", "readme":"false", "run-name":"build unraid ${{ github.event.inputs.ref }}", "etc":"${{ env.WORKFLOW_BUILD_UNRAID_BASE64JSON }}" }'
+
+      # NOBODY
+      - name: build container image for nobody
+        if: env.WORKFLOW_BUILD_NOBODY == 'true' && steps.build.conclusion == 'success'
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 #v1.3.2
+        with:
+          workflow: org.container.yml
+          wait-for-completion: ${{ github.event.inputs.wait == 'true' }}
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "release":"false", "readme":"false", "run-name":"build nobody ${{ github.event.inputs.ref }}", "etc":"${{ env.WORKFLOW_BUILD_NOBODY_BASE64JSON }}" }'

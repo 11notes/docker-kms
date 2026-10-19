@@ -1,0 +1,38 @@
+name: org.version
+run-name: org.version ${{ inputs.version }}
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'set version for build'
+        type: string
+        required: true
+
+jobs:
+  # ╔═════════════════════════════════════════════════════╗
+  # ║               BUILD VERSION {N} IMAGE               ║
+  # ╚═════════════════════════════════════════════════════╝
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: 'master'
+
+      - name: set build parameters
+        uses: 11notes/actions/version@v1 # v1
+        with:
+          version: ${{ github.event.inputs.version }}
+
+      - name: build container images
+        uses: benc-uk/workflow-dispatch@7a027648b88c2413826b6ddd6c76114894dc5ec4 # v1.3.1
+        with:
+          workflow: org.build.yml
+          wait-for-completion: false
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "ref":"master",  "release":"false", "readme":"false", "etc":"${{ env.ACTIONS_VERSION_BASE64JSON }}" }'

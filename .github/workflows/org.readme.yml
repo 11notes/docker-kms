@@ -1,0 +1,22 @@
+name: org.readme
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # ╔═════════════════════════════════════════════════════╗
+  # ║                   CREATE README.md                  ║
+  # ╚═════════════════════════════════════════════════════╝
+  readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create README.md
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 #v1.3.2
+        with:
+          wait-for-completion: false
+          workflow: org.container.yml
+          token: "${{ secrets.REPOSITORY_TOKEN }}"
+          inputs: '{ "build":"false", "release":"false", "readme":"true", "run-name":"readme" }'
