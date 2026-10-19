@@ -255,7 +255,7 @@ jobs:
                 quay:{enabled:true},
               },
               grype:{
-                fail:(opt.input?.etc?.grype?.fail || opt.dot?.grype?.fail)
+                fail:(opt.input?.etc?.grype?.fail ?? opt.dot?.grype?.fail ?? true)
               },
               tags:[],
               merge_tags:[],
