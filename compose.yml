@@ -1,0 +1,44 @@
+name: "kms"
+
+x-lockdown: &lockdown
+  # prevents write access to the image itself
+  read_only: true
+  # prevents any process within the container to gain more privileges
+  security_opt:
+    - "no-new-privileges=true"
+
+services:
+  server:
+    image: "11notes/kms:1.0.3"
+    <<: *lockdown
+    environment:
+      TZ: "Europe/Zurich"
+    volumes:
+      - "server.var:/kms/var"
+    networks:
+      frontend:
+    ports:
+      - "1688:1688/tcp"
+    restart: "always"
+
+  gui:
+    depends_on:
+      server:
+        condition: "service_healthy"
+        restart: true
+    image: "11notes/kms-gui:1.0.3"
+    environment:
+      TZ: "Europe/Zurich"
+    volumes:
+      - "server.var:/kms/var"
+    networks:
+      frontend:
+    ports:
+      - "3000:3000/tcp"
+    restart: "always"
+
+volumes:
+  server.var:
+
+networks:
+  frontend:
